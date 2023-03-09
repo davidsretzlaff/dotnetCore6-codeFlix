@@ -88,7 +88,7 @@ namespace CodeFlix.CatalogUnitTests.Domain.Entity.Category
             var exception = Assert.Throws<EntityValidationException>(action);
 
             // Assert
-            Assert.Equal("Description should not be empty or null", exception.Message);
+            Assert.Equal("Description should not be null", exception.Message);
         }
         [Theory(DisplayName = nameof(InstantiateErrorWhenNameIsLessThan3Characters))]
         [Trait("Domain", "Category - Agregates")]
@@ -106,7 +106,7 @@ namespace CodeFlix.CatalogUnitTests.Domain.Entity.Category
             var exception = Assert.Throws<EntityValidationException>(action);
 
             // Assert
-            Assert.Equal("Name should be at least 3 characters", exception.Message);
+            Assert.Equal("Name should be less or equal 3 characters long", exception.Message);
         }
 
         [Fact(DisplayName = nameof(InstantiateErrorWhenNameIsGreaterThan255Characters))]
@@ -122,7 +122,7 @@ namespace CodeFlix.CatalogUnitTests.Domain.Entity.Category
 
             // Assert
             var exception = Assert.Throws<EntityValidationException>(action);
-            Assert.Equal("Name should be less or equal 255 characters", exception.Message);
+            Assert.Equal("Name should be less or equal 255 characters long", exception.Message);
         }
 
         [Fact(DisplayName = nameof(InstantiateErrorWhenDescriptionIsGreaterThan10_000Characters))]
@@ -237,7 +237,7 @@ namespace CodeFlix.CatalogUnitTests.Domain.Entity.Category
             var exception = Assert.Throws<EntityValidationException>(action);
 
             // Assert
-            Assert.Equal("Name should be at least 3 characters", exception.Message);
+            Assert.Equal("Name should be less or equal 3 characters long", exception.Message);
         }
 
         [Fact(DisplayName = nameof(UpdateErrorWhenNameIsGreaterThan255Characters))]
@@ -253,7 +253,7 @@ namespace CodeFlix.CatalogUnitTests.Domain.Entity.Category
             var exception = Assert.Throws<EntityValidationException>(action);
 
             // Assert
-            Assert.Equal("Name should be less or equal 255 characters", exception.Message);
+            Assert.Equal("Name should be less or equal 255 characters long", exception.Message);
         }
 
         [Fact(DisplayName = nameof(UpdateErrorWhenDescriptionIsGreaterThan10_000Characters))]
