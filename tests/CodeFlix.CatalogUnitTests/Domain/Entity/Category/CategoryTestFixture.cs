@@ -1,10 +1,10 @@
 ﻿using Xunit;
 using DomainEntity = CodeFlix.Catalog.Domain.Entity;
-namespace CodeFlix.CatalogUnitTests.Entity.Category
+namespace CodeFlix.CatalogUnitTests.Domain.Entity.Category
 {
     public class CategoryTestFixture
     {
-        public DomainEntity.Category GetValidCategory() => new ("Category Name", "Category Description");
+        public DomainEntity.Category GetValidCategory() => new("Category Name", "Category Description");
     }
 
     [CollectionDefinition(nameof(CategoryTestFixture))]

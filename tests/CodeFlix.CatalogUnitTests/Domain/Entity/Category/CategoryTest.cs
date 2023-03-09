@@ -3,7 +3,7 @@ using CodeFlix.Catalog.Domain.Exceptions;
 using System;
 using Xunit;
 using DomainEntity = CodeFlix.Catalog.Domain.Entity;
-namespace CodeFlix.CatalogUnitTests.Entity.Category
+namespace CodeFlix.CatalogUnitTests.Domain.Entity.Category
 {
     [Collection(nameof(CategoryTestFixture))]
     public class CategoryTest
@@ -27,8 +27,8 @@ namespace CodeFlix.CatalogUnitTests.Entity.Category
             Assert.NotNull(category);
             Assert.Equal(category.Name, validCategory.Name);
             Assert.Equal(category.Description, validCategory.Description);
-            Assert.NotEqual(default(Guid), category.Id);
-            Assert.NotEqual(default(DateTime), category.CreatedAt);
+            Assert.NotEqual(default, category.Id);
+            Assert.NotEqual(default, category.CreatedAt);
             Assert.True(category.CreatedAt >= datetimeBefore);
             Assert.True(category.CreatedAt <= datetimeAfter);
             Assert.True(category.IsActive);
@@ -45,25 +45,25 @@ namespace CodeFlix.CatalogUnitTests.Entity.Category
             var datetimeBefore = DateTime.Now;
 
             // Act
-            var category = new DomainEntity.Category(validCategory.Name, validCategory.Description,isActive);
+            var category = new DomainEntity.Category(validCategory.Name, validCategory.Description, isActive);
             var datetimeAfter = DateTime.Now.AddSeconds(1);
 
             // Assert
             Assert.NotNull(category);
             Assert.Equal(category.Name, validCategory.Name);
             Assert.Equal(category.Description, validCategory.Description);
-            Assert.NotEqual(default(Guid), category.Id);
-            Assert.NotEqual(default(DateTime), category.CreatedAt);
+            Assert.NotEqual(default, category.Id);
+            Assert.NotEqual(default, category.CreatedAt);
             Assert.True(category.CreatedAt >= datetimeBefore);
             Assert.True(category.CreatedAt <= datetimeAfter);
             Assert.Equal(category.IsActive, isActive);
         }
-        [Theory(DisplayName =nameof(InstantiateErrorWhenNameIsEmpty))]
+        [Theory(DisplayName = nameof(InstantiateErrorWhenNameIsEmpty))]
         [Trait("Domain", "Category - Agregates")]
         [InlineData("")]
         [InlineData(null)]
         [InlineData(" ")]
-        public void InstantiateErrorWhenNameIsEmpty(string? name) 
+        public void InstantiateErrorWhenNameIsEmpty(string? name)
         {
             // Arrange
             var validCategory = _categoryTestFixture.GetValidCategory();
@@ -82,11 +82,11 @@ namespace CodeFlix.CatalogUnitTests.Entity.Category
         {
             // Arrange
             var validCategory = _categoryTestFixture.GetValidCategory();
-           
+
             // Act
             Action action = () => new DomainEntity.Category(validCategory.Name, null!);
             var exception = Assert.Throws<EntityValidationException>(action);
-            
+
             // Assert
             Assert.Equal("Description should not be empty or null", exception.Message);
         }
@@ -148,7 +148,7 @@ namespace CodeFlix.CatalogUnitTests.Entity.Category
             // Arrange
             var validCategory = _categoryTestFixture.GetValidCategory();
             var category = new DomainEntity.Category(validCategory.Name, validCategory.Description, false);
-            
+
             // Act
             category.Activate();
 
@@ -163,7 +163,7 @@ namespace CodeFlix.CatalogUnitTests.Entity.Category
             // Arrange
             var validCategory = _categoryTestFixture.GetValidCategory();
             var category = new DomainEntity.Category(validCategory.Name, validCategory.Description, true);
-            
+
             // Act
             category.Deactivate();
 
@@ -198,7 +198,7 @@ namespace CodeFlix.CatalogUnitTests.Entity.Category
 
             // Act
             category.Update(newValues.Name);
-            
+
             // Assert
             Assert.Equal(newValues.Name, category.Name);
             Assert.Equal(currentDescription, category.Description);
@@ -263,7 +263,7 @@ namespace CodeFlix.CatalogUnitTests.Entity.Category
             // Arrange
             var category = _categoryTestFixture.GetValidCategory();
             var invalidDescription = string.Join(null, Enumerable.Range(1, 10_001).Select(_ => "a").ToArray());
-            
+
             // Act
             Action action = () => category.Update("Category New Name", invalidDescription);
             var exception = Assert.Throws<EntityValidationException>(action);
