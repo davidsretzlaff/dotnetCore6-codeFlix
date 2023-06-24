@@ -1,9 +1,9 @@
-﻿using CodeFlix.Catalog.Domain.Entity;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
-using Moq;
-using System.Xml.Linq;
+﻿using Moq;
 using Xunit;
 using UseCases = CodeFlix.Catalog.Application.UseCases.CreateCategory;
+using CodeFlix.Catalog.Domain.Entity;
+using CodeFlix.Catalog.Domain.Repository;
+
 namespace CodeFlix.CatalogUnitTests.Application.CreateCategory
 {
     public class CreateCategoryTest
@@ -14,8 +14,16 @@ namespace CodeFlix.CatalogUnitTests.Application.CreateCategory
         {
             var repositoryMock = new Mock<ICategoryRepository>();
             var unitOfWorkMock = new Mock<IunitOfWorkRepository>();
-            var useCase = new UseCases.CreateCategory(repositoryMock.Object, unitOfWorkMock.Object);
-            var input = new CreateCategoryInput("Category Name", "Category Description", true);
+            var useCase = new UseCases.CreateCategory(
+                repositoryMock.Object, 
+                unitOfWorkMock.Object
+            );
+
+            var input = new CreateCategoryInput(
+                "Category Name", 
+                "Category Description", 
+                true
+            );
             
             var output = await useCase.Handle(input,CancellationToken.None);
 
@@ -38,8 +46,6 @@ namespace CodeFlix.CatalogUnitTests.Application.CreateCategory
             output.IsActive.Should().Be(true);
             (output.Id != null && output.Id != Guid.Empty).Should().BeTrue();
             (output.CreatedAt != null && output.CreatedAt != default(DateTime)).Should().BeTrue();
-
-
 
         }
     }

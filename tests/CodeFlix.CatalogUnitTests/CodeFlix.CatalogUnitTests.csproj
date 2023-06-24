@@ -21,8 +21,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\CodeFlix.Domain\CodeFlix.Catalog.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

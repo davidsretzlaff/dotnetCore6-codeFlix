@@ -3,7 +3,7 @@ using CodeFlix.Catalog.Domain.SeedWork;
 
 namespace CodeFlix.Catalog.Domain.Repository
 {
-    public interface ICategoryRepository : IRepository
-    {
+    public interface ICategoryRepository : IGenericRepository<Category>
+    {        
     }
 }
