@@ -1,8 +1,9 @@
 ﻿using Moq;
 using Xunit;
-using UseCases = CodeFlix.Catalog.Application.UseCases.CreateCategory;
+using UseCases = CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
 using CodeFlix.Catalog.Domain.Entity;
 using CodeFlix.Catalog.Domain.Repository;
+using CodeFlix.Catalog.Application.Interfaces;
 
 namespace CodeFlix.CatalogUnitTests.Application.CreateCategory
 {
@@ -13,13 +14,13 @@ namespace CodeFlix.CatalogUnitTests.Application.CreateCategory
         public async void CreateCategory()
         {
             var repositoryMock = new Mock<ICategoryRepository>();
-            var unitOfWorkMock = new Mock<IunitOfWorkRepository>();
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
             var useCase = new UseCases.CreateCategory(
                 repositoryMock.Object, 
                 unitOfWorkMock.Object
             );
 
-            var input = new CreateCategoryInput(
+            var input = new UseCases.CreateCategoryInput(
                 "Category Name", 
                 "Category Description", 
                 true
@@ -40,13 +41,14 @@ namespace CodeFlix.CatalogUnitTests.Application.CreateCategory
                Times.Once
                );
 
-            output.Should().NotBeNull();
-            output.Name.Should().Be("Category Name");
-            output.Description.Should().Be("Category Description");
-            output.IsActive.Should().Be(true);
-            (output.Id != null && output.Id != Guid.Empty).Should().BeTrue();
-            (output.CreatedAt != null && output.CreatedAt != default(DateTime)).Should().BeTrue();
 
+            Assert.NotNull(output);
+            Assert.Equal(output.Name, input.Name);
+            Assert.Equal(output.Description, input.Description);
+            Assert.True(output.IsActive);
+            Assert.NotEqual(default(Guid), output.Id);
+            Assert.NotEqual(default(DateTime), output.CreatedAt);
+            
         }
     }
 }
