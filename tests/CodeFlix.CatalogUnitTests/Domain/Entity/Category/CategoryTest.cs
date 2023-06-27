@@ -135,10 +135,11 @@ namespace CodeFlix.CatalogUnitTests.Domain.Entity.Category
 
             // Act
             Action action = () => new DomainEntity.Category(validCategory.Name, invalidDescription);
+
             var exception = Assert.Throws<EntityValidationException>(action);
 
             // Assert
-            Assert.Equal("Description should be less or equal 10.000 characters long", exception.Message);
+            Assert.Equal("Description should be less or equal 10000 characters long", exception.Message);
         }
 
         [Fact(DisplayName = nameof(Activate))]
@@ -269,7 +270,7 @@ namespace CodeFlix.CatalogUnitTests.Domain.Entity.Category
             var exception = Assert.Throws<EntityValidationException>(action);
 
             // Assert
-            Assert.Equal("Description should be less or equal 10.000 characters long", exception.Message);
+            Assert.Equal("Description should be less or equal 10000 characters long", exception.Message);
         }
     }
 }
