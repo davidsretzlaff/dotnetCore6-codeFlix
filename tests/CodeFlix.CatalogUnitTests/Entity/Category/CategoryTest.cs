@@ -1,7 +1,6 @@
-﻿
-using Xunit;
+﻿using Xunit;
 using DomainEntity = CodeFlix.Catalog.Domain.Entity;
-namespace CodeFlix.CatalogUnitTests.Entity.Category
+namespace CodeFlix.Catalog.UnitTests.Entity.Category
 {
     public class CategoryTest
     {
@@ -10,7 +9,7 @@ namespace CodeFlix.CatalogUnitTests.Entity.Category
         public void Instantiate()
         {
             // Arrange
-            var validDate = new 
+            var validDate = new
             {
                 Name = "Category name",
                 Description = "Category Description"
@@ -21,7 +20,7 @@ namespace CodeFlix.CatalogUnitTests.Entity.Category
 
             // Assert
             Assert.NotNull(category);
-            Assert.Equal(category.Name,validDate.Name);
+            Assert.Equal(category.Name, validDate.Name);
             Assert.Equal(category.Description, validDate.Description);
         }
     }

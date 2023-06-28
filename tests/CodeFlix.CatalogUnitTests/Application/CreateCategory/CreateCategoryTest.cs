@@ -2,31 +2,36 @@
 using Xunit;
 using UseCases = CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
 using CodeFlix.Catalog.Domain.Entity;
-using CodeFlix.Catalog.Domain.Repository;
-using CodeFlix.Catalog.Application.Interfaces;
+using CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
+using CodeFlix.Catalog.Domain.Exceptions;
+using System;
+using FluentAssertions;
 
-namespace CodeFlix.CatalogUnitTests.Application.CreateCategory
+namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
 {
+    [Collection(nameof(CreateCategoryTestFixture))]
     public class CreateCategoryTest
     {
+        private readonly CreateCategoryTestFixture _fixture;
+
+        public CreateCategoryTest(CreateCategoryTestFixture fixture)
+            => _fixture = fixture;
+
         [Fact(DisplayName = nameof(CreateCategory))]
         [Trait("Application", "CreateCategory - Use Cases")]
         public async void CreateCategory()
         {
-            var repositoryMock = new Mock<ICategoryRepository>();
-            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            var repositoryMock = _fixture.GetRepositoryMock();
+            var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
+
             var useCase = new UseCases.CreateCategory(
-                repositoryMock.Object, 
+                repositoryMock.Object,
                 unitOfWorkMock.Object
             );
 
-            var input = new UseCases.CreateCategoryInput(
-                "Category Name", 
-                "Category Description", 
-                true
-            );
-            
-            var output = await useCase.Handle(input,CancellationToken.None);
+            var input = _fixture.GetInput();
+
+            var output = await useCase.Handle(input, CancellationToken.None);
 
             repositoryMock.Verify(
                 repository => repository.Insert(
@@ -46,9 +51,161 @@ namespace CodeFlix.CatalogUnitTests.Application.CreateCategory
             Assert.Equal(output.Name, input.Name);
             Assert.Equal(output.Description, input.Description);
             Assert.True(output.IsActive);
-            Assert.NotEqual(default(Guid), output.Id);
-            Assert.NotEqual(default(DateTime), output.CreatedAt);
+            Assert.NotEqual(default, output.Id);
+            Assert.NotEqual(default, output.CreatedAt);
+        }
+
+        [Fact(DisplayName = nameof(CreateCategoryWithOnlyName))]
+        [Trait("Application", "CreateCategory - Use Cases")]
+        public async void CreateCategoryWithOnlyName()
+        {
+            var repositoryMock = _fixture.GetRepositoryMock();
+            var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
+
+            var useCase = new UseCases.CreateCategory(
+                repositoryMock.Object,
+                unitOfWorkMock.Object
+            );
+
+            var input = new CreateCategoryInput(_fixture.GetValidCategoryName());
+
+            var output = await useCase.Handle(input, CancellationToken.None);
+
+            repositoryMock.Verify(
+                repository => repository.Insert(
+                    It.IsAny<Category>(),
+                    It.IsAny<CancellationToken>()
+                 ),
+                Times.Once
+                );
+
+            unitOfWorkMock.Verify(
+               unitOfWork => unitOfWork.Commit(It.IsAny<CancellationToken>()),
+               Times.Once
+               );
+
+            output.Should().NotBeNull();
+            output.Name.Should().Be(input.Name);
+            output.Description.Should().Be("");
+            output.IsActive.Should().BeTrue();
+            output.Id.Should().NotBeEmpty();
+            output.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
+        }
+
+        [Fact(DisplayName = nameof(CreateCategoryWithOnlyDescription))]
+        [Trait("Application", "CreateCategory - Use Cases")]
+        public async void CreateCategoryWithOnlyDescription()
+        {
+            var repositoryMock = _fixture.GetRepositoryMock();
+            var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
+
+            var useCase = new UseCases.CreateCategory(
+                repositoryMock.Object,
+                unitOfWorkMock.Object
+            );
+
+            var input = new CreateCategoryInput(_fixture.GetValidCategoryDescription());
+
+            var output = await useCase.Handle(input, CancellationToken.None);
+
+            repositoryMock.Verify(
+                repository => repository.Insert(
+                    It.IsAny<Category>(),
+                    It.IsAny<CancellationToken>()
+                 ),
+                Times.Once
+                );
+
+            unitOfWorkMock.Verify(
+               unitOfWork => unitOfWork.Commit(It.IsAny<CancellationToken>()),
+               Times.Once
+               );
+
+            output.Should().NotBeNull();
+            output.Name.Should().Be("");
+            output.Description.Should().Be(input.Description);
+            output.IsActive.Should().BeTrue();
+            output.Id.Should().NotBeEmpty();
+            output.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
+        }
+
+        [Theory(DisplayName =nameof(ThrowWhenCantInstantiateAggregate))]
+        [Trait("Application", "CreateCategory - Use Cases")]
+        [MemberData(nameof(GetInvalidInputs))]
+        public async void ThrowWhenCantInstantiateAggregate(
+            CreateCategoryInput input,
+            string exceptionMessage
+        )
+        {
+            var useCase = new UseCases.CreateCategory(
+                _fixture.GetRepositoryMock().Object,
+                _fixture.GetUnitOfWorkMock().Object
+            );
+
+            Func<Task> task = async () => await useCase.Handle(input, CancellationToken.None);
+
+            await task.Should().ThrowAsync<EntityValidationException>().WithMessage(exceptionMessage);
+        }
+
+        public static IEnumerable<object[]> GetInvalidInputs()
+        {
+            var fixture = new CreateCategoryTestFixture();
+            var invalidInputsList = new List<object[]>();
+
+            // short name
+            var invalidInputsShortName = fixture.GetInput();
+            invalidInputsShortName.Name = 
+                invalidInputsShortName.Name.Substring(0, 2);
+
+            invalidInputsList.Add(new object[]
+            {
+                invalidInputsShortName,
+                "Name should be less or equal 3 characters long"
+            });
+
+            // too long name
+            var invalidInputsToolongName = fixture.GetInput();
+            var toolongNameForCategory = fixture.Faker.Commerce.ProductName();
+
+            while (toolongNameForCategory.Length <= 255){
+                toolongNameForCategory = $"{toolongNameForCategory} {fixture.Faker.Commerce.ProductName()}";
+            }
+
+            invalidInputsToolongName.Name = toolongNameForCategory;
+
+            invalidInputsList.Add(new object[]
+            {
+                invalidInputsToolongName,
+                "Name should be less or equal 255 characters long"
+            });
+
+            // description null
+            var invalidInputDescriptionNull = fixture.GetInput();
+            invalidInputDescriptionNull.Description = null!;
             
+            invalidInputsList.Add(new object[]
+            {
+                invalidInputDescriptionNull,
+                "Description should not be null"
+            });
+
+            //description too long
+            var invalidInputsToolongDescription = fixture.GetInput();
+            var toolongDescriptionForCategory = fixture.Faker.Commerce.ProductDescription();
+
+            while (toolongDescriptionForCategory.Length <= 10001)
+            {
+                toolongDescriptionForCategory = $"{toolongDescriptionForCategory} {fixture.Faker.Commerce.ProductDescription()}";
+            }
+
+            invalidInputsToolongDescription.Description = toolongDescriptionForCategory;
+
+            invalidInputsList.Add(new object[]
+            {
+                invalidInputsToolongDescription,
+                "Description should be less or equal 10000 characters long"
+            });
+            return invalidInputsList;
         }
     }
 }

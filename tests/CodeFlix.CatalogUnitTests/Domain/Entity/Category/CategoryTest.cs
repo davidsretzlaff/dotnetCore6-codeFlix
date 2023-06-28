@@ -3,7 +3,7 @@ using CodeFlix.Catalog.Domain.Exceptions;
 using System;
 using Xunit;
 using DomainEntity = CodeFlix.Catalog.Domain.Entity;
-namespace CodeFlix.CatalogUnitTests.Domain.Entity.Category
+namespace CodeFlix.Catalog.UnitTests.Domain.Entity.Category
 {
     [Collection(nameof(CategoryTestFixture))]
     public class CategoryTest

@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2048B217-5E0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FCC18B37-BAAC-4350-8EFA-9ABCDAACBF14}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeFlix.CatalogUnitTests", "tests\CodeFlix.CatalogUnitTests\CodeFlix.CatalogUnitTests.csproj", "{C8902F74-F21B-46E1-8283-57CB7ED33544}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeFlix.Catalog.UnitTests", "tests\CodeFlix.CatalogUnitTests\CodeFlix.Catalog.UnitTests.csproj", "{C8902F74-F21B-46E1-8283-57CB7ED33544}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeFlix.Catalog.Domain", "src\CodeFlix.Domain\CodeFlix.Catalog.Domain.csproj", "{D8A64222-FB70-4DB8-9813-E7F35963F809}"
 EndProject

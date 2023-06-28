@@ -1,12 +1,12 @@
 ﻿using CodeFlix.Catalog.Domain.Exceptions;
 using CodeFlix.Catalog.Domain.Validation;
-using CodeFlix.CatalogUnitTests.Domain.Entity.Category;
+using CodeFlix.Catalog.UnitTests.Domain.Entity.Category;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using System;
 using System.ComponentModel;
 using Xunit;
 
-namespace CodeFlix.CatalogUnitTests.Domain.Entity.Validation
+namespace CodeFlix.Catalog.UnitTests.Domain.Entity.Validation
 {
     public class DomainValidationTest
     {
@@ -17,8 +17,8 @@ namespace CodeFlix.CatalogUnitTests.Domain.Entity.Validation
             string argumentValue = "Category";
 
             var exception = Record.Exception(() => DomainValidation.NotNull(argumentValue, "Value"));
-            
-            Assert.Null(exception);      
+
+            Assert.Null(exception);
         }
 
         [Fact(DisplayName = nameof(NotNullThrowWhenNull))]
@@ -64,7 +64,7 @@ namespace CodeFlix.CatalogUnitTests.Domain.Entity.Validation
 
         [Theory(DisplayName = nameof(MinLengthThrowWhenLess))]
         [Trait("Domain", "DomainValidation - Validation")]
-        [InlineData("a",12)]
+        [InlineData("a", 12)]
         [InlineData("Kia", 4)]
         [InlineData("Kuth", 6)]
         public void MinLengthThrowWhenLess(string target, int minLength)
@@ -85,7 +85,7 @@ namespace CodeFlix.CatalogUnitTests.Domain.Entity.Validation
         [InlineData("Valid target ok", 4)]
         public void MinLengthOk(string target, int minLength)
         {
-            var exception = Record.Exception(() => DomainValidation.MinLength(target,minLength ,"fieldName"));
+            var exception = Record.Exception(() => DomainValidation.MinLength(target, minLength, "fieldName"));
 
             Assert.Null(exception);
         }
@@ -95,7 +95,7 @@ namespace CodeFlix.CatalogUnitTests.Domain.Entity.Validation
         [InlineData("Product with name error", 3)]
         [InlineData("Invalid target", 5)]
         [InlineData("Invalid target ok", 4)]
-        public void MaxLengthThrowWhenGreater(string target, int maxLength) 
+        public void MaxLengthThrowWhenGreater(string target, int maxLength)
         {
             Action action = () => DomainValidation.MaxLength(target, maxLength, "fieldName");
 
