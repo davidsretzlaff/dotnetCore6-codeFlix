@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.SymbolStore;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using DomainEntity = CodeFlix.Catalog.Domain.Entity;
 namespace CodeFlix.Catalog.Application.UseCases.Category.CreateCategory
 {
     public class CreateCategoryOutput
@@ -29,5 +23,14 @@ namespace CodeFlix.Catalog.Application.UseCases.Category.CreateCategory
             IsActive = isActive;
             CreatedAt = createdAt;
         }
+
+        public static CreateCategoryOutput FromCategory(DomainEntity.Category category)
+            => new CreateCategoryOutput(
+            category.Id,
+            category.Name,
+            category.Description,
+            category.IsActive,
+            category.CreatedAt
+        );
     }
 }
