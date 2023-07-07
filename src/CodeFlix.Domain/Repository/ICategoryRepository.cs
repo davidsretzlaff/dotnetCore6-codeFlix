@@ -4,6 +4,7 @@ using CodeFlix.Catalog.Domain.SeedWork;
 namespace CodeFlix.Catalog.Domain.Repository
 {
     public interface ICategoryRepository : IGenericRepository<Category>
-    {        
+    {
+        //void Get(Func<Guid> isAny);
     }
 }

@@ -92,9 +92,9 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
             output.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
         }
 
-        [Fact(DisplayName = nameof(CreateCategoryWithOnlyDescription))]
+        [Fact(DisplayName = nameof(CreateCategoryWithOnlyNameAndDescription))]
         [Trait("Application", "CreateCategory - Use Cases")]
-        public async void CreateCategoryWithOnlyDescription()
+        public async void CreateCategoryWithOnlyNameAndDescription()
         {
             var repositoryMock = _fixture.GetRepositoryMock();
             var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
@@ -104,7 +104,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
                 unitOfWorkMock.Object
             );
 
-            var input = new CreateCategoryInput(_fixture.GetValidCategoryDescription());
+            var input = new CreateCategoryInput(_fixture.GetValidCategoryName(),_fixture.GetValidCategoryDescription());
 
             var output = await useCase.Handle(input, CancellationToken.None);
 
@@ -122,11 +122,11 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
                );
 
             output.Should().NotBeNull();
-            output.Name.Should().Be("");
+            output.Name.Should().Be(input.Name);
             output.Description.Should().Be(input.Description);
             output.IsActive.Should().BeTrue();
             output.Id.Should().NotBeEmpty();
-            output.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
+            output.CreatedAt.Should().NotBeSameDateAs(default);
         }
 
         [Theory(DisplayName =nameof(ThrowWhenCantInstantiateAggregate))]

@@ -1,4 +1,5 @@
 ﻿using CodeFlix.Catalog.Application.Interfaces;
+using CodeFlix.Catalog.Application.UseCases.Category.Common;
 using CodeFlix.Catalog.Domain.Repository;
 using System;
 using DomainEntity = CodeFlix.Catalog.Domain.Entity;
@@ -19,7 +20,7 @@ namespace CodeFlix.Catalog.Application.UseCases.Category.CreateCategory
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<CreateCategoryOutput> Handle(
+        public async Task<CategoryModelOutput> Handle(
             CreateCategoryInput input, 
             CancellationToken cancellationToken)
         {
@@ -31,7 +32,7 @@ namespace CodeFlix.Catalog.Application.UseCases.Category.CreateCategory
             await _categoryRepository.Insert(category, cancellationToken);
             await _unitOfWork.Commit(cancellationToken);
 
-            return CreateCategoryOutput.FromCategory(category);
+            return CategoryModelOutput.FromCategory(category);
         }
     }
 }
