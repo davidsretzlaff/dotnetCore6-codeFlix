@@ -50,7 +50,6 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
             );
 
         public Mock<ICategoryRepository> GetRepositoryMock() => new();
-
         public Mock<IUnitOfWork> GetUnitOfWorkMock() => new();
     }
 }
