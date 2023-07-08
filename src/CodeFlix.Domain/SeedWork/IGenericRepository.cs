@@ -6,5 +6,6 @@ namespace CodeFlix.Catalog.Domain.SeedWork
     {
         public Task Insert(TAgregate agregate, CancellationToken cancelationToken);
         public Task<TAgregate> Get(Guid id, CancellationToken cancelationToken);
+        public Task Delete(TAgregate agregate, CancellationToken cancelationToken);
     }
 }

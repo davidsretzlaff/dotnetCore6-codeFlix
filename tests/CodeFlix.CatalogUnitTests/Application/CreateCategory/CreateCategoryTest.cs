@@ -29,7 +29,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
                 unitOfWorkMock.Object
             );
 
-            var input = _fixture.GetInput();
+            var input = _fixture.GetValidCategory();
 
             var output = await useCase.Handle(input, CancellationToken.None);
 

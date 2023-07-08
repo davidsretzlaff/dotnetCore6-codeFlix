@@ -34,11 +34,11 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
             return categoryDescription;
         }
 
-        //public DomainEntity.Category GetValidCategory()
-        //    => new(
-        //        GetValidCategoryName(),
-        //        GetValidCategoryDescription()
-        //    );
+        public CreateCategoryInput GetValidCategory()
+            => new(
+                GetValidCategoryName(),
+                GetValidCategoryDescription()
+            );
 
         public bool getRamdomBoolean()
             => (new Random()).NextDouble() < 0.5;
