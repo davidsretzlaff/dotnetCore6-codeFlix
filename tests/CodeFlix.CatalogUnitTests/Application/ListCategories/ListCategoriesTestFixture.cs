@@ -6,9 +6,10 @@ using Xunit;
 
 namespace CodeFlix.Catalog.UnitTests.Application.ListCategories
 {
-    //[CollectionDefinition(nameof(ListCategoriesTestFixture))]
-    //public class ListCategoriesTestFixtureCollection : 
-    //    ICollectionFixture<ListCategoriesTestFixture> { }
+    [CollectionDefinition(nameof(ListCategoriesTestFixture))]
+    public class ListCategoriesTestFixtureCollection :
+        ICollectionFixture<ListCategoriesTestFixture>
+    { }
     public class ListCategoriesTestFixture : BaseFixture
     {
         public Mock<ICategoryRepository> GetRepositoryMock() => new();

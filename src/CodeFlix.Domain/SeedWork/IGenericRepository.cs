@@ -2,11 +2,12 @@
 
 namespace CodeFlix.Catalog.Domain.SeedWork
 {
-    public interface IGenericRepository<TAgregate> : IRepository
+    public interface IGenericRepository<TAggregate> : IRepository
+        where TAggregate : AggregateRoot
     {
-        public Task Insert(TAgregate agregate, CancellationToken cancelationToken);
-        public Task<TAgregate> Get(Guid id, CancellationToken cancelationToken);
-        public Task Delete(TAgregate agregate, CancellationToken cancelationToken);
-        public Task Update(TAgregate agregate, CancellationToken cancelationToken);
+        public Task Insert(TAggregate aggregate, CancellationToken cancelationToken);
+        public Task<TAggregate> Get(Guid id, CancellationToken cancelationToken);
+        public Task Delete(TAggregate aggregate, CancellationToken cancelationToken);
+        public Task Update(TAggregate aggregate, CancellationToken cancelationToken);
     }
 }
