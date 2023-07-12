@@ -1,5 +1,7 @@
-﻿using CodeFlix.Catalog.Domain.Entity;
+﻿using CodeFlix.Catalog.Application.UseCases.Category.ListCategories;
+using CodeFlix.Catalog.Domain.Entity;
 using CodeFlix.Catalog.Domain.Repository;
+using CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using CodeFlix.Catalog.UnitTests.Common;
 using Moq;
 using Xunit;
@@ -47,6 +49,19 @@ namespace CodeFlix.Catalog.UnitTests.Application.ListCategories
             if (categoryDescription.Length > 10_000)
                 categoryDescription = categoryDescription[..10_000];
             return categoryDescription; ;
+        }
+
+        public ListCategoriesInput GetExampleInput()
+        {
+            var random = new Random();
+
+            return new ListCategoriesInput(
+               page: random.Next(1, 10),
+               perPage: random.Next(15, 100),
+               search: Faker.Commerce.ProductName(),
+               sort: Faker.Commerce.ProductName(),
+               dir: random.Next(0, 15) > 5 ? SearchOrder.Asc : SearchOrder.Asc
+           );
         }
     }
 }

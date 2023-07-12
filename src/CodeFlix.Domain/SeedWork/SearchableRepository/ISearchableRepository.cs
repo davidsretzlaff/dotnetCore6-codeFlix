@@ -1,8 +1,8 @@
 ﻿namespace CodeFlix.Catalog.Domain.SeedWork.SearchableRepository
 {
-    public interface ISearchableRepository<Taggregate> where Taggregate : AggregateRoot
+    public interface ISearchableRepository<TAggregate> where TAggregate : AggregateRoot
     {
-        Task<SearchOuput<Taggregate>> Search(
+        Task<SearchOuput<TAggregate>> Search(
             SearchInput input,
             CancellationToken cancellationToken
         );
