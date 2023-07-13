@@ -29,7 +29,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
                 unitOfWorkMock.Object
             );
 
-            var input = _fixture.GetValidCategory();
+            var input = _fixture.GetInput();
 
             var output = await useCase.Handle(input, CancellationToken.None);
 
@@ -50,7 +50,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
             Assert.NotNull(output);
             Assert.Equal(output.Name, input.Name);
             Assert.Equal(output.Description, input.Description);
-            Assert.True(output.IsActive);
+            Assert.Equal(input.IsActive,output.IsActive);
             Assert.NotEqual(default, output.Id);
             Assert.NotEqual(default, output.CreatedAt);
         }

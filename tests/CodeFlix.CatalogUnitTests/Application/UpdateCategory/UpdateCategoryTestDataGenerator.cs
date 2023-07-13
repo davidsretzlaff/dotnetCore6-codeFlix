@@ -10,7 +10,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.UpdateCategory
             var fixture = new UpdateCategoryTestFixture();
             for (int i = 0; i < times; i++)
             {
-                var exampleCategory = fixture.GetCategory();
+                var exampleCategory = fixture.GetExampleCategory();
                 var exampleInput = fixture.GetValidInput(exampleCategory.Id);
                 yield return new object[] {
                     exampleCategory,

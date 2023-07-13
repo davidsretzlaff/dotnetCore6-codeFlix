@@ -161,7 +161,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.UpdateCategory
             )]
         public async Task ThrowWhenCantUpdateCategory(UpdateCategoryInput input,string expectedExceptionMessage)
         {
-            var exampleCategory = _fixture.GetCategory();
+            var exampleCategory = _fixture.GetExampleCategory();
             input.Id = exampleCategory.Id;
             var repositoryMock = _fixture.GetRepositoryMock();
             var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
