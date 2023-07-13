@@ -1,14 +1,14 @@
 ﻿using CodeFlix.Catalog.Application.Exceptions;
 using CodeFlix.Catalog.Application.UseCases.Category.Common;
 using CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
-using CodeFlix.Catalog.Domain.Entity;
+using DomainEntity = CodeFlix.Catalog.Domain.Entity;
 using CodeFlix.Catalog.Domain.Exceptions;
 using FluentAssertions;
 using Moq;
 using Xunit;
 using UseCase = CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 
-namespace CodeFlix.Catalog.UnitTests.Application.UpdateCategory
+namespace CodeFlix.Catalog.UnitTests.Application.Category.UpdateCategory
 {
     [Collection(nameof(UpdateCategoryTestFixture))]
     public class UpdateCategoryTest
@@ -24,23 +24,23 @@ namespace CodeFlix.Catalog.UnitTests.Application.UpdateCategory
             parameters: 10,
             MemberType = typeof(UpdateCategoryTestDataGenerator)
         )]
-        public async Task UpdateCategory(Category category, UseCase.UpdateCategoryInput input)
+        public async Task UpdateCategory(DomainEntity.Category category, UpdateCategoryInput input)
         {
             var repositoryMock = _fixture.GetRepositoryMock();
             var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
             repositoryMock.Setup(x => x.Get(
-                category.Id, 
+                category.Id,
                 It.IsAny<CancellationToken>())
             ).ReturnsAsync(category);
             var useCase = new UseCase.UpdateCategory(repositoryMock.Object, unitOfWorkMock.Object);
 
             CategoryModelOutput output = await useCase.Handle(input, CancellationToken.None);
-            
+
             output.Should().NotBeNull();
             output.Name.Should().Be(input.Name);
             output.Description.Should().Be(input.Description);
             output.IsActive.Should().Be((bool)input.IsActive!);
-            repositoryMock.Verify(x=> x.Get(
+            repositoryMock.Verify(x => x.Get(
                   category.Id,
                 It.IsAny<CancellationToken>())
                 , Times.Once);
@@ -51,7 +51,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.UpdateCategory
             , Times.Once);
             unitOfWorkMock.Verify(x => x.Commit(
                 It.IsAny<CancellationToken>())
-            ,Times.Once);
+            , Times.Once);
         }
 
         [Fact(DisplayName = nameof(ThrowWhenCategoryNotFound))]
@@ -70,7 +70,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.UpdateCategory
             var task = async () => await useCase.Handle(input, CancellationToken.None);
 
             await task.Should().ThrowAsync<NotFoundException>();
-            
+
             repositoryMock.Verify(x => x.Get(
                   input.Id,
                 It.IsAny<CancellationToken>())
@@ -84,7 +84,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.UpdateCategory
             parameters: 10,
             MemberType = typeof(UpdateCategoryTestDataGenerator)
         )]
-        public async Task UpdateCategoryWithoutProvidingIsActive(Category exampleCategory, UseCase.UpdateCategoryInput exampleInput)
+        public async Task UpdateCategoryWithoutProvidingIsActive(DomainEntity.Category exampleCategory, UpdateCategoryInput exampleInput)
         {
             var input = new UpdateCategoryInput(
                 exampleInput.Id,
@@ -122,7 +122,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.UpdateCategory
            parameters: 10,
            MemberType = typeof(UpdateCategoryTestDataGenerator)
        )]
-        public async Task UpdateCategoryOnlyName(Category exampleCategory, UseCase.UpdateCategoryInput exampleInput)
+        public async Task UpdateCategoryOnlyName(DomainEntity.Category exampleCategory, UpdateCategoryInput exampleInput)
         {
             var input = new UpdateCategoryInput(
                 exampleInput.Id,
@@ -153,13 +153,13 @@ namespace CodeFlix.Catalog.UnitTests.Application.UpdateCategory
         }
 
         [Theory(DisplayName = nameof(ThrowWhenCantUpdateCategory))]
-        [Trait("Application","UpdateCategory - Use Cases")]
+        [Trait("Application", "UpdateCategory - Use Cases")]
         [MemberData(
             nameof(UpdateCategoryTestDataGenerator.GetInvalidInputs),
             parameters: 12,
             MemberType = typeof(UpdateCategoryTestDataGenerator)
             )]
-        public async Task ThrowWhenCantUpdateCategory(UpdateCategoryInput input,string expectedExceptionMessage)
+        public async Task ThrowWhenCantUpdateCategory(UpdateCategoryInput input, string expectedExceptionMessage)
         {
             var exampleCategory = _fixture.GetExampleCategory();
             input.Id = exampleCategory.Id;
@@ -169,9 +169,9 @@ namespace CodeFlix.Catalog.UnitTests.Application.UpdateCategory
                 exampleCategory.Id,
                 It.IsAny<CancellationToken>())
             ).ReturnsAsync(exampleCategory);
-            var useCase = new UseCase.UpdateCategory(repositoryMock.Object,unitOfWorkMock.Object);
+            var useCase = new UseCase.UpdateCategory(repositoryMock.Object, unitOfWorkMock.Object);
 
-            var task = async () => await useCase.Handle(input,CancellationToken.None);
+            var task = async () => await useCase.Handle(input, CancellationToken.None);
 
             await task.Should().ThrowAsync<EntityValidationException>()
                 .WithMessage(expectedExceptionMessage);

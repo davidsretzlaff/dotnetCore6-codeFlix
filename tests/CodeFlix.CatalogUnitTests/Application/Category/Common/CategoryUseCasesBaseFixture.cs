@@ -1,11 +1,11 @@
 ﻿using CodeFlix.Catalog.Application.Interfaces;
 using CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
-using CodeFlix.Catalog.Domain.Entity;
+using DomainEntity = CodeFlix.Catalog.Domain.Entity;
 using CodeFlix.Catalog.Domain.Repository;
 using CodeFlix.Catalog.UnitTests.Common;
 using Moq;
 
-namespace CodeFlix.Catalog.UnitTests.Application.Common
+namespace CodeFlix.Catalog.UnitTests.Application.Category.Common
 {
     public abstract class CategoryUseCasesBaseFixture
         : BaseFixture
@@ -39,14 +39,14 @@ namespace CodeFlix.Catalog.UnitTests.Application.Common
                 getRamdomBoolean()
         );
 
-        public Category GetExampleCategory()
+        public DomainEntity.Category GetExampleCategory()
             => new(
                 GetValidCategoryName(),
                 GetValidCategoryDescription(),
                 getRamdomBoolean()
         );
         public bool getRamdomBoolean()
-           => (new Random()).NextDouble() < 0.5;
+           => new Random().NextDouble() < 0.5;
 
     }
 }

@@ -1,7 +1,8 @@
 ﻿using CodeFlix.Catalog.Application.UseCases.Category.ListCategories;
+using CodeFlix.Catalog.UnitTests.Application.Category.ListCategories;
 using Microsoft.VisualBasic;
 
-namespace CodeFlix.Catalog.UnitTests.Application.ListCategories
+namespace CodeFlix.Catalog.UnitTests.Application.Category.ListCategories
 {
     public class ListCategoriesTestDataGenerator
     {
@@ -14,12 +15,13 @@ namespace CodeFlix.Catalog.UnitTests.Application.ListCategories
                 switch (i % 6)
                 {
                     case 0:
-                        yield return new object[] { 
-                            new ListCategoriesInput() 
+                        yield return new object[] {
+                            new ListCategoriesInput()
                         };
                         break;
-                    case 1: yield return new object[] { 
-                            new ListCategoriesInput(inputExample.Page) 
+                    case 1:
+                        yield return new object[] {
+                            new ListCategoriesInput(inputExample.Page)
                         };
                         break;
                     case 2:
@@ -55,9 +57,9 @@ namespace CodeFlix.Catalog.UnitTests.Application.ListCategories
                     default:
                         yield return new object[] {
                             new ListCategoriesInput()
-                        }; 
+                        };
                         break;
-                            
+
 
                 }
             }

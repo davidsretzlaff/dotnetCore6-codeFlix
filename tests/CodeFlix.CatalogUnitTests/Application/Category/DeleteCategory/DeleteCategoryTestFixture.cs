@@ -1,8 +1,8 @@
 ﻿using CodeFlix.Catalog.Application.Interfaces;
-using CodeFlix.Catalog.UnitTests.Application.Common;
+using CodeFlix.Catalog.UnitTests.Application.Category.Common;
 using Xunit;
 
-namespace CodeFlix.Catalog.UnitTests.Application.DeleteCategory
+namespace CodeFlix.Catalog.UnitTests.Application.Category.DeleteCategory
 {
     [CollectionDefinition(nameof(DeleteCategoryTestFixture))]
     public class DeleteCategoryTestFixtureCollection
@@ -11,6 +11,6 @@ namespace CodeFlix.Catalog.UnitTests.Application.DeleteCategory
 
     public class DeleteCategoryTestFixture
         : CategoryUseCasesBaseFixture
-    {        
+    {
     }
 }

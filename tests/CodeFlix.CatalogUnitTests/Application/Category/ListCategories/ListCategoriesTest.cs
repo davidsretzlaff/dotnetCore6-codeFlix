@@ -1,12 +1,12 @@
 ﻿using CodeFlix.Catalog.Application.UseCases.Category.Common;
-using CodeFlix.Catalog.Domain.Entity;
+using DomainEntity = CodeFlix.Catalog.Domain.Entity;
 using CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using FluentAssertions;
 using Moq;
 using Xunit;
 using UseCase = CodeFlix.Catalog.Application.UseCases.Category.ListCategories;
 
-namespace CodeFlix.Catalog.UnitTests.Application.ListCategories
+namespace CodeFlix.Catalog.UnitTests.Application.Category.ListCategories
 {
     [Collection(nameof(ListCategoriesTestFixture))]
     public class ListCategoriesTest
@@ -24,15 +24,15 @@ namespace CodeFlix.Catalog.UnitTests.Application.ListCategories
             var repositoryMock = _fixture.GetRepositoryMock();
             var categoriesExampleList = _fixture.GetExampleCategoriesList();
             var input = _fixture.GetExampleInput();
-            var outputRepositorySearch = new SearchOuput<Category>(
+            var outputRepositorySearch = new SearchOuput<DomainEntity.Category>(
                 currentPage: input.Page,
                 perPage: input.PerPage,
-                items: (IReadOnlyList<Category>)categoriesExampleList,
-                total: (new Random()).Next(50, 200)
+                items: (IReadOnlyList<DomainEntity.Category>)categoriesExampleList,
+                total: new Random().Next(50, 200)
             );
             repositoryMock.Setup(x => x.Search(
                 It.Is<SearchInput>(
-                    searchInput => 
+                    searchInput =>
                     searchInput.Page == input.Page &&
                     searchInput.PerPage == input.PerPage &&
                     searchInput.Search == input.Search &&
@@ -64,7 +64,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.ListCategories
 
             repositoryMock.Verify(x => x.Search(
                 It.Is<SearchInput>(
-                    searchInput => 
+                    searchInput =>
                     searchInput.Page == input.Page &&
                     searchInput.PerPage == input.PerPage &&
                     searchInput.Search == input.Search &&
@@ -86,11 +86,11 @@ namespace CodeFlix.Catalog.UnitTests.Application.ListCategories
         {
             var repositoryMock = _fixture.GetRepositoryMock();
             var categoriesExampleList = _fixture.GetExampleCategoriesList();
-            var outputRepositorySearch = new SearchOuput<Category>(
+            var outputRepositorySearch = new SearchOuput<DomainEntity.Category>(
                 currentPage: input.Page,
                 perPage: input.PerPage,
-                items: (IReadOnlyList<Category>)categoriesExampleList,
-                total: (new Random()).Next(50, 200)
+                items: (IReadOnlyList<DomainEntity.Category>)categoriesExampleList,
+                total: new Random().Next(50, 200)
             );
             repositoryMock.Setup(x => x.Search(
                 It.Is<SearchInput>(
@@ -144,10 +144,10 @@ namespace CodeFlix.Catalog.UnitTests.Application.ListCategories
         {
             var repositoryMock = _fixture.GetRepositoryMock();
             var input = _fixture.GetExampleInput();
-            var outputRepositorySearch = new SearchOuput<Category>(
+            var outputRepositorySearch = new SearchOuput<DomainEntity.Category>(
                   currentPage: input.Page,
                   perPage: input.PerPage,
-                  items: new List<Category>().AsReadOnly(),
+                  items: new List<DomainEntity.Category>().AsReadOnly(),
                   total: 0
               );
             repositoryMock.Setup(x => x.Search(

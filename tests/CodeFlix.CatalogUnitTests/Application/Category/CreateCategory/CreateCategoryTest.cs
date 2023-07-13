@@ -1,13 +1,12 @@
 ﻿using Moq;
 using Xunit;
 using UseCases = CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
-using CodeFlix.Catalog.Domain.Entity;
+using DomainEntity = CodeFlix.Catalog.Domain.Entity;
 using CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
 using CodeFlix.Catalog.Domain.Exceptions;
-using System;
 using FluentAssertions;
 
-namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
+namespace CodeFlix.Catalog.UnitTests.Application.Category.CreateCategory
 {
     [Collection(nameof(CreateCategoryTestFixture))]
     public class CreateCategoryTest
@@ -35,7 +34,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
 
             repositoryMock.Verify(
                 repository => repository.Insert(
-                    It.IsAny<Category>(),
+                    It.IsAny<DomainEntity.Category>(),
                     It.IsAny<CancellationToken>()
                  ),
                 Times.Once
@@ -50,7 +49,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
             Assert.NotNull(output);
             Assert.Equal(output.Name, input.Name);
             Assert.Equal(output.Description, input.Description);
-            Assert.Equal(input.IsActive,output.IsActive);
+            Assert.Equal(input.IsActive, output.IsActive);
             Assert.NotEqual(default, output.Id);
             Assert.NotEqual(default, output.CreatedAt);
         }
@@ -73,7 +72,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
 
             repositoryMock.Verify(
                 repository => repository.Insert(
-                    It.IsAny<Category>(),
+                    It.IsAny<DomainEntity.Category>(),
                     It.IsAny<CancellationToken>()
                  ),
                 Times.Once
@@ -89,7 +88,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
             output.Description.Should().Be("");
             output.IsActive.Should().BeTrue();
             output.Id.Should().NotBeEmpty();
-            output.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
+            output.CreatedAt.Should().NotBeSameDateAs(default);
         }
 
         [Fact(DisplayName = nameof(CreateCategoryWithOnlyNameAndDescription))]
@@ -104,13 +103,13 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
                 unitOfWorkMock.Object
             );
 
-            var input = new CreateCategoryInput(_fixture.GetValidCategoryName(),_fixture.GetValidCategoryDescription());
+            var input = new CreateCategoryInput(_fixture.GetValidCategoryName(), _fixture.GetValidCategoryDescription());
 
             var output = await useCase.Handle(input, CancellationToken.None);
 
             repositoryMock.Verify(
                 repository => repository.Insert(
-                    It.IsAny<Category>(),
+                    It.IsAny<DomainEntity.Category>(),
                     It.IsAny<CancellationToken>()
                  ),
                 Times.Once
@@ -129,7 +128,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
             output.CreatedAt.Should().NotBeSameDateAs(default);
         }
 
-        [Theory(DisplayName =nameof(ThrowWhenCantInstantiateAggregate))]
+        [Theory(DisplayName = nameof(ThrowWhenCantInstantiateAggregate))]
         [Trait("Application", "CreateCategory - Use Cases")]
         [MemberData(nameof(GetInvalidInputs))]
         public async void ThrowWhenCantInstantiateAggregate(
@@ -152,9 +151,8 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
             var fixture = new CreateCategoryTestFixture();
             var invalidInputsList = new List<object[]>();
 
-            // short name
             var invalidInputsShortName = fixture.GetInput();
-            invalidInputsShortName.Name = 
+            invalidInputsShortName.Name =
                 invalidInputsShortName.Name.Substring(0, 2);
 
             invalidInputsList.Add(new object[]
@@ -167,7 +165,8 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
             var invalidInputsToolongName = fixture.GetInput();
             var toolongNameForCategory = fixture.Faker.Commerce.ProductName();
 
-            while (toolongNameForCategory.Length <= 255){
+            while (toolongNameForCategory.Length <= 255)
+            {
                 toolongNameForCategory = $"{toolongNameForCategory} {fixture.Faker.Commerce.ProductName()}";
             }
 
@@ -182,7 +181,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.CreateCategory
             // description null
             var invalidInputDescriptionNull = fixture.GetInput();
             invalidInputDescriptionNull.Description = null!;
-            
+
             invalidInputsList.Add(new object[]
             {
                 invalidInputDescriptionNull,

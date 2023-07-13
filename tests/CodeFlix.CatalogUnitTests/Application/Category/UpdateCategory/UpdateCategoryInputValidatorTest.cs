@@ -1,7 +1,8 @@
 ﻿using Xunit;
 using CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 using FluentAssertions;
-namespace CodeFlix.Catalog.UnitTests.Application.UpdateCategory
+
+namespace CodeFlix.Catalog.UnitTests.Application.Category.UpdateCategory
 {
     [Collection(nameof(UpdateCategoryTestFixture))]
     public class UpdateCategoryInputValidatorTest
@@ -14,7 +15,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.UpdateCategory
         }
 
         [Fact(DisplayName = nameof(DontValidateWhenEmptyGuid))]
-        [Trait("Application","UpdateCategoryInputValidator - Use Cases")]
+        [Trait("Application", "UpdateCategoryInputValidator - Use Cases")]
         public void DontValidateWhenEmptyGuid()
         {
             var input = _fixture.GetValidInput(Guid.Empty);
@@ -25,7 +26,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.UpdateCategory
             validateResult.IsValid.Should().BeFalse();
             validateResult.Errors.Should().HaveCount(1);
             validateResult.Errors[0].ErrorMessage.Should().Be("'Id' must not be empty.");
-            
+
         }
 
         [Fact(DisplayName = nameof(ValidateWhenValid))]

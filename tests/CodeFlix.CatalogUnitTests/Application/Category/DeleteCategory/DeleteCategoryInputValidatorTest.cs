@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CodeFlix.Catalog.UnitTests.Application.DeleteCategory
+namespace CodeFlix.Catalog.UnitTests.Application.Category.DeleteCategory
 {
 
     [Collection(nameof(DeleteCategoryTestFixture))]
