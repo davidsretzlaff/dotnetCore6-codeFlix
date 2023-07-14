@@ -14,8 +14,12 @@ namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRe
             => new(
                 GetValidCategoryName(),
                 GetValidCategoryDescription(),
-                getRamdomBoolean()
+                GetRamdomBoolean()
             );
+
+        public List<Category> GetExampleCategoriesList(int length = 10)
+            => Enumerable.Range(1, length)
+            .Select(_ => GetExampleCategory()).ToList();
 
         public string GetValidCategoryName()
         {
@@ -37,7 +41,7 @@ namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRe
             return categoryDescription;
         }
 
-        public bool getRamdomBoolean()
+        public bool GetRamdomBoolean()
          => new Random().NextDouble() < 0.5;
 
         public CatalogDbContext CreateDbContext()

@@ -15,12 +15,10 @@ namespace CodeFlix.Catalog.Infra.Data.EF.Repositories
         public async Task Insert(Category aggregate, CancellationToken cancelationToken)
             => await _categories.AddAsync(aggregate, cancelationToken);
 
-        public Task Delete(Category aggregate, CancellationToken cancelationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Category> Get(Guid id, CancellationToken cancelationToken)
+            => await _categories.FindAsync(id, cancelationToken);
 
-        public Task<Category> Get(Guid id, CancellationToken cancelationToken)
+        public Task Delete(Category aggregate, CancellationToken cancelationToken)
         {
             throw new NotImplementedException();
         }
