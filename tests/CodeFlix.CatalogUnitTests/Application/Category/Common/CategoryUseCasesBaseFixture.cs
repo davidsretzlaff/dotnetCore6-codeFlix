@@ -14,6 +14,11 @@ namespace CodeFlix.Catalog.UnitTests.Application.Category.Common
         public Mock<ICategoryRepository> GetRepositoryMock() => new();
         public Mock<IUnitOfWork> GetUnitOfWorkMock() => new();
 
+        public CreateCategoryInput GetInput()
+            => new(GetValidCategoryName(),
+                GetValidCategoryDescription(),
+                getRamdomBoolean()
+        );
         public string GetValidCategoryName()
         {
             var categoryName = "";
@@ -33,12 +38,6 @@ namespace CodeFlix.Catalog.UnitTests.Application.Category.Common
                     categoryDescription[..10_000];
             return categoryDescription;
         }
-        public CreateCategoryInput GetInput()
-            => new(GetValidCategoryName(),
-                GetValidCategoryDescription(),
-                getRamdomBoolean()
-        );
-
         public DomainEntity.Category GetExampleCategory()
             => new(
                 GetValidCategoryName(),
