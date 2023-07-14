@@ -1,4 +1,5 @@
 ﻿using CodeFlix.Catalog.Domain.Entity;
+using CodeFlix.Catalog.Infra.Data.EF;
 using CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
@@ -40,12 +41,10 @@ namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRe
          => new Random().NextDouble() < 0.5;
 
         public CatalogDbContext CreateDbContext()
-        {
-            var dbContext = new CatalogDbContext(
+            => new CatalogDbContext(
                 new DbContextOptionsBuilder<CatalogDbContext>()
                 .UseInMemoryDatabase("integration-tests-db")
                 .Options
             );
-        }
     }
 }

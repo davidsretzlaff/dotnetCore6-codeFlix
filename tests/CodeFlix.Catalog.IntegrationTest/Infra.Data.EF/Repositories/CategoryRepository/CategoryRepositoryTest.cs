@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CodeFlix.Catalog.Infra.Data.EF;
+using FluentAssertions;
 using Xunit;
-
+using Repository = CodeFlix.Catalog.Infra.Data.EF.Repositories;
 namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRepository
 {
     [Collection(nameof(CategoryRepositoryTestFixture))]
@@ -17,18 +18,17 @@ namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRe
         {
             CatalogDbContext dbContext = _fixture.CreateDbContext();
             var exampleCategory = _fixture.GetExampleCategory();
-            var categoryRepository = new CategoryRepository(dbContext);
+            var categoryRepository = new Repository.CategoryRepository(dbContext);
             
             await categoryRepository.Insert(exampleCategory, CancellationToken.None);
             await dbContext.SaveChangesAsync();
 
-            var dbCategory = await dbContext.Categories.Find(exampleCategory.Id);
+            var dbCategory = await dbContext.Categories.FindAsync(exampleCategory.Id);
             dbCategory.Should().NotBeNull();
-            dbCategory.Name.Should().Be(exampleCategory.Name);
+            dbCategory!.Name.Should().Be(exampleCategory.Name);
             dbCategory.Description.Should().Be(exampleCategory.Description);
-            dbCategory.IsActive.Should().BeTrue(exampleCategory.IsActive);
-            dbCategory.CreatedAd.Should().Be(exampleCategory.CreatedAd);
+            dbCategory.IsActive.Should().Be(exampleCategory.IsActive);
+            dbCategory.CreatedAt.Should().Be(exampleCategory.CreatedAt);
         }
     }
-}
 }
