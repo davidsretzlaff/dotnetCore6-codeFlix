@@ -1,6 +1,7 @@
 ﻿using CodeFlix.Catalog.Application.Exceptions;
 using CodeFlix.Catalog.Infra.Data.EF;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 using Repository = CodeFlix.Catalog.Infra.Data.EF.Repositories;
 namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRepository
@@ -23,8 +24,9 @@ namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRe
             
             await categoryRepository.Insert(exampleCategory, CancellationToken.None);
             await dbContext.SaveChangesAsync();
-
-            var dbCategory = await dbContext.Categories.FindAsync(exampleCategory.Id);
+            
+            // creating new context because EF tracking
+            var dbCategory = await (_fixture.CreateDbContext()).Categories.FindAsync(exampleCategory.Id);
             dbCategory.Should().NotBeNull();
             dbCategory!.Name.Should().Be(exampleCategory.Name);
             dbCategory.Description.Should().Be(exampleCategory.Description);
@@ -42,7 +44,7 @@ namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRe
             exampleCategoriesList.Add(exampleCategory);
             await dbContext.AddRangeAsync(exampleCategoriesList);
             await dbContext.SaveChangesAsync(CancellationToken.None);
-            var categoryRepository = new Repository.CategoryRepository(dbContext);
+            var categoryRepository = new Repository.CategoryRepository(_fixture.CreateDbContext());
      
             var dbCategory = await categoryRepository.Get(exampleCategory.Id, CancellationToken.None);
 
@@ -86,8 +88,11 @@ namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRe
 
             await categoryRepository.Update(exampleCategory, CancellationToken.None);
             dbContext.SaveChanges();
-            var dbCategory = await dbContext.Categories.FindAsync(exampleCategory.Id);
-       
+            //Creating new dbcontext because of EF tracking
+            var dbCategory = await (_fixture.CreateDbContext()).Categories.FindAsync(exampleCategory.Id );
+            // it could be like this
+            //var dbCategory = await dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Id == exampleCategory.Id);
+            
             dbCategory.Should().NotBeNull();
             dbCategory!.Id.Should().Be(exampleCategory.Id);
             dbCategory.Name.Should().Be(exampleCategory.Name);

@@ -18,7 +18,9 @@ namespace CodeFlix.Catalog.Infra.Data.EF.Repositories
 
         public async Task<Category> Get(Guid id, CancellationToken cancelationToken)
         {
-            var category =  await _categories.FindAsync(id, cancelationToken);
+            var category =  await _categories.AsNoTracking().FirstOrDefaultAsync(
+                x => x.Id == id, cancelationToken
+            );
             NotFoundException.ThrowIfNull(category, $"Category '{id}' not found.");
             return category!;
         }
