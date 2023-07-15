@@ -23,6 +23,10 @@ namespace CodeFlix.Catalog.Infra.Data.EF.Repositories
             return category!;
         }
 
+        public async Task Update(Category aggregate, CancellationToken cancelationToken)
+            => Task.FromResult(_categories.Update(aggregate));
+        
+
         public Task Delete(Category aggregate, CancellationToken cancelationToken)
         {
             throw new NotImplementedException();
@@ -33,9 +37,5 @@ namespace CodeFlix.Catalog.Infra.Data.EF.Repositories
             throw new NotImplementedException();
         }
 
-        public Task Update(Category aggregate, CancellationToken cancelationToken)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
