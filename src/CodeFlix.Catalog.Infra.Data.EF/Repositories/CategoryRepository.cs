@@ -1,4 +1,5 @@
-﻿using CodeFlix.Catalog.Domain.Entity;
+﻿using CodeFlix.Catalog.Application.Exceptions;
+using CodeFlix.Catalog.Domain.Entity;
 using CodeFlix.Catalog.Domain.Repository;
 using CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,11 @@ namespace CodeFlix.Catalog.Infra.Data.EF.Repositories
             => await _categories.AddAsync(aggregate, cancelationToken);
 
         public async Task<Category> Get(Guid id, CancellationToken cancelationToken)
-            => await _categories.FindAsync(id, cancelationToken);
+        {
+            var category =  await _categories.FindAsync(id, cancelationToken);
+            NotFoundException.ThrowIfNull(category, $"Category '{id}' not found.");
+            return category!;
+        }
 
         public Task Delete(Category aggregate, CancellationToken cancelationToken)
         {
