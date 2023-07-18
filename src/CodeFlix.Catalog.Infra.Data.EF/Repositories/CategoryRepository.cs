@@ -30,13 +30,13 @@ namespace CodeFlix.Catalog.Infra.Data.EF.Repositories
         
 
         public Task Delete(Category aggregate, CancellationToken cancelationToken)
-        {
-            throw new NotImplementedException();
-        }
+            => Task.FromResult(_categories.Remove(aggregate));
 
-        public Task<SearchOuput<Category>> Search(SearchInput input, CancellationToken cancellationToken)
+        public async Task<SearchOuput<Category>> Search(SearchInput input, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var total = await _categories.CountAsync();
+            var items = await _categories.ToListAsync();
+            return new SearchOuput<Category>(input.Page, input.PerPage, total, items);
         }
 
     }

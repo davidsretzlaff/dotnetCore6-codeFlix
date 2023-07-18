@@ -44,11 +44,19 @@ namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRe
         public bool GetRamdomBoolean()
          => new Random().NextDouble() < 0.5;
 
-        public CatalogDbContext CreateDbContext()
-            => new CatalogDbContext(
+        public CatalogDbContext CreateDbContext(bool preserveData = false)
+        {
+            var context = new CatalogDbContext(
                 new DbContextOptionsBuilder<CatalogDbContext>()
                 .UseInMemoryDatabase("integration-tests-db")
                 .Options
             );
+            
+            if(preserveData == false)
+                context.Database.EnsureDeleted();
+
+            return context
+        }
+            
     }
 }
