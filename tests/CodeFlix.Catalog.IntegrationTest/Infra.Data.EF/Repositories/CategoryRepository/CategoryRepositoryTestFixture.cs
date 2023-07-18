@@ -55,8 +55,7 @@ namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRe
             if(preserveData == false)
                 context.Database.EnsureDeleted();
 
-            return context
+            return context;
         }
-            
     }
 }
