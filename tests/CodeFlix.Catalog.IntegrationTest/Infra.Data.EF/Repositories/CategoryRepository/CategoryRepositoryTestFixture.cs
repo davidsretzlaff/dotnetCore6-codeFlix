@@ -1,8 +1,10 @@
 ﻿using CodeFlix.Catalog.Domain.Entity;
+using CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using CodeFlix.Catalog.Infra.Data.EF;
 using CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRepository
 {
@@ -20,6 +22,24 @@ namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRe
         public List<Category> GetExampleCategoriesList(int length = 10)
             => Enumerable.Range(1, length)
             .Select(_ => GetExampleCategory()).ToList();
+
+        public List<Category> CloneCategoriesListOrdered(List<Category> categoriesList, string orderBy, SearchOrder order)
+        {
+            var listClone = new List<Category>(categoriesList);
+            var orderedEnumerable = (orderBy, order) switch
+            {
+                ("name", SearchOrder.Asc) => listClone.OrderBy(x => x.Name),
+                ("name", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Name),
+                ("id", SearchOrder.Asc) => listClone.OrderBy(x => x.Name),
+                ("id", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Name),
+                ("createdat", SearchOrder.Asc) => listClone.OrderBy(x => x.CreatedAt),
+                ("createdat", SearchOrder.Desc) => listClone.OrderByDescending(x => x.CreatedAt),
+                _ => listClone.OrderBy(x => x.Name),
+            };
+
+            return orderedEnumerable.ToList();
+        }
+
 
         public List<Category> GetExampleCategoriesListWithNames(List<string> names)
             => names.Select(name =>
