@@ -219,5 +219,64 @@ namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRe
                 outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
             }
         }
+
+        [Theory(DisplayName = nameof(SearchByText))]
+        [InlineData("Action",1, 5, 1, 1)]
+        [InlineData("Horror", 1, 5, 3, 3)]
+        [InlineData("Horror", 2, 5, 0, 3)]
+        [InlineData("Sci-fi", 1, 5, 4, 4)]
+        [InlineData("Sci-fi", 1, 2, 2, 4)]
+        [InlineData("Sci-fi", 2, 3, 1, 4)]
+        [InlineData("Sci-fi Other", 1, 5, 0, 0)]
+        [InlineData("Robots", 1, 5, 2, 2)]
+        [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
+        public async Task SearchByText(
+            string search,
+            int page,
+            int perPage,
+            int expectedQuantityItemsReturned,
+            int expectedQuantityTotalItems
+        )
+        {
+            CatalogDbContext dbContext = _fixture.CreateDbContext();
+            var exampleCategoriesList = _fixture.GetExampleCategoriesListWithNames(new List<string>()
+            {
+                "Action",
+                "Horror",
+                "Horror - Robots",
+                "Horror - Based on Real Facts",
+                "Drama",
+                "Sci-fi IA",
+                "Sci-fi Space",
+                "Sci-fi Robots",
+                "Sci-fi Future"
+            });
+            await dbContext.AddRangeAsync(exampleCategoriesList);
+            await dbContext.SaveChangesAsync(CancellationToken.None);
+            var categoryRepository = new Repository.CategoryRepository(dbContext);
+            var searchInput = new SearchInput(page, perPage, search, "", SearchOrder.Asc);
+
+            var output = await categoryRepository.Search(searchInput, CancellationToken.None);
+
+            output.Should().NotBeNull();
+            output.Items.Should().NotBeNull();
+            output.CurrentPage.Should().Be(searchInput.Page);
+            output.PerPage.Should().Be(searchInput.PerPage);
+            output.Total.Should().Be(expectedQuantityTotalItems);
+            output.Items.Should().HaveCount(expectedQuantityItemsReturned);
+
+            foreach (Category outputItem in output.Items)
+            {
+                var exampleItem = exampleCategoriesList.Find(
+                    category => category.Id == outputItem.Id
+                );
+                exampleItem.Should().NotBeNull();
+                outputItem.Id.Should().Be(exampleItem!.Id);
+                outputItem.Name.Should().Be(exampleItem.Name);
+                outputItem.Description.Should().Be(exampleItem.Description);
+                outputItem.IsActive.Should().Be(exampleItem.IsActive);
+                outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
+            }
+        }
     }
 }
