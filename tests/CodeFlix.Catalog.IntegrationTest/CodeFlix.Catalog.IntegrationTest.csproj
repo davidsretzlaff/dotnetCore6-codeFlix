@@ -30,4 +30,10 @@
     <ProjectReference Include="..\..\src\CodeFlix.Domain\CodeFlix.Catalog.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

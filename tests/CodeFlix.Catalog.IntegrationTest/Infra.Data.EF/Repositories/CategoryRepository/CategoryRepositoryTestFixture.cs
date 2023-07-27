@@ -1,53 +1,17 @@
 ﻿using CodeFlix.Catalog.Domain.Entity;
 using CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
-using CodeFlix.Catalog.Infra.Data.EF;
-using CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.Base;
-using Microsoft.EntityFrameworkCore;
+using CodeFlix.Catalog.IntegrationTest.Base;
 using Xunit;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRepository
 {
     [CollectionDefinition(nameof(CategoryRepositoryTestFixture))]
-    public class CategoryRepositoryTestFixtureCollection : ICollectionFixture<CategoryRepositoryTestFixture> { }
+    public class CategoryRepositoryTestFixtureCollection
+    : ICollectionFixture<CategoryRepositoryTestFixture>
+    { }
+
     public class CategoryRepositoryTestFixture : BaseFixture
     {
-        public Category GetExampleCategory()
-            => new(
-                GetValidCategoryName(),
-                GetValidCategoryDescription(),
-                GetRamdomBoolean()
-            );
-
-        public List<Category> GetExampleCategoriesList(int length = 10)
-            => Enumerable.Range(1, length)
-            .Select(_ => GetExampleCategory()).ToList();
-
-        public List<Category> CloneCategoriesListOrdered(List<Category> categoriesList, string orderBy, SearchOrder order)
-        {
-            var listClone = new List<Category>(categoriesList);
-            var orderedEnumerable = (orderBy, order) switch
-            {
-                ("name", SearchOrder.Asc) => listClone.OrderBy(x => x.Name),
-                ("name", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Name),
-                ("id", SearchOrder.Asc) => listClone.OrderBy(x => x.Name),
-                ("id", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Name),
-                ("createdat", SearchOrder.Asc) => listClone.OrderBy(x => x.CreatedAt),
-                ("createdat", SearchOrder.Desc) => listClone.OrderByDescending(x => x.CreatedAt),
-                _ => listClone.OrderBy(x => x.Name),
-            };
-
-            return orderedEnumerable.ToList();
-        }
-
-
-        public List<Category> GetExampleCategoriesListWithNames(List<string> names)
-            => names.Select(name =>
-            {
-                var category = GetExampleCategory();
-                category.Update(name);
-                return category;
-            }).ToList();
         public string GetValidCategoryName()
         {
             var categoryName = "";
@@ -68,21 +32,46 @@ namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRe
             return categoryDescription;
         }
 
-        public bool GetRamdomBoolean()
-         => new Random().NextDouble() < 0.5;
+        public bool getRandomBoolean()
+            => new Random().NextDouble() < 0.5;
 
-        public CatalogDbContext CreateDbContext(bool preserveData = false)
-        {
-            var context = new CatalogDbContext(
-                new DbContextOptionsBuilder<CatalogDbContext>()
-                .UseInMemoryDatabase("integration-tests-db")
-                .Options
+        public Category GetExampleCategory()
+            => new(
+                GetValidCategoryName(),
+                GetValidCategoryDescription(),
+                getRandomBoolean()
             );
-            
-            if(preserveData == false)
-                context.Database.EnsureDeleted();
 
-            return context;
+        public List<Category> GetExampleCategoriesList(int length = 10)
+            => Enumerable.Range(1, length)
+                .Select(_ => GetExampleCategory()).ToList();
+
+        public List<Category> GetExampleCategoriesListWithNames(List<string> names)
+            => names.Select(name =>
+            {
+                var category = GetExampleCategory();
+                category.Update(name);
+                return category;
+            }).ToList();
+
+        public List<Category> CloneCategoriesListOrdered(
+            List<Category> categoriesList,
+            string orderBy,
+            SearchOrder order
+        )
+        {
+            var listClone = new List<Category>(categoriesList);
+            var orderedEnumerable = (orderBy.ToLower(), order) switch
+            {
+                ("name", SearchOrder.Asc) => listClone.OrderBy(x => x.Name),
+                ("name", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Name),
+                ("id", SearchOrder.Asc) => listClone.OrderBy(x => x.Id),
+                ("id", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Id),
+                ("createdat", SearchOrder.Asc) => listClone.OrderBy(x => x.CreatedAt),
+                ("createdat", SearchOrder.Desc) => listClone.OrderByDescending(x => x.CreatedAt),
+                _ => listClone.OrderBy(x => x.Name)
+            };
+            return orderedEnumerable.ToList();
         }
     }
 }
