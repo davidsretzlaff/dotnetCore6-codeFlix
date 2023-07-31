@@ -16,8 +16,8 @@ namespace CodeFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
         {
             var input = _fixture.getExampleInput();
 
-            CategoryModelOutput output = await _fixture.Api
-                .Post<CategoryModelOutput>(
+            CategoryModelOutput output = await _fixture.
+                ApiClient.Post<CategoryModelOutput>(
                     "/categories",
                     input
                 );
@@ -29,7 +29,7 @@ namespace CodeFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
             output.Id.Should().NotBeEmpty();
             output.CreatedAt.Should()
                 .NotBeSameDateAs(default);
-            
+
             DomainEntity.Category dbCategory = await _fixture.Persistence
                 .GetById(output.Id);
             dbCategory.Should().NotBeNull();
