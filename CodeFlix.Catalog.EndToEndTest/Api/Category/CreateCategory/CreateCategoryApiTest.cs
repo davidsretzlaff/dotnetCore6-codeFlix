@@ -1,4 +1,5 @@
 ﻿using CodeFlix.Catalog.Application.UseCases.Category.Common;
+using FluentAssertions;
 using System.Net;
 using Xunit;
 namespace CodeFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
@@ -11,7 +12,7 @@ namespace CodeFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
         public CreateCategoryApiTest(CreateCategoryApiTestFixture fixture)
             => _fixture = fixture;
 
-        [Fact(DisplayName = "")]
+        [Fact(DisplayName = nameof(CreateCategory))]
         [Trait("EndToEnd/API", "Category - Endpoints")]
         public async Task CreateCategory()
         {
@@ -32,10 +33,10 @@ namespace CodeFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
                 output.IsActive.Should().Be(input.IsActive);
                 output.Id.Should().NotBeEmpty();
                 output.CreatedAt.Should().NotBeSameDateAs(default);
-                
-                DomainEntity.Category dbCategory = await _fixture.Persistence.GetById(output.Id);
+
+                var dbCategory = await _fixture.Persistence.GetById(output.Id);
                 dbCategory.Should().NotBeNull();
-                dbCategory.Name.Should().Be(input.Name);
+                dbCategory!.Name.Should().Be(input.Name);
                 dbCategory.Description.Should().Be(input.Description);
             }
         }

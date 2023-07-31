@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using CodeFlix.Catalog.Infra.Data.EF;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,15 @@ namespace CodeFlix.Catalog.EndToEndTest.Base
     {
         protected Faker Faker { get; set; }
         public ApiClient ApiClient { get; set; }
-
-        public BaseFixture() => Faker = new Faker("pt_BR");
+        public CustomWebApplicationFactory<Program> WebAppFactory { get; set; }
+        public HttpClient HttpClient { get; set; }
+        public BaseFixture()
+        {
+            Faker = new Faker("pt_BR");
+            WebAppFactory = new CustomWebApplicationFactory<Program>();
+            HttpClient = WebAppFactory.CreateClient();
+            ApiClient = new ApiClient(HttpClient);
+        }
 
         public CatalogDbContext CreateDbContext()
         {
