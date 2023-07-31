@@ -15,7 +15,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.Category.GetCategory
         private readonly GetCategoryTestFixture _fixture;
 
         [Fact(DisplayName = nameof(GetCategory))]
-        [Trait("Application", "GetCategory - Use Case")]
+        [Trait("Application", "GetCategory - Use Cases")]
         public async Task GetCategory()
         {
             var repositoryMock = _fixture.GetRepositoryMock();
