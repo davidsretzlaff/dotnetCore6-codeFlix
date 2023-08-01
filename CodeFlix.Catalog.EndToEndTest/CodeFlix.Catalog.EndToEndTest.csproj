@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\src\CodeFlix.Catalog.Api\CodeFlix.Catalog.Api.csproj" />
     <ProjectReference Include="..\src\CodeFlix.Catalog.Infra.Data.EF\CodeFlix.Catalog.Infra.Data.EF.csproj" />
 	<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.3" />
   </ItemGroup>
