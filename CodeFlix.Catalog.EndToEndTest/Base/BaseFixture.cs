@@ -1,12 +1,7 @@
 ﻿using Bogus;
 using CodeFlix.Catalog.Infra.Data.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace CodeFlix.Catalog.EndToEndTest.Base
 {

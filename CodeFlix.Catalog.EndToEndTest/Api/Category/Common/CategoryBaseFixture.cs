@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using CodeFlix.Catalog.EndToEndTest.Base;
+using System;
 
 namespace CodeFlix.Catalog.EndToEndTest.Api.Category.Common
 {

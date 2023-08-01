@@ -1,5 +1,7 @@
 ﻿using CodeFlix.Catalog.Infra.Data.EF;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 using DomainEntity = CodeFlix.Catalog.Domain.Entity;
 
 namespace CodeFlix.Catalog.EndToEndTest.Api.Category.Common

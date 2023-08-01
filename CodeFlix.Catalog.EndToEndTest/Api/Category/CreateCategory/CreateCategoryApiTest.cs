@@ -1,6 +1,7 @@
 ﻿using CodeFlix.Catalog.Application.UseCases.Category.Common;
 using FluentAssertions;
 using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 namespace CodeFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
 {

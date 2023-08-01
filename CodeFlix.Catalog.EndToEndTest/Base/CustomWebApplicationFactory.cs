@@ -1,6 +1,10 @@
 ﻿
+using CodeFlix.Catalog.Infra.Data.EF;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 
 namespace CodeFlix.Catalog.EndToEndTest.Base
 {
@@ -17,12 +21,12 @@ namespace CodeFlix.Catalog.EndToEndTest.Base
             {
                 var dbOptions = services.FirstOrDefault(
                     x => x.ServiceType == typeof(
-                        DbContextOptions<CodeflixCatalogDbContext>
+                        DbContextOptions<CatalogDbContext>
                     )
                 );
                 if (dbOptions is not null)
                     services.Remove(dbOptions);
-                services.AddDbContext<CodeflixCatalogDbContext>(
+                services.AddDbContext<CatalogDbContext>(
                     options =>
                     {
                         options.UseInMemoryDatabase("end2end-tests-db");

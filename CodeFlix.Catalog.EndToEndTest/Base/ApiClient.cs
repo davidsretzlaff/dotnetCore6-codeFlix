@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text;
+using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace CodeFlix.Catalog.EndToEndTest.Base
 {
