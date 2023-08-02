@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeFlix.Catalog.Application\CodeFlix.Catalog.Application.csproj" />
-    <ProjectReference Include="..\CodeFlix.Catalog.Infra.Data.EF\CodeFlix.Catalog.Infra.Data.EF.csproj" />
+    <ProjectReference Include="..\MyFlix.Catalog.Application\MyFlix.Catalog.Application.csproj" />
+    <ProjectReference Include="..\MyFlix.Catalog.Infra.Data.EF\MyFlix.Catalog.Infra.Data.EF.csproj" />
   </ItemGroup>
 
 </Project>
