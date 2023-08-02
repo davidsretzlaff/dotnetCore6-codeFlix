@@ -158,7 +158,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.Category.CreateCategory
             invalidInputsList.Add(new object[]
             {
                 invalidInputsShortName,
-                "Name should be less or equal 3 characters long"
+                "Name should be at least 3 characters long"
             });
 
             // too long name

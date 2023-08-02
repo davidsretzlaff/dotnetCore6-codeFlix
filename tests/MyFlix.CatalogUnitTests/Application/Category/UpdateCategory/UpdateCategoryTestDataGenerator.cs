@@ -34,7 +34,7 @@ namespace CodeFlix.Catalog.UnitTests.Application.Category.UpdateCategory
                     case 0:
                         invalidInputsList.Add(new object[]{
                         fixture.GetInvalidInputShortName(),
-                            "Name should be less or equal 3 characters long"
+                            "Name should be at least 3 characters long"
                         });
                         break;
                     case 1:

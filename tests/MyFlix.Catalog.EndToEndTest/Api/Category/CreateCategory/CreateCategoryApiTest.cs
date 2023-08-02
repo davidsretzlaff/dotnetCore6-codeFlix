@@ -1,6 +1,7 @@
 ﻿using CodeFlix.Catalog.Application.UseCases.Category.Common;
 using CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory;
 using System.Net;
@@ -64,7 +65,7 @@ namespace CodeFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
             output.Should().NotBeNull();
             output!.Title.Should().Be("One or more validation errors ocurred");
             output.Type.Should().Be("UnprocessableEntity");
-            output.Status.Should().Be((int)HttpStatusCode.UnprocessableEntity);
+            output.Status.Should().Be((int)StatusCodes.Status422UnprocessableEntity);
             output.Detail.Should().Be(expectedDetail);
         }
     }

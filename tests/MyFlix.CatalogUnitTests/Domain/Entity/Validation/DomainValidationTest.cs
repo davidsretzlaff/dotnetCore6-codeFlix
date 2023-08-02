@@ -74,7 +74,7 @@ namespace CodeFlix.Catalog.UnitTests.Domain.Entity.Validation
             var exception = Assert.Throws<EntityValidationException>(action);
 
             // Assert
-            Assert.Equal($"fieldName should be less or equal {minLength} characters long", exception.Message);
+            Assert.Equal($"fieldName should be at least {minLength} characters long", exception.Message);
 
         }
 

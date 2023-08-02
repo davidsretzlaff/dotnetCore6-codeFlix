@@ -106,7 +106,7 @@ namespace CodeFlix.Catalog.UnitTests.Domain.Entity.Category
             var exception = Assert.Throws<EntityValidationException>(action);
 
             // Assert
-            Assert.Equal("Name should be less or equal 3 characters long", exception.Message);
+            Assert.Equal("Name should be at least 3 characters long", exception.Message);
         }
 
         [Fact(DisplayName = nameof(InstantiateErrorWhenNameIsGreaterThan255Characters))]
@@ -238,7 +238,7 @@ namespace CodeFlix.Catalog.UnitTests.Domain.Entity.Category
             var exception = Assert.Throws<EntityValidationException>(action);
 
             // Assert
-            Assert.Equal("Name should be less or equal 3 characters long", exception.Message);
+            Assert.Equal("Name should be at least 3 characters long", exception.Message);
         }
 
         [Fact(DisplayName = nameof(UpdateErrorWhenNameIsGreaterThan255Characters))]
