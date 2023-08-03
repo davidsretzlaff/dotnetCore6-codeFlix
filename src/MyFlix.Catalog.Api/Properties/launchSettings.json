@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "CodeFlix.Catalog.Api": {
+    "MyFlix.Catalog.Api": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

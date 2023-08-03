@@ -1,7 +1,7 @@
-﻿using CodeFlix.Catalog.UnitTests.Application.Category.Common;
+﻿using MyFlix.Catalog.UnitTests.Application.Category.Common;
 using Xunit;
 
-namespace CodeFlix.Catalog.UnitTests.Application.Category.GetCategory
+namespace MyFlix.Catalog.UnitTests.Application.Category.GetCategory
 {
     [CollectionDefinition(nameof(GetCategoryTestFixture))]
     public class GetcagegoryTextFixtureCollection : ICollectionFixture<GetCategoryTestFixture> { }

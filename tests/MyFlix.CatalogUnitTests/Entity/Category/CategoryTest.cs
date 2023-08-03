@@ -1,6 +1,6 @@
 ﻿using Xunit;
-using DomainEntity = CodeFlix.Catalog.Domain.Entity;
-namespace CodeFlix.Catalog.UnitTests.Entity.Category
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
+namespace MyFlix.Catalog.UnitTests.Entity.Category
 {
     public class CategoryTest
     {

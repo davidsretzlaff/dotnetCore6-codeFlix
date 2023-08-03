@@ -1,8 +1,8 @@
-﻿using CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
-using CodeFlix.Catalog.UnitTests.Application.Category.Common;
+﻿using MyFlix.Catalog.Application.UseCases.Category.UpdateCategory;
+using MyFlix.Catalog.UnitTests.Application.Category.Common;
 using Xunit;
 
-namespace CodeFlix.Catalog.UnitTests.Application.Category.UpdateCategory
+namespace MyFlix.Catalog.UnitTests.Application.Category.UpdateCategory
 {
     [CollectionDefinition(nameof(UpdateCategoryTestFixture))]
     public class UpdateCategoryTextFixtureCollection : ICollectionFixture<UpdateCategoryTestFixture> { }

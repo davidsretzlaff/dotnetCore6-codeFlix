@@ -1,9 +1,9 @@
-﻿using CodeFlix.Catalog.Domain.Entity;
-using CodeFlix.Catalog.Domain.Exceptions;
+﻿using MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.Domain.Exceptions;
 using System;
 using Xunit;
-using DomainEntity = CodeFlix.Catalog.Domain.Entity;
-namespace CodeFlix.Catalog.UnitTests.Domain.Entity.Category
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
+namespace MyFlix.Catalog.UnitTests.Domain.Entity.Category
 {
     [Collection(nameof(CategoryTestFixture))]
     public class CategoryTest

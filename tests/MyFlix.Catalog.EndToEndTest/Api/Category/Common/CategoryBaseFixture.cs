@@ -1,8 +1,11 @@
 ﻿using Bogus;
-using CodeFlix.Catalog.EndToEndTest.Base;
+using MyFlix.Catalog.EndToEndTest.Base;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
 
-namespace CodeFlix.Catalog.EndToEndTest.Api.Category.Common
+namespace MyFlix.Catalog.EndToEndTest.Api.Category.Common
 {
     public class CategoryBaseFixture : BaseFixture
     {
@@ -14,6 +17,22 @@ namespace CodeFlix.Catalog.EndToEndTest.Api.Category.Common
                 CreateDbContext()
             );
         }
+        public DomainEntity.Category GetExampleCategory()
+            => new(
+                GetValidCategoryName(),
+                GetValidCategoryDescription(),
+                getRandomBoolean()
+        );
+
+        public List<DomainEntity.Category> GetExampleCategoriesList(int listLength = 15)
+            => Enumerable.Range(1, listLength).Select(
+                _ => new DomainEntity.Category(
+                    GetValidCategoryName(),
+                    GetValidCategoryDescription(),
+                    getRandomBoolean()
+                )
+        ).ToList();
+
         public string GetValidCategoryName()
         {
             var categoryName = "";

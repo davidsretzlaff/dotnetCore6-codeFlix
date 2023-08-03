@@ -1,11 +1,11 @@
-﻿using CodeFlix.Catalog.Application.Interfaces;
-using CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
-using CodeFlix.Catalog.Domain.Repository;
-using CodeFlix.Catalog.Infra.Data.EF.Repositories;
-using CodeFlix.Catalog.Infra.Data.EF;
+﻿using MyFlix.Catalog.Application.Interfaces;
+using MyFlix.Catalog.Application.UseCases.Category.CreateCategory;
+using MyFlix.Catalog.Domain.Repository;
+using MyFlix.Catalog.Infra.Data.EF.Repositories;
+using MyFlix.Catalog.Infra.Data.EF;
 using MediatR;
 
-namespace CodeFlix.Catalog.Api.Configuration
+namespace MyFlix.Catalog.Api.Configuration
 {
     public static class UseCasesConfiguration
     {

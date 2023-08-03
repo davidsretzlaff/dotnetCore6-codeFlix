@@ -1,4 +1,4 @@
-using CodeFlix.Catalog.Api.Configuration;
+using MyFlix.Catalog.Api.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 

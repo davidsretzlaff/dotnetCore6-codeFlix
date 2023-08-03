@@ -1,13 +1,13 @@
-﻿using CodeFlix.Catalog.Application.Exceptions;
-using CodeFlix.Catalog.Domain.Entity;
-using CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
-using CodeFlix.Catalog.Infra.Data.EF;
+﻿using MyFlix.Catalog.Application.Exceptions;
+using MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
+using MyFlix.Catalog.Infra.Data.EF;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Xunit;
-using Repository = CodeFlix.Catalog.Infra.Data.EF.Repositories;
-namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRepository
+using Repository = MyFlix.Catalog.Infra.Data.EF.Repositories;
+namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRepository
 {
     [Collection(nameof(CategoryRepositoryTestFixture))]
     public class CategoryRepositoryTest 

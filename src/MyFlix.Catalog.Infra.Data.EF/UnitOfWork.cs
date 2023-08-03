@@ -1,6 +1,6 @@
-﻿using CodeFlix.Catalog.Application.Interfaces;
+﻿using MyFlix.Catalog.Application.Interfaces;
 
-namespace CodeFlix.Catalog.Infra.Data.EF
+namespace MyFlix.Catalog.Infra.Data.EF
 {
     public class UnitOfWork : IUnitOfWork
     {

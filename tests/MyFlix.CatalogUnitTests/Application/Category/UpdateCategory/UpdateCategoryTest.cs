@@ -1,14 +1,14 @@
-﻿using CodeFlix.Catalog.Application.Exceptions;
-using CodeFlix.Catalog.Application.UseCases.Category.Common;
-using CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
-using DomainEntity = CodeFlix.Catalog.Domain.Entity;
-using CodeFlix.Catalog.Domain.Exceptions;
+﻿using MyFlix.Catalog.Application.Exceptions;
+using MyFlix.Catalog.Application.UseCases.Category.Common;
+using MyFlix.Catalog.Application.UseCases.Category.UpdateCategory;
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.Domain.Exceptions;
 using FluentAssertions;
 using Moq;
 using Xunit;
-using UseCase = CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
+using UseCase = MyFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 
-namespace CodeFlix.Catalog.UnitTests.Application.Category.UpdateCategory
+namespace MyFlix.Catalog.UnitTests.Application.Category.UpdateCategory
 {
     [Collection(nameof(UpdateCategoryTestFixture))]
     public class UpdateCategoryTest

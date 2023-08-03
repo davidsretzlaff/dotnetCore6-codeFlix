@@ -1,8 +1,8 @@
-﻿using CodeFlix.Catalog.Application.Common;
-using CodeFlix.Catalog.Application.UseCases.Category.Common;
+﻿using MyFlix.Catalog.Application.Common;
+using MyFlix.Catalog.Application.UseCases.Category.Common;
 using MediatR;
 
-namespace CodeFlix.Catalog.Application.UseCases.Category.ListCategories
+namespace MyFlix.Catalog.Application.UseCases.Category.ListCategories
 {
     public class ListCategoriesOutput 
         : PaginatedListOutput<CategoryModelOutput>

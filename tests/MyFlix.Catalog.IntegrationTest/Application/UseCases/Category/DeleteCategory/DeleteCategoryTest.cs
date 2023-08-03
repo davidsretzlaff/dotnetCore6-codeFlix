@@ -1,12 +1,12 @@
-﻿using CodeFlix.Catalog.Application.Exceptions;
-using CodeFlix.Catalog.Infra.Data.EF;
-using CodeFlix.Catalog.Infra.Data.EF.Repositories;
+﻿using MyFlix.Catalog.Application.Exceptions;
+using MyFlix.Catalog.Infra.Data.EF;
+using MyFlix.Catalog.Infra.Data.EF.Repositories;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
-using ApplicationUseCase = CodeFlix.Catalog.Application.UseCases.Category.DeleteCategory;
+using ApplicationUseCase = MyFlix.Catalog.Application.UseCases.Category.DeleteCategory;
 
-namespace CodeFlix.Catalog.IntegrationTest.Application.UseCases.Category.DeleteCategory
+namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.DeleteCategory
 {
     [Collection(nameof(DeleteCategoryTestFixture))]
     public class DeleteCategoryTest

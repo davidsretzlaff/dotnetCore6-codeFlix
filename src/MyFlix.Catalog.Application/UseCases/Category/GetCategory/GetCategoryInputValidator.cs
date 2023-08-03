@@ -1,7 +1,7 @@
 ﻿
 using FluentValidation;
 
-namespace CodeFlix.Catalog.Application.UseCases.Category.GetCategory 
+namespace MyFlix.Catalog.Application.UseCases.Category.GetCategory 
 {
     public class GetCategoryInputValidator : AbstractValidator<GetCategoryInput>
     {

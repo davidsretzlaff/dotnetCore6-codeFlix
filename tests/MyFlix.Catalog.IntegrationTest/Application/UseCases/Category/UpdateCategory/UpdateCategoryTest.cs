@@ -1,16 +1,16 @@
-﻿using CodeFlix.Catalog.Application.UseCases.Category.Common;
-using CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
-using CodeFlix.Catalog.Infra.Data.EF;
-using CodeFlix.Catalog.Infra.Data.EF.Repositories;
+﻿using MyFlix.Catalog.Application.UseCases.Category.Common;
+using MyFlix.Catalog.Application.UseCases.Category.UpdateCategory;
+using MyFlix.Catalog.Infra.Data.EF;
+using MyFlix.Catalog.Infra.Data.EF.Repositories;
 using Xunit;
-using DomainEntity = CodeFlix.Catalog.Domain.Entity;
-using ApplicationUseCase = CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
+using ApplicationUseCase = MyFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using CodeFlix.Catalog.Application.Exceptions;
-using CodeFlix.Catalog.Domain.Exceptions;
+using MyFlix.Catalog.Application.Exceptions;
+using MyFlix.Catalog.Domain.Exceptions;
 
-namespace CodeFlix.Catalog.IntegrationTest.Application.UseCases.Category.UpdateCategory
+namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.UpdateCategory
 {
 
     [Collection(nameof(UpdateCategoryTestFixture))]

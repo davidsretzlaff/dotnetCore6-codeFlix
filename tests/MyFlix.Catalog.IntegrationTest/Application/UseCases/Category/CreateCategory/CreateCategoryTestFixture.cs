@@ -1,9 +1,9 @@
-﻿using CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
-using CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory;
-using CodeFlix.Catalog.IntegrationTest.Application.UseCases.Category.Common;
+﻿using MyFlix.Catalog.Application.UseCases.Category.CreateCategory;
+using MyFlix.Catalog.Application.UseCases.Category.UpdateCategory;
+using MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.Common;
 using Xunit;
 
-namespace CodeFlix.Catalog.IntegrationTest.Application.UseCases.Category.CreateCategory
+namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.CreateCategory
 {
     [CollectionDefinition(nameof(CreateCategoryTestFixture))]
     public class CreateCategoryTestFixtureCollection : ICollectionFixture<CreateCategoryTestFixture> { }

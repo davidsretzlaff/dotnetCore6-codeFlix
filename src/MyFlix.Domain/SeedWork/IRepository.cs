@@ -1,4 +1,4 @@
-﻿namespace CodeFlix.Catalog.Domain.SeedWork
+﻿namespace MyFlix.Catalog.Domain.SeedWork
 {
     public  interface IRepository
     {

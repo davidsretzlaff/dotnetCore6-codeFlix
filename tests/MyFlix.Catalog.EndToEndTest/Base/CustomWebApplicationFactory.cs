@@ -1,12 +1,12 @@
 ﻿
-using CodeFlix.Catalog.Infra.Data.EF;
+using MyFlix.Catalog.Infra.Data.EF;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 
-namespace CodeFlix.Catalog.EndToEndTest.Base
+namespace MyFlix.Catalog.EndToEndTest.Base
 {
 
     public class CustomWebApplicationFactory<TStartup>

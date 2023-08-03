@@ -1,7 +1,7 @@
-﻿using CodeFlix.Catalog.Application.UseCases.Category.Common;
+﻿using MyFlix.Catalog.Application.UseCases.Category.Common;
 using MediatR;
 
-namespace CodeFlix.Catalog.Application.UseCases.Category.CreateCategory
+namespace MyFlix.Catalog.Application.UseCases.Category.CreateCategory
 {
     public class CreateCategoryInput : IRequest<CategoryModelOutput>
     {

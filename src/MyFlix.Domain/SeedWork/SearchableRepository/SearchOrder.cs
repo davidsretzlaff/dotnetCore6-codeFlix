@@ -1,4 +1,4 @@
-﻿namespace CodeFlix.Catalog.Domain.SeedWork.SearchableRepository
+﻿namespace MyFlix.Catalog.Domain.SeedWork.SearchableRepository
 {
     public enum SearchOrder
     {

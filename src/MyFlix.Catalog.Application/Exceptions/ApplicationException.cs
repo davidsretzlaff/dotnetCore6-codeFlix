@@ -1,4 +1,4 @@
-﻿namespace CodeFlix.Catalog.Application.Exceptions
+﻿namespace MyFlix.Catalog.Application.Exceptions
 {
     public abstract class ApplicationException : Exception
     {

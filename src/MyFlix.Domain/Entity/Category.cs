@@ -1,10 +1,10 @@
-﻿using CodeFlix.Catalog.Domain.Exceptions;
-using CodeFlix.Catalog.Domain.SeedWork;
-using CodeFlix.Catalog.Domain.Validation;
+﻿using MyFlix.Catalog.Domain.Exceptions;
+using MyFlix.Catalog.Domain.SeedWork;
+using MyFlix.Catalog.Domain.Validation;
 using System.Data;
 using System.Net.Http.Headers;
 
-namespace CodeFlix.Catalog.Domain.Entity
+namespace MyFlix.Catalog.Domain.Entity
 {
     public class Category : AggregateRoot
     {

@@ -1,5 +1,5 @@
-﻿using CodeFlix.Catalog.Application.UseCases.Category.Common;
-using CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
+﻿using MyFlix.Catalog.Application.UseCases.Category.Common;
+using MyFlix.Catalog.Application.UseCases.Category.CreateCategory;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +7,7 @@ using MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
-namespace CodeFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
+namespace MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
 {
     [Collection(nameof(CreateCategoryApiTestFixture))]
     public class CreateCategoryApiTest
@@ -18,7 +18,7 @@ namespace CodeFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
             => _fixture = fixture;
 
         [Fact(DisplayName = nameof(CreateCategory))]
-        [Trait("EndToEnd/API", "Category - Endpoints")]
+        [Trait("EndToEnd/API", "Category/Create - Endpoints")]
         public async Task CreateCategory()
         {
             {
@@ -47,7 +47,7 @@ namespace CodeFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
         }
 
         [Theory(DisplayName = nameof(ThrowWhenCantInstantiateAggregate))]
-        [Trait("EndToEnd/API", "Category - Endpoints")]
+        [Trait("EndToEnd/API", "Category/Create - Endpoints")]
         [MemberData(
             nameof(CreateCategoryApiTestDataGenerator.GetInvalidInputs),
             MemberType = typeof(CreateCategoryApiTestDataGenerator)

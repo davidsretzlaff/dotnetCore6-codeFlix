@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
 using Moq;
 using Xunit;
-using UseCase = CodeFlix.Catalog.Application.UseCases.Category.GetCategory;
-using CodeFlix.Catalog.Application.Exceptions;
+using UseCase = MyFlix.Catalog.Application.UseCases.Category.GetCategory;
+using MyFlix.Catalog.Application.Exceptions;
 
-namespace CodeFlix.Catalog.UnitTests.Application.Category.GetCategory
+namespace MyFlix.Catalog.UnitTests.Application.Category.GetCategory
 {
     [Collection(nameof(GetCategoryTestFixture))]
     public class GetCategoryTest

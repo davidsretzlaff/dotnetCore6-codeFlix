@@ -1,9 +1,9 @@
-﻿using CodeFlix.Catalog.Domain.Entity;
-using CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
-using CodeFlix.Catalog.IntegrationTest.Base;
+﻿using MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
+using MyFlix.Catalog.IntegrationTest.Base;
 using Xunit;
 
-namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRepository
+namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRepository
 {
     [CollectionDefinition(nameof(CategoryRepositoryTestFixture))]
     public class CategoryRepositoryTestFixtureCollection

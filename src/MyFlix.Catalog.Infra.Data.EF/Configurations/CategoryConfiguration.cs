@@ -1,8 +1,8 @@
-﻿using CodeFlix.Catalog.Domain.Entity;
+﻿using MyFlix.Catalog.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CodeFlix.Catalog.Infra.Data.EF.Configurations
+namespace MyFlix.Catalog.Infra.Data.EF.Configurations
 {
     internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {

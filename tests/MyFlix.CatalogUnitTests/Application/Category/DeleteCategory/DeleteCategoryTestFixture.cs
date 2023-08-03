@@ -1,8 +1,8 @@
-﻿using CodeFlix.Catalog.Application.Interfaces;
-using CodeFlix.Catalog.UnitTests.Application.Category.Common;
+﻿using MyFlix.Catalog.Application.Interfaces;
+using MyFlix.Catalog.UnitTests.Application.Category.Common;
 using Xunit;
 
-namespace CodeFlix.Catalog.UnitTests.Application.Category.DeleteCategory
+namespace MyFlix.Catalog.UnitTests.Application.Category.DeleteCategory
 {
     [CollectionDefinition(nameof(DeleteCategoryTestFixture))]
     public class DeleteCategoryTestFixtureCollection

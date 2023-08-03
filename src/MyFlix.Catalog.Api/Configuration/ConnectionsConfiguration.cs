@@ -1,7 +1,7 @@
-﻿using CodeFlix.Catalog.Infra.Data.EF;
+﻿using MyFlix.Catalog.Infra.Data.EF;
 using Microsoft.EntityFrameworkCore;
 
-namespace CodeFlix.Catalog.Api.Configuration
+namespace MyFlix.Catalog.Api.Configuration
 {
     public static class ConnectionsConfiguration
     {

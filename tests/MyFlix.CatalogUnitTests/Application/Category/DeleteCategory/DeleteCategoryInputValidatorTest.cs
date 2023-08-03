@@ -1,5 +1,5 @@
-﻿using CodeFlix.Catalog.Application.UseCases.Category.DeleteCategory;
-using CodeFlix.Catalog.Application.UseCases.Category.GetCategory;
+﻿using MyFlix.Catalog.Application.UseCases.Category.DeleteCategory;
+using MyFlix.Catalog.Application.UseCases.Category.GetCategory;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CodeFlix.Catalog.UnitTests.Application.Category.DeleteCategory
+namespace MyFlix.Catalog.UnitTests.Application.Category.DeleteCategory
 {
 
     [Collection(nameof(DeleteCategoryTestFixture))]

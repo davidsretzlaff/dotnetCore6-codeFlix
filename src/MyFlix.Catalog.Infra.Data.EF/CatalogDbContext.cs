@@ -1,9 +1,9 @@
-﻿using CodeFlix.Catalog.Domain.Entity;
-using CodeFlix.Catalog.Infra.Data.EF.Configurations;
+﻿using MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.Infra.Data.EF.Configurations;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace CodeFlix.Catalog.Infra.Data.EF
+namespace MyFlix.Catalog.Infra.Data.EF
 {
     public class CatalogDbContext : DbContext
     {

@@ -1,6 +1,6 @@
-﻿using DomainEntity = CodeFlix.Catalog.Domain.Entity;
+﻿using DomainEntity = MyFlix.Catalog.Domain.Entity;
 
-namespace CodeFlix.Catalog.Application.UseCases.Category.Common
+namespace MyFlix.Catalog.Application.UseCases.Category.Common
 {
     public class CategoryModelOutput
     {

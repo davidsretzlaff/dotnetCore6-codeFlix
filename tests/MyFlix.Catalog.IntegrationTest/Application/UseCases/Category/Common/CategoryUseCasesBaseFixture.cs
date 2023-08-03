@@ -1,8 +1,8 @@
 ﻿using Bogus;
-using CodeFlix.Catalog.IntegrationTest.Base;
-using DomainEntity = CodeFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.IntegrationTest.Base;
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
 
-namespace CodeFlix.Catalog.IntegrationTest.Application.UseCases.Category.Common
+namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.Common
 {
     public class CategoryUseCasesBaseFixture : BaseFixture
     {

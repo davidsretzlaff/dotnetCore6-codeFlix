@@ -1,6 +1,6 @@
-﻿using CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
+﻿using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 
-namespace CodeFlix.Catalog.Application.Common
+namespace MyFlix.Catalog.Application.Common
 {
     public abstract class PaginatedListInput
     {

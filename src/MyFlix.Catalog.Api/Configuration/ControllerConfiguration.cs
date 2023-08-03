@@ -1,6 +1,6 @@
 ﻿using MyFlix.Catalog.Api.Filters;
 
-namespace CodeFlix.Catalog.Api.Configuration
+namespace MyFlix.Catalog.Api.Configuration
 {
     public static class ControllerConfiguration
     {

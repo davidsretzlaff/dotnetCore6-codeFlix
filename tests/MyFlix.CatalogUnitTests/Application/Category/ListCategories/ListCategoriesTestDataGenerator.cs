@@ -1,8 +1,8 @@
-﻿using CodeFlix.Catalog.Application.UseCases.Category.ListCategories;
-using CodeFlix.Catalog.UnitTests.Application.Category.ListCategories;
+﻿using MyFlix.Catalog.Application.UseCases.Category.ListCategories;
+using MyFlix.Catalog.UnitTests.Application.Category.ListCategories;
 using Microsoft.VisualBasic;
 
-namespace CodeFlix.Catalog.UnitTests.Application.Category.ListCategories
+namespace MyFlix.Catalog.UnitTests.Application.Category.ListCategories
 {
     public class ListCategoriesTestDataGenerator
     {

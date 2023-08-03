@@ -1,4 +1,4 @@
-﻿using CodeFlix.Catalog.EndToEndTest.Api.Category.CreateCategory;
+﻿using MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory;
 using System.Collections.Generic;
 
 namespace MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory

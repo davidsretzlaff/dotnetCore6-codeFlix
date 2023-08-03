@@ -1,7 +1,7 @@
-﻿using CodeFlix.Catalog.IntegrationTest.Application.UseCases.Category.Common;
+﻿using MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.Common;
 using Xunit;
 
-namespace CodeFlix.Catalog.IntegrationTest.Application.UseCases.Category.DeleteCategory
+namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.DeleteCategory
 {
     [CollectionDefinition(nameof(DeleteCategoryTestFixture))]
     public class DeleteCategoryTestFixtureCollection : ICollectionFixture<DeleteCategoryTestFixture>{}

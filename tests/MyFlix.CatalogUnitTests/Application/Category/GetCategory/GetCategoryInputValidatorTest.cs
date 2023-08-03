@@ -1,8 +1,8 @@
-﻿using CodeFlix.Catalog.Application.UseCases.Category.GetCategory;
+﻿using MyFlix.Catalog.Application.UseCases.Category.GetCategory;
 using Xunit;
 using FluentAssertions;
 
-namespace CodeFlix.Catalog.UnitTests.Application.Category.GetCategory
+namespace MyFlix.Catalog.UnitTests.Application.Category.GetCategory
 {
     [Collection(nameof(GetCategoryTestFixture))]
     public class GetCategoryInputValidatorTest

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeFlix.Catalog.Application.Exceptions
+namespace MyFlix.Catalog.Application.Exceptions
 {
     public class NotFoundException : ApplicationException
     {

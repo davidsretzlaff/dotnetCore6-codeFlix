@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeFlix.Catalog.Application.Interfaces
+namespace MyFlix.Catalog.Application.Interfaces
 {
     public interface IUnitOfWork
     {

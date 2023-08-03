@@ -1,10 +1,10 @@
-﻿using CodeFlix.Catalog.Application.Exceptions;
-using CodeFlix.Catalog.Domain.Entity;
-using CodeFlix.Catalog.Domain.Repository;
-using CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
+﻿using MyFlix.Catalog.Application.Exceptions;
+using MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.Domain.Repository;
+using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using Microsoft.EntityFrameworkCore;
 
-namespace CodeFlix.Catalog.Infra.Data.EF.Repositories
+namespace MyFlix.Catalog.Infra.Data.EF.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {

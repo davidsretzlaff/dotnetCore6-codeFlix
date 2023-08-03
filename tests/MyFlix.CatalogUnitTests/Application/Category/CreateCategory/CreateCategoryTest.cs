@@ -1,12 +1,12 @@
 ﻿using Moq;
 using Xunit;
-using UseCases = CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
-using DomainEntity = CodeFlix.Catalog.Domain.Entity;
-using CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
-using CodeFlix.Catalog.Domain.Exceptions;
+using UseCases = MyFlix.Catalog.Application.UseCases.Category.CreateCategory;
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.Application.UseCases.Category.CreateCategory;
+using MyFlix.Catalog.Domain.Exceptions;
 using FluentAssertions;
 
-namespace CodeFlix.Catalog.UnitTests.Application.Category.CreateCategory
+namespace MyFlix.Catalog.UnitTests.Application.Category.CreateCategory
 {
     [Collection(nameof(CreateCategoryTestFixture))]
     public class CreateCategoryTest

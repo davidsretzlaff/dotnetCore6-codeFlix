@@ -1,8 +1,8 @@
-﻿using CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
-using CodeFlix.Catalog.IntegrationTest.Application.UseCases.Category.Common;
+﻿using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
+using MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.Common;
 using Xunit;
-using DomainEntity = CodeFlix.Catalog.Domain.Entity;
-namespace CodeFlix.Catalog.IntegrationTest.Application.UseCases.Category.ListCategory
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
+namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.ListCategory
 {
 
     [CollectionDefinition(nameof(ListCategoryTestFixture))]

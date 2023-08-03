@@ -1,8 +1,8 @@
 ﻿
-using CodeFlix.Catalog.IntegrationTest.Application.UseCases.Category.Common;
+using MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.Common;
 using Xunit;
 
-namespace CodeFlix.Catalog.IntegrationTest.Application.UseCases.Category.GetCategory
+namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.GetCategory
 {
     [CollectionDefinition(nameof(GetCategoryTestFixture))]
     public class GetCategoryTestFixtureCollection : ICollectionFixture<GetCategoryTestFixture> { }

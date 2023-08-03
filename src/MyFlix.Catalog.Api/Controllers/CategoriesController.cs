@@ -1,9 +1,9 @@
-using CodeFlix.Catalog.Application.UseCases.Category.Common;
-using CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
+using MyFlix.Catalog.Application.UseCases.Category.Common;
+using MyFlix.Catalog.Application.UseCases.Category.CreateCategory;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CodeFlix.Catalog.Api.Controllers
+namespace MyFlix.Catalog.Api.Controllers
 {
 
     [ApiController]

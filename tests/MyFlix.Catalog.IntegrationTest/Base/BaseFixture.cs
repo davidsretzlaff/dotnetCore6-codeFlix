@@ -1,8 +1,8 @@
 ﻿using Bogus;
-using CodeFlix.Catalog.Infra.Data.EF;
+using MyFlix.Catalog.Infra.Data.EF;
 using Microsoft.EntityFrameworkCore;
 
-namespace CodeFlix.Catalog.IntegrationTest.Base
+namespace MyFlix.Catalog.IntegrationTest.Base
 {
     public class BaseFixture
     {

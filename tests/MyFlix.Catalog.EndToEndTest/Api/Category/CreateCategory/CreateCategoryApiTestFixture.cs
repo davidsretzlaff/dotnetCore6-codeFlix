@@ -1,9 +1,9 @@
 ﻿
-using CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
-using CodeFlix.Catalog.EndToEndTest.Api.Category.Common;
+using MyFlix.Catalog.Application.UseCases.Category.CreateCategory;
+using MyFlix.Catalog.EndToEndTest.Api.Category.Common;
 using Xunit;
 
-namespace CodeFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
+namespace MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
 {
 
     [CollectionDefinition(nameof(CreateCategoryApiTestFixture))]

@@ -1,14 +1,14 @@
-﻿using CodeFlix.Catalog.Infra.Data.EF;
+﻿using MyFlix.Catalog.Infra.Data.EF;
 using FluentAssertions;
 using Xunit;
-using CodeFlix.Catalog.Infra.Data.EF.Repositories;
-using CodeFlix.Catalog.Application.UseCases.Category.ListCategories;
-using ApplicationUseCases = CodeFlix.Catalog.Application.UseCases.Category.ListCategories;
-using CodeFlix.Catalog.Application.UseCases.Category.Common;
-using CodeFlix.Catalog.Domain.SeedWork.SearchableRepository;
-using CodeFlix.Catalog.Domain.SeedWork;
+using MyFlix.Catalog.Infra.Data.EF.Repositories;
+using MyFlix.Catalog.Application.UseCases.Category.ListCategories;
+using ApplicationUseCases = MyFlix.Catalog.Application.UseCases.Category.ListCategories;
+using MyFlix.Catalog.Application.UseCases.Category.Common;
+using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
+using MyFlix.Catalog.Domain.SeedWork;
 
-namespace CodeFlix.Catalog.IntegrationTest.Application.UseCases.Category.ListCategory
+namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.ListCategory
 {
 
     [Collection(nameof(ListCategoryTestFixture))]

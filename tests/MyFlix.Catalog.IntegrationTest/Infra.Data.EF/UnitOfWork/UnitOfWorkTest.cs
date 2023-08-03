@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
-using UnitOfWorkInfra = CodeFlix.Catalog.Infra.Data.EF;
+using UnitOfWorkInfra = MyFlix.Catalog.Infra.Data.EF;
 
-namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.UnitOfWork
+namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.UnitOfWork
 {
     [Collection(nameof(UnitOfWorkTestFixture))]
     public class UnitOfWorkTest

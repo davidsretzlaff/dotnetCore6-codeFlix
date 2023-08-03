@@ -1,11 +1,11 @@
-﻿using UseCase = CodeFlix.Catalog.Application.UseCases.Category.GetCategory;
-using CodeFlix.Catalog.Infra.Data.EF.Repositories;
+﻿using UseCase = MyFlix.Catalog.Application.UseCases.Category.GetCategory;
+using MyFlix.Catalog.Infra.Data.EF.Repositories;
 using Xunit;
 using FluentAssertions;
-using CodeFlix.Catalog.Application.Exceptions;
+using MyFlix.Catalog.Application.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
-namespace CodeFlix.Catalog.IntegrationTest.Application.UseCases.Category.GetCategory
+namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.GetCategory
 {
     [Collection(nameof(GetCategoryTestFixture))]
     public class GetCategoryTest

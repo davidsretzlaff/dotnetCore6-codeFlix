@@ -1,10 +1,10 @@
 ﻿using Moq;
 using Xunit;
 using FluentAssertions;
-using UseCase = CodeFlix.Catalog.Application.UseCases.Category.DeleteCategory;
-using CodeFlix.Catalog.Application.Exceptions;
+using UseCase = MyFlix.Catalog.Application.UseCases.Category.DeleteCategory;
+using MyFlix.Catalog.Application.Exceptions;
 
-namespace CodeFlix.Catalog.UnitTests.Application.Category.DeleteCategory
+namespace MyFlix.Catalog.UnitTests.Application.Category.DeleteCategory
 {
     [Collection(nameof(DeleteCategoryTestFixture))]
     public class DeleteCategoryTest

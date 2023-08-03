@@ -1,8 +1,8 @@
-﻿using CodeFlix.Catalog.Domain.Entity;
-using CodeFlix.Catalog.IntegrationTest.Base;
+﻿using MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.IntegrationTest.Base;
 using Xunit;
 
-namespace CodeFlix.Catalog.IntegrationTest.Infra.Data.EF.UnitOfWork
+namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.UnitOfWork
 {
     [CollectionDefinition(nameof(UnitOfWorkTestFixture))]
     public class UnitOfWorkTestFixtureCollection

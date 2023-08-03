@@ -1,6 +1,6 @@
-﻿using CodeFlix.Catalog.Domain.Exceptions;
+﻿using MyFlix.Catalog.Domain.Exceptions;
 
-namespace CodeFlix.Catalog.Domain.Validation
+namespace MyFlix.Catalog.Domain.Validation
 {
     public class DomainValidation
     {

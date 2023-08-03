@@ -1,9 +1,9 @@
-﻿using CodeFlix.Catalog.Application.Interfaces;
-using CodeFlix.Catalog.Application.UseCases.Category.Common;
-using CodeFlix.Catalog.Domain.Repository;
+﻿using MyFlix.Catalog.Application.Interfaces;
+using MyFlix.Catalog.Application.UseCases.Category.Common;
+using MyFlix.Catalog.Domain.Repository;
 using MediatR;
 
-namespace CodeFlix.Catalog.Application.UseCases.Category.UpdateCategory
+namespace MyFlix.Catalog.Application.UseCases.Category.UpdateCategory
 {
     public class UpdateCategory : IUpdateCategory
     {

@@ -1,10 +1,11 @@
-﻿using CodeFlix.Catalog.Infra.Data.EF;
+﻿using MyFlix.Catalog.Infra.Data.EF;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
-using DomainEntity = CodeFlix.Catalog.Domain.Entity;
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
+using System.Collections.Generic;
 
-namespace CodeFlix.Catalog.EndToEndTest.Api.Category.Common
+namespace MyFlix.Catalog.EndToEndTest.Api.Category.Common
 {
     public class CategoryPersistence
     {
@@ -15,5 +16,11 @@ namespace CodeFlix.Catalog.EndToEndTest.Api.Category.Common
 
         public async Task<DomainEntity.Category?> GetById(Guid id)
             => await _context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
+        public async Task InsertList(List<DomainEntity.Category> categories)
+        {
+            await _context.Categories.AddRangeAsync(categories);
+            await _context.SaveChangesAsync();
+        }
     }
 }

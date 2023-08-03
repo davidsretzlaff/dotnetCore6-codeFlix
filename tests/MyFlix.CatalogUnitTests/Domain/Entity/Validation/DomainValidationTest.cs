@@ -1,12 +1,12 @@
-﻿using CodeFlix.Catalog.Domain.Exceptions;
-using CodeFlix.Catalog.Domain.Validation;
-using CodeFlix.Catalog.UnitTests.Domain.Entity.Category;
+﻿using MyFlix.Catalog.Domain.Exceptions;
+using MyFlix.Catalog.Domain.Validation;
+using MyFlix.Catalog.UnitTests.Domain.Entity.Category;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using System;
 using System.ComponentModel;
 using Xunit;
 
-namespace CodeFlix.Catalog.UnitTests.Domain.Entity.Validation
+namespace MyFlix.Catalog.UnitTests.Domain.Entity.Validation
 {
     public class DomainValidationTest
     {

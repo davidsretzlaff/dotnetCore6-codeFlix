@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["src/CodeFlix.Catalog.Api/CodeFlix.Catalog.Api.csproj", "src/CodeFlix.Catalog.Api/"]
-RUN dotnet restore "src/CodeFlix.Catalog.Api/CodeFlix.Catalog.Api.csproj"
+COPY ["src/MyFlix.Catalog.Api/MyFlix.Catalog.Api.csproj", "src/MyFlix.Catalog.Api/"]
+RUN dotnet restore "src/MyFlix.Catalog.Api/MyFlix.Catalog.Api.csproj"
 COPY . .
-WORKDIR "/src/src/CodeFlix.Catalog.Api"
-RUN dotnet build "CodeFlix.Catalog.Api.csproj" -c Release -o /app/build
+WORKDIR "/src/src/MyFlix.Catalog.Api"
+RUN dotnet build "MyFlix.Catalog.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "CodeFlix.Catalog.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "MyFlix.Catalog.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "CodeFlix.Catalog.Api.dll"]
+ENTRYPOINT ["dotnet", "MyFlix.Catalog.Api.dll"]

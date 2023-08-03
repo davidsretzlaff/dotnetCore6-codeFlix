@@ -1,5 +1,5 @@
 ﻿
-namespace CodeFlix.Catalog.Domain.Exceptions
+namespace MyFlix.Catalog.Domain.Exceptions
 {
     public class EntityValidationException : Exception
     {

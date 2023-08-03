@@ -1,11 +1,11 @@
-﻿using CodeFlix.Catalog.Application.Interfaces;
-using CodeFlix.Catalog.Application.UseCases.Category.CreateCategory;
-using DomainEntity = CodeFlix.Catalog.Domain.Entity;
-using CodeFlix.Catalog.Domain.Repository;
-using CodeFlix.Catalog.UnitTests.Common;
+﻿using MyFlix.Catalog.Application.Interfaces;
+using MyFlix.Catalog.Application.UseCases.Category.CreateCategory;
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.Domain.Repository;
+using MyFlix.Catalog.UnitTests.Common;
 using Moq;
 
-namespace CodeFlix.Catalog.UnitTests.Application.Category.Common
+namespace MyFlix.Catalog.UnitTests.Application.Category.Common
 {
     public abstract class CategoryUseCasesBaseFixture
         : BaseFixture

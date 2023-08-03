@@ -1,7 +1,7 @@
-﻿using CodeFlix.Catalog.Application.UseCases.Category.Common;
-using CodeFlix.Catalog.Domain.Repository;
+﻿using MyFlix.Catalog.Application.UseCases.Category.Common;
+using MyFlix.Catalog.Domain.Repository;
 
-namespace CodeFlix.Catalog.Application.UseCases.Category.ListCategories
+namespace MyFlix.Catalog.Application.UseCases.Category.ListCategories
 {
     public class ListCategories : IListCategories
     {

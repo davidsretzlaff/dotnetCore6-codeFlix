@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeFlix.Catalog.UnitTests.Common
+namespace MyFlix.Catalog.UnitTests.Common
 {
 
     public abstract class BaseFixture

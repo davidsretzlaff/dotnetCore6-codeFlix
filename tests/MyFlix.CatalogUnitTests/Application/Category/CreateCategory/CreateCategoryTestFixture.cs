@@ -1,7 +1,7 @@
-﻿using CodeFlix.Catalog.UnitTests.Application.Category.Common;
+﻿using MyFlix.Catalog.UnitTests.Application.Category.Common;
 using Xunit;
 
-namespace CodeFlix.Catalog.UnitTests.Application.Category.CreateCategory
+namespace MyFlix.Catalog.UnitTests.Application.Category.CreateCategory
 {
     [CollectionDefinition(nameof(CreateCategoryTestFixture))]
     public class CreateCategoryTestFixtureCollection :

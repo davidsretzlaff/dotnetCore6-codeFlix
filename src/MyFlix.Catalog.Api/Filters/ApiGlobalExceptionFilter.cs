@@ -1,4 +1,4 @@
-﻿using CodeFlix.Catalog.Domain.Exceptions;
+﻿using MyFlix.Catalog.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeFlix.Catalog.Application.UseCases.Category.DeleteCategory
+namespace MyFlix.Catalog.Application.UseCases.Category.DeleteCategory
 {
     public class DeleteCategoryInputValidator : AbstractValidator<DeleteCategoryInput>
     {

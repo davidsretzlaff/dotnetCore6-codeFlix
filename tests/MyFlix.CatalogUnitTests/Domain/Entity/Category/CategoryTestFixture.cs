@@ -1,6 +1,6 @@
 ﻿using Xunit;
-using DomainEntity = CodeFlix.Catalog.Domain.Entity;
-namespace CodeFlix.Catalog.UnitTests.Domain.Entity.Category
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
+namespace MyFlix.Catalog.UnitTests.Domain.Entity.Category
 {
     public class CategoryTestFixture
     {
