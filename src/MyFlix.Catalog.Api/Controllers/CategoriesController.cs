@@ -3,6 +3,7 @@ using MyFlix.Catalog.Application.UseCases.Category.CreateCategory;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MyFlix.Catalog.Application.UseCases.Category.GetCategory;
+using MyFlix.Catalog.Application.UseCases.Category.DeleteCategory;
 
 namespace MyFlix.Catalog.Api.Controllers
 {
@@ -35,10 +36,20 @@ namespace MyFlix.Catalog.Api.Controllers
 
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(CategoryModelOutput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             var output = await _mediator.Send(new GetCategoryInput(id), cancellationToken);
             return Ok(output);
+        }
+
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
+        {
+                await _mediator.Send(new DeleteCategoryInput(id), cancellationToken);
+                return NoContent();
         }
     }
 }

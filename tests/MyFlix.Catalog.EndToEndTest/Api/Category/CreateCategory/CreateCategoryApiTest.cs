@@ -46,13 +46,13 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
             }
         }
 
-        [Theory(DisplayName = nameof(ThrowWhenCantInstantiateAggregate))]
+        [Theory(DisplayName = nameof(ErrorWhenCantInstantiateAggregate))]
         [Trait("EndToEnd/API", "Category/Create - Endpoints")]
         [MemberData(
             nameof(CreateCategoryApiTestDataGenerator.GetInvalidInputs),
             MemberType = typeof(CreateCategoryApiTestDataGenerator)
         )]
-        public async Task ThrowWhenCantInstantiateAggregate(CreateCategoryInput input, string expectedDetail)
+        public async Task ErrorWhenCantInstantiateAggregate(CreateCategoryInput input, string expectedDetail)
         {
             var (response, output) = await _fixture.
                 ApiClient.Post<ProblemDetails>(
