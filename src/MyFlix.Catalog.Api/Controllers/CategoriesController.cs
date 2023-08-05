@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MyFlix.Catalog.Application.UseCases.Category.GetCategory;
 using MyFlix.Catalog.Application.UseCases.Category.DeleteCategory;
+using MyFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 
 namespace MyFlix.Catalog.Api.Controllers
 {
@@ -50,6 +51,15 @@ namespace MyFlix.Catalog.Api.Controllers
         {
                 await _mediator.Send(new DeleteCategoryInput(id), cancellationToken);
                 return NoContent();
+        }
+
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(typeof(CategoryModelOutput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Update([FromBody] UpdateCategoryInput input, CancellationToken cancellationToken)
+        {
+            var output = await _mediator.Send(input, cancellationToken);
+            return Ok(output);
         }
     }
 }
