@@ -56,6 +56,7 @@ namespace MyFlix.Catalog.Api.Controllers
         [HttpPut("{id:guid}")]
         [ProducesResponseType(typeof(CategoryModelOutput), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Update([FromBody] UpdateCategoryInput input, CancellationToken cancellationToken)
         {
             var output = await _mediator.Send(input, cancellationToken);
