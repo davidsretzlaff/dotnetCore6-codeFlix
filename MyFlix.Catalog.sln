@@ -19,7 +19,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFlix.Catalog.Infra.Data.E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFlix.Catalog.EndToEndTest", "tests\MyFlix.Catalog.EndToEndTest\MyFlix.Catalog.EndToEndTest.csproj", "{8F4CCA3E-5834-4A7D-AD75-A94860C63946}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFlix.Catalog.Api", "src\MyFlix.Catalog.Api\MyFlix.Catalog.Api.csproj", "{8B9254D1-E72E-4652-9761-91FEB6C5FE84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFlix.Catalog.Api", "src\MyFlix.Catalog.Api\MyFlix.Catalog.Api.csproj", "{8B9254D1-E72E-4652-9761-91FEB6C5FE84}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "env", "env", "{6CE53F53-D9CC-45F8-AEE6-2BA2050C68CE}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
