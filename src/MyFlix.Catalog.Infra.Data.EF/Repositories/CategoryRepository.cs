@@ -58,7 +58,7 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
             SearchOrder order
         ) 
         {
-            return (orderProperty.ToLower(), order) switch
+            var orderedQuery = (orderProperty.ToLower(), order) switch
             {
                 ("name", SearchOrder.Asc) => query.OrderBy(x => x.Name),
                 ("name", SearchOrder.Desc) => query.OrderByDescending(x => x.Name),
@@ -68,6 +68,7 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
                 ("createdat", SearchOrder.Desc) => query.OrderByDescending(x => x.CreatedAt),
                 _ => query.OrderBy(x => x.Name)
             };
+            return orderedQuery.ThenBy(x => x.CreatedAt);
         }
 
     }

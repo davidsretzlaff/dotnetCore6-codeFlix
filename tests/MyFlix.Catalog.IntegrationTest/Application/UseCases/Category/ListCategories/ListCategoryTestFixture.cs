@@ -2,7 +2,7 @@
 using MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.Common;
 using Xunit;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
-namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.ListCategory
+namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.ListCategories
 {
 
     [CollectionDefinition(nameof(ListCategoryTestFixture))]
@@ -34,7 +34,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.ListCateg
                 ("createdat", SearchOrder.Desc) => listClone.OrderByDescending(x => x.CreatedAt),
                 _ => listClone.OrderBy(x => x.Name)
             };
-            return orderedEnumerable.ToList();
+            return orderedEnumerable.ThenBy(x => x.CreatedAt).ToList();
         }
     }
 }

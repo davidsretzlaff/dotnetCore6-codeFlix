@@ -8,7 +8,7 @@ using MyFlix.Catalog.Application.UseCases.Category.Common;
 using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using MyFlix.Catalog.Domain.SeedWork;
 
-namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.ListCategory
+namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.ListCategories
 {
 
     [Collection(nameof(ListCategoryTestFixture))]
