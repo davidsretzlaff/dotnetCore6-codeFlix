@@ -9,7 +9,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.DeleteCategory
 {
 
     [Collection(nameof(DeleteCategoryApiTestFixture))]
-    public class DeleteCategoryApiTest
+    public class DeleteCategoryApiTest : IDisposable
     {
         private readonly DeleteCategoryApiTestFixture _fixture;
 
@@ -58,5 +58,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.DeleteCategory
             output!.Status.Should().Be((int)StatusCodes.Status404NotFound);
             output!.Detail.Should().Be($"Category '{randomGuid}' not found.");
         }
+
+        public void Dispose() => _fixture.CleanPersistence();
     }
 }

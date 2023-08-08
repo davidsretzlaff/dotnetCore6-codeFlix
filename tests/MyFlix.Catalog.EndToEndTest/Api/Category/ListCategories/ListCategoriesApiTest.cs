@@ -3,6 +3,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using MyFlix.Catalog.Application.UseCases.Category.Common;
 using MyFlix.Catalog.Application.UseCases.Category.ListCategories;
+using System;
 using System.Linq;
 using System.Net;
 using Xunit;
@@ -10,7 +11,7 @@ using Xunit;
 namespace MyFlix.Catalog.EndToEndTest.Api.Category.ListCategories
 {
     [Collection(nameof(ListCategoriesApiTestFixture))]
-    public class ListCategoriesApiTest
+    public class ListCategoriesApiTest : IDisposable
     {
         private readonly ListCategoriesApiTestFixture _fixture;
 
@@ -44,5 +45,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.ListCategories
                 outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
             }
         }
+
+        public void Dispose() => _fixture.CleanPersistence();
     }
 }

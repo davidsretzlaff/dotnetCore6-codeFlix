@@ -3,14 +3,15 @@ using MyFlix.Catalog.Application.UseCases.Category.CreateCategory;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
+using System;
+
 namespace MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
 {
     [Collection(nameof(CreateCategoryApiTestFixture))]
-    public class CreateCategoryApiTest
+    public class CreateCategoryApiTest : IDisposable
     {
         private readonly CreateCategoryApiTestFixture _fixture;
 
@@ -68,5 +69,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
             output.Status.Should().Be((int)StatusCodes.Status422UnprocessableEntity);
             output.Detail.Should().Be(expectedDetail);
         }
+
+        public void Dispose() => _fixture.CleanPersistence();
     }
 }

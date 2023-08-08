@@ -14,7 +14,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.GetCategory
 {
 
     [Collection(nameof(GetCategoryApiTestFixture))]
-    public class GetCategoryApiTest
+    public class GetCategoryApiTest : IDisposable
     {
         private readonly GetCategoryApiTestFixture _fixture;
 
@@ -63,5 +63,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.GetCategory
             output.Title.Should().Be("Not Found");
             output.Detail.Should().Be($"Category '{randomGuid}' not found.");
         }
+
+        public void Dispose() => _fixture.CleanPersistence();
     }
 }

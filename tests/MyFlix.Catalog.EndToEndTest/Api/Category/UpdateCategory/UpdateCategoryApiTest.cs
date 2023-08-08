@@ -10,7 +10,7 @@ using Xunit;
 namespace MyFlix.Catalog.EndToEndTest.Api.Category.UpdateCategory
 {
     [Collection(nameof(UpdateCategoryApiTestFixture))]
-    public class UpdateCategoryApiTest
+    public class UpdateCategoryApiTest : IDisposable
     {
         private readonly UpdateCategoryApiTestFixture _fixture;
 
@@ -161,5 +161,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.UpdateCategory
             output.Status.Should().Be((int)StatusCodes.Status422UnprocessableEntity);
             output.Detail.Should().Be(expectedDetail);
         }
+
+        public void Dispose() => _fixture.CleanPersistence();
     }
 }
