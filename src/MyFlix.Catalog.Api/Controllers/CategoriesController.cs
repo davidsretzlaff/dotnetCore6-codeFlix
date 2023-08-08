@@ -6,6 +6,7 @@ using MyFlix.Catalog.Application.UseCases.Category.GetCategory;
 using MyFlix.Catalog.Application.UseCases.Category.DeleteCategory;
 using MyFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 using MyFlix.Catalog.Application.UseCases.Category.ListCategories;
+using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 
 namespace MyFlix.Catalog.Api.Controllers
 {
@@ -67,10 +68,22 @@ namespace MyFlix.Catalog.Api.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(CategoryModelOutput), StatusCodes.Status200OK)]
         public async Task<IActionResult> List(
-        [FromQuery] ListCategoriesInput input,
-        CancellationToken cancellationToken
-    )
+            CancellationToken cancellationToken,
+            [FromQuery] int? page = null,
+            [FromQuery] int? perPage = null,
+            [FromQuery] string? search = null,
+            [FromQuery] string? sort = null,
+            [FromQuery] SearchOrder? dir = null
+        )
         {
+            var input = new ListCategoriesInput();
+
+            if (page is not null) input.Page = page.Value;
+            if (perPage is not null) input.PerPage = perPage.Value;
+            if (!String.IsNullOrWhiteSpace(search)) input.Search = search;
+            if (!String.IsNullOrWhiteSpace(sort)) input.Sort = sort;
+            if (dir is not null) input.Dir = dir.Value;
+
             var output = await _mediator.Send(input, cancellationToken);
             return Ok(output);
         }
