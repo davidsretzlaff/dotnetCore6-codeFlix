@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using MyFlix.Catalog.Application.UseCases.Category.Common;
 using MyFlix.Catalog.Application.UseCases.Category.ListCategories;
 using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
+using MyFlix.Catalog.EndToEndTest.Extensions.DataTime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,9 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.ListCategories
                 outputItem.Name.Should().Be(exampleItem!.Name);
                 outputItem.Description.Should().Be(exampleItem.Description);
                 outputItem.IsActive.Should().Be(exampleItem.IsActive);
-                outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
+                outputItem.CreatedAt.TrimMillisseconds().Should().Be(
+                    exampleItem.CreatedAt.TrimMillisseconds()
+                );
             }
         }
 
@@ -89,7 +92,9 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.ListCategories
                 outputItem.Name.Should().Be(exampleItem!.Name);
                 outputItem.Description.Should().Be(exampleItem.Description);
                 outputItem.IsActive.Should().Be(exampleItem.IsActive);
-                outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
+                outputItem.CreatedAt.TrimMillisseconds().Should().Be(
+                   exampleItem.CreatedAt.TrimMillisseconds()
+               );
             }
         }
 
@@ -130,7 +135,9 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.ListCategories
                 outputItem.Name.Should().Be(exampleItem!.Name);
                 outputItem.Description.Should().Be(exampleItem.Description);
                 outputItem.IsActive.Should().Be(exampleItem.IsActive);
-                outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
+                outputItem.CreatedAt.TrimMillisseconds().Should().Be(
+                   exampleItem.CreatedAt.TrimMillisseconds()
+               );
             }
         }
 
@@ -186,7 +193,9 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.ListCategories
                 outputItem.Name.Should().Be(exampleItem!.Name);
                 outputItem.Description.Should().Be(exampleItem.Description);
                 outputItem.IsActive.Should().Be(exampleItem.IsActive);
-                outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
+                outputItem.CreatedAt.TrimMillisseconds().Should().Be(
+                   exampleItem.CreatedAt.TrimMillisseconds()
+               );
             }
         }
 
@@ -239,7 +248,9 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.ListCategories
                 outputItem.Id.Should().Be(exampleItem.Id);
                 outputItem.Description.Should().Be(exampleItem.Description);
                 outputItem.IsActive.Should().Be(exampleItem.IsActive);
-                outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
+                outputItem.CreatedAt.TrimMillisseconds().Should().Be(
+                   exampleItem.CreatedAt.TrimMillisseconds()
+               );
             }
         }
         public void Dispose() => _fixture.CleanPersistence();

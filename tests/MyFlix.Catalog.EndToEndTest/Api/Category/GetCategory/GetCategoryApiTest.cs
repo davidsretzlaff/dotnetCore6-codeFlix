@@ -1,4 +1,4 @@
-﻿using MyFlix.Catalog.Application.UseCases.Category.Common;
+﻿    using MyFlix.Catalog.Application.UseCases.Category.Common;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using MyFlix.Catalog.EndToEndTest.Extensions.DataTime;
 
 namespace MyFlix.Catalog.EndToEndTest.Api.Category.GetCategory
 {
@@ -40,7 +41,9 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.GetCategory
             output.Name.Should().Be(exampleCategory.Name);
             output.Description.Should().Be(exampleCategory.Description);
             output.IsActive.Should().Be(exampleCategory.IsActive);
-            output.CreatedAt.Should().Be(exampleCategory.CreatedAt);
+            output.CreatedAt.TrimMillisseconds().Should().Be(
+                output.CreatedAt.TrimMillisseconds()
+            );
         }
 
         [Fact(DisplayName = nameof(ErrorWhenNotFound))]

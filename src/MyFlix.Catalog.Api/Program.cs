@@ -3,7 +3,7 @@ using MyFlix.Catalog.Api.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddAppConections()
+     .AddAppConections(builder.Configuration)
     .AddUseCases()
     .AddAndConfigureControllers();
 

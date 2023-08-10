@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
+using System;
 
 namespace MyFlix.Catalog.EndToEndTest.Base
 {
@@ -17,21 +18,15 @@ namespace MyFlix.Catalog.EndToEndTest.Base
             IWebHostBuilder builder
         )
         {
-            builder.ConfigureServices(services =>
-            {
-                var dbOptions = services.FirstOrDefault(
-                    x => x.ServiceType == typeof(
-                        DbContextOptions<CatalogDbContext>
-                    )
-                );
-                if (dbOptions is not null)
-                    services.Remove(dbOptions);
-                services.AddDbContext<CatalogDbContext>(
-                    options =>
-                    {
-                        options.UseInMemoryDatabase("end2end-tests-db");
-                    }
-                );
+            builder.UseEnvironment("EndToEndTest");
+            builder.ConfigureServices(services => {               
+                var serviceProvider = services.BuildServiceProvider();
+                using var scope = serviceProvider.CreateScope();
+                var context = scope.ServiceProvider
+                    .GetService<CatalogDbContext>();
+                ArgumentNullException.ThrowIfNull(context);
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
             });
 
             base.ConfigureWebHost(builder);
