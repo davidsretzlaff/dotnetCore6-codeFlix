@@ -34,7 +34,13 @@ namespace MyFlix.Catalog.Api.Filters
                 details.Type = "NotFound";
                 details.Detail = exception!.Message;
             }
-
+            else
+            {
+                details.Title = "An unexpected error ocurred";
+                details.Status = StatusCodes.Status422UnprocessableEntity;
+                details.Type = "UnexpectedError";
+                details.Detail = exception.Message;
+            }
             context.HttpContext.Response.StatusCode = (int)details.Status;
             context.Result = new ObjectResult(details);
             context.ExceptionHandled = true;
