@@ -4,15 +4,29 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Generic;
+using MyFlix.Catalog.EndToEndTest.Extensions;
 
 namespace MyFlix.Catalog.EndToEndTest.Base
 {
+    class SnakeCaseNamingPolicy : JsonNamingPolicy
+    {
+        public override string ConvertName(string name) => name.ToSnakeCase();
+    }
+
     public class ApiClient
     {
         private readonly HttpClient _httpClient;
+        private readonly JsonSerializerOptions _defaultSerializeOptions;
 
         public ApiClient(HttpClient httpClient)
-            => _httpClient = httpClient;
+        {
+            _httpClient = httpClient;
+            _defaultSerializeOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = new SnakeCaseNamingPolicy(),
+                PropertyNameCaseInsensitive = true
+            };
+        }
 
         public async Task<(HttpResponseMessage?, TOutput?)> Post<TOutput>(
             string route,
@@ -22,7 +36,7 @@ namespace MyFlix.Catalog.EndToEndTest.Base
             var response = await _httpClient.PostAsync(
                 route,
                 new StringContent(
-                    JsonSerializer.Serialize(payload),
+                    JsonSerializer.Serialize(payload, _defaultSerializeOptions),
                     Encoding.UTF8,
                     "application/json"
                 )
@@ -38,11 +52,12 @@ namespace MyFlix.Catalog.EndToEndTest.Base
             var response = await _httpClient.PutAsync(
                 route,
                 new StringContent(
-                    JsonSerializer.Serialize(payload),
+                    JsonSerializer.Serialize(payload, _defaultSerializeOptions),
                     Encoding.UTF8,
                     "application/json"
                 )
             );
+
             var output = await GetOutput<TOutput>(response);
             return (response, output);
         }
@@ -71,13 +86,10 @@ namespace MyFlix.Catalog.EndToEndTest.Base
         {
             var outputString = await response.Content.ReadAsStringAsync();
             TOutput? output = null;
+            
             if (!string.IsNullOrWhiteSpace(outputString))
-                output = JsonSerializer.Deserialize<TOutput>(outputString,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    }
-                );
+                output = JsonSerializer.Deserialize<TOutput>(outputString, _defaultSerializeOptions);
+
             return output;
         }
 
@@ -88,6 +100,7 @@ namespace MyFlix.Catalog.EndToEndTest.Base
         {
             if (queryStringParametersObject is null)
                 return route;
+
             var parametersJson = JsonSerializer.Serialize(queryStringParametersObject);
             var parametersDictionary = Newtonsoft.Json.JsonConvert
                 .DeserializeObject<Dictionary<string, string>>(parametersJson);
