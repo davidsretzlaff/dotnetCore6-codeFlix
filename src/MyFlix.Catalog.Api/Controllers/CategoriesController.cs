@@ -7,6 +7,7 @@ using MyFlix.Catalog.Application.UseCases.Category.DeleteCategory;
 using MyFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 using MyFlix.Catalog.Application.UseCases.Category.ListCategories;
 using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
+using MyFlix.Catalog.Api.ApiModels.Category;
 
 namespace MyFlix.Catalog.Api.Controllers
 {
@@ -59,8 +60,9 @@ namespace MyFlix.Catalog.Api.Controllers
         [ProducesResponseType(typeof(CategoryModelOutput), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> Update([FromBody] UpdateCategoryInput input, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update([FromBody] UpdateCategoryApiInput inputApi, [FromRoute] Guid id ,CancellationToken cancellationToken)
         {
+            UpdateCategoryInput input = new UpdateCategoryInput(id, inputApi.Name, inputApi.Description, inputApi.IsActive);
             var output = await _mediator.Send(input, cancellationToken);
             return Ok(output);
         }

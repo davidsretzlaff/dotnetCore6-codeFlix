@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyFlix.Catalog.Api.ApiModels.Category;
 using MyFlix.Catalog.Application.UseCases.Category.Common;
 using MyFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 using System;
@@ -24,7 +25,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.UpdateCategory
             var exampleCategoriesList = _fixture.GetExampleCategoriesList(20);
             await _fixture.Persistence.InsertList(exampleCategoriesList);
             var exampleCategory = exampleCategoriesList[10];
-            var input = _fixture.GetExampleInput(exampleCategory.Id);
+            var input = _fixture.GetExampleInput();
 
             var (response, output) = await _fixture.ApiClient.Put<CategoryModelOutput>(
                 $"/categories/{exampleCategory.Id}",
@@ -53,8 +54,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.UpdateCategory
             var exampleCategoriesList = _fixture.GetExampleCategoriesList(20);
             await _fixture.Persistence.InsertList(exampleCategoriesList);
             var exampleCategory = exampleCategoriesList[10];
-            var input = new UpdateCategoryInput(
-                exampleCategory.Id,
+            var input = new UpdateCategoryApiInput(
                 _fixture.GetValidCategoryName()
             );
 
@@ -85,8 +85,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.UpdateCategory
             var exampleCategoriesList = _fixture.GetExampleCategoriesList(20);
             await _fixture.Persistence.InsertList(exampleCategoriesList);
             var exampleCategory = exampleCategoriesList[10];
-            var input = new UpdateCategoryInput(
-                exampleCategory.Id,
+            var input = new UpdateCategoryApiInput(
                 _fixture.GetValidCategoryName(),
                 _fixture.GetValidCategoryDescription()
             );
@@ -119,7 +118,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.UpdateCategory
             var exampleCategoriesList = _fixture.GetExampleCategoriesList(20);
             await _fixture.Persistence.InsertList(exampleCategoriesList);
             var randomGuid = Guid.NewGuid();
-            var input = _fixture.GetExampleInput(randomGuid);
+            var input = _fixture.GetExampleInput();
 
             var (response, output) = await _fixture.ApiClient.Put<ProblemDetails>(
                 $"/categories/{randomGuid}",
@@ -141,12 +140,11 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.UpdateCategory
             nameof(UpdateCategoryApiTestDataGenerator.GetInvalidInputs),
             MemberType = typeof(UpdateCategoryApiTestDataGenerator)
         )]
-        public async void ErrorWhenCantInstantiateAggregate(UpdateCategoryInput input, string expectedDetail)
+        public async void ErrorWhenCantInstantiateAggregate(UpdateCategoryApiInput input, string expectedDetail)
         {
             var exampleCategoriesList = _fixture.GetExampleCategoriesList(20);
             await _fixture.Persistence.InsertList(exampleCategoriesList);
             var exampleCategory = exampleCategoriesList[10];
-            input.Id = exampleCategory.Id;
 
             var (response, output) = await _fixture.ApiClient.Put<ProblemDetails>(
                 $"/categories/{exampleCategory.Id}",

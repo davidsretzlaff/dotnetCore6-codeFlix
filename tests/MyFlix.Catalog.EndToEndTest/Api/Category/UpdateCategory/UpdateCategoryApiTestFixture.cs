@@ -1,4 +1,4 @@
-﻿using MyFlix.Catalog.Application.UseCases.Category.UpdateCategory;
+﻿using MyFlix.Catalog.Api.ApiModels.Category;
 using MyFlix.Catalog.EndToEndTest.Api.Category.Common;
 using System;
 using Xunit;
@@ -11,9 +11,8 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.UpdateCategory
 
     public class UpdateCategoryApiTestFixture : CategoryBaseFixture
     {
-        public UpdateCategoryInput GetExampleInput(Guid? id = null)
+        public UpdateCategoryApiInput GetExampleInput()
             => new(
-                id ?? Guid.NewGuid(),
                 GetValidCategoryName(),
                 GetValidCategoryDescription(),
                 getRandomBoolean()
