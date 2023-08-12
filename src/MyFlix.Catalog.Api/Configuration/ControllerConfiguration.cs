@@ -1,4 +1,5 @@
-﻿using MyFlix.Catalog.Api.Filters;
+﻿using MyFlix.Catalog.Api.Configuration.Policies;
+using MyFlix.Catalog.Api.Filters;
 
 namespace MyFlix.Catalog.Api.Configuration
 {
@@ -6,9 +7,14 @@ namespace MyFlix.Catalog.Api.Configuration
     {
         public static IServiceCollection AddAndConfigureControllers(this IServiceCollection services)
         {
-            services.AddControllers(options 
+            services
+            .AddControllers(options
                 => options.Filters.Add(typeof(ApiGlobalExceptionFilter))
-            );
+            )
+            .AddJsonOptions(jsonOptions => {
+                jsonOptions.JsonSerializerOptions.PropertyNamingPolicy
+                    = new JsonSnakeCasePolicy();
+            });
             services.AddDocumentation();
             return services;
         }
