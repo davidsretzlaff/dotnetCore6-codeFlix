@@ -88,7 +88,7 @@ namespace MyFlix.Catalog.Api.Controllers
             if (dir is not null) input.Dir = dir.Value;
 
             var output = await _mediator.Send(input, cancellationToken);
-            return Ok(output);
+            return Ok(new ApiResponseList<CategoryModelOutput>(output));
         }
     }
 }
