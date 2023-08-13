@@ -18,7 +18,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.GetCategory
 
     [Collection(nameof(GetCategoryApiTestFixture))]
     public class GetCategoryApiTest : IDisposable
-    {
+    {        
         private readonly GetCategoryApiTestFixture _fixture;
 
         public GetCategoryApiTest(GetCategoryApiTestFixture fixture)
