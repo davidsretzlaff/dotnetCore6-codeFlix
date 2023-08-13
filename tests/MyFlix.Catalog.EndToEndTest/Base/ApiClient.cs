@@ -4,14 +4,10 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Generic;
-using MyFlix.Catalog.EndToEndTest.Extensions;
+using MyFlix.Catalog.Api.Configuration.Policies;
 
 namespace MyFlix.Catalog.EndToEndTest.Base
 {
-    class SnakeCaseNamingPolicy : JsonNamingPolicy
-    {
-        public override string ConvertName(string name) => name.ToSnakeCase();
-    }
 
     public class ApiClient
     {
@@ -23,7 +19,7 @@ namespace MyFlix.Catalog.EndToEndTest.Base
             _httpClient = httpClient;
             _defaultSerializeOptions = new JsonSerializerOptions
             {
-                PropertyNamingPolicy = new SnakeCaseNamingPolicy(),
+                PropertyNamingPolicy = new JsonSnakeCasePolicy(),
                 PropertyNameCaseInsensitive = true
             };
         }

@@ -10,6 +10,8 @@ using Xunit;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using MyFlix.Catalog.EndToEndTest.Extensions.DataTime;
+using MyFlix.Catalog.Api.ApiModels.Response;
+using MyFlix.Catalog.Application.UseCases.Category.GetCategory;
 
 namespace MyFlix.Catalog.EndToEndTest.Api.Category.GetCategory
 {
@@ -18,16 +20,6 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.GetCategory
     public class GetCategoryApiTest : IDisposable
     {
         private readonly GetCategoryApiTestFixture _fixture;
-
-        class GetCategoryResponse
-        {
-            public GetCategoryResponse(CategoryModelOutput data)
-            {
-                Data = data;
-            }
-
-            public CategoryModelOutput Data { get; set; }
-        }
 
         public GetCategoryApiTest(GetCategoryApiTestFixture fixture)
             => _fixture = fixture;
@@ -40,7 +32,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.GetCategory
             await _fixture.Persistence.InsertList(exampleCategoriesList);
             var exampleCategory = exampleCategoriesList[10];
 
-            var (response, output) = await _fixture.ApiClient.Get<GetCategoryResponse>(
+            var (response, output) = await _fixture.ApiClient.Get<ApiResponse<CategoryModelOutput>>(
                 $"/categories/{exampleCategory.Id}"
             );
 

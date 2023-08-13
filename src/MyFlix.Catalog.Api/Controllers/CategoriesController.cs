@@ -23,7 +23,7 @@ namespace MyFlix.Catalog.Api.Controllers
             => _mediator = mediator;
 
         [HttpPost]
-        [ProducesResponseType(typeof(CategoryModelOutput), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiResponse<CategoryModelOutput>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Create(
@@ -35,7 +35,7 @@ namespace MyFlix.Catalog.Api.Controllers
             return CreatedAtAction(
                 nameof(Create),
                 new { output.Id },
-                output
+                new ApiResponse<CategoryModelOutput>(output)
             );
         }
 
@@ -58,18 +58,18 @@ namespace MyFlix.Catalog.Api.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        [ProducesResponseType(typeof(CategoryModelOutput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<CategoryModelOutput>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Update([FromBody] UpdateCategoryApiInput inputApi, [FromRoute] Guid id ,CancellationToken cancellationToken)
         {
             UpdateCategoryInput input = new UpdateCategoryInput(id, inputApi.Name, inputApi.Description, inputApi.IsActive);
             var output = await _mediator.Send(input, cancellationToken);
-            return Ok(output);
+            return Ok(new ApiResponse<CategoryModelOutput>(output));
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(CategoryModelOutput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ListCategoriesOutput), StatusCodes.Status200OK)]
         public async Task<IActionResult> List(
             CancellationToken cancellationToken,
             [FromQuery] int? page = null,

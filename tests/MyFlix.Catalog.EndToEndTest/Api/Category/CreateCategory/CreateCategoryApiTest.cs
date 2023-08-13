@@ -7,6 +7,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 using System;
+using MyFlix.Catalog.Api.ApiModels.Response;
 
 namespace MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
 {
@@ -26,7 +27,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
                 var input = _fixture.getExampleInput();
 
                 var (response, output) = await _fixture.
-                    ApiClient.Post<CategoryModelOutput>(
+                    ApiClient.Post<ApiResponse<CategoryModelOutput>>(
                         "/categories",
                         input
                     );
@@ -34,13 +35,14 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
                 response.Should().NotBeNull();
                 response!.StatusCode.Should().Be(HttpStatusCode.Created);
                 output.Should().NotBeNull();
-                output!.Name.Should().Be(input.Name);
-                output.Description.Should().Be(input.Description);
-                output.IsActive.Should().Be(input.IsActive);
-                output.Id.Should().NotBeEmpty();
-                output.CreatedAt.Should().NotBeSameDateAs(default);
+                output.Data.Should().NotBeNull();
+                output.Data.Name.Should().Be(input.Name);
+                output.Data.Description.Should().Be(input.Description);
+                output.Data.IsActive.Should().Be(input.IsActive);
+                output.Data.Id.Should().NotBeEmpty();
+                output.Data.CreatedAt.Should().NotBeSameDateAs(default);
 
-                var dbCategory = await _fixture.Persistence.GetById(output.Id);
+                var dbCategory = await _fixture.Persistence.GetById(output.Data.Id);
                 dbCategory.Should().NotBeNull();
                 dbCategory!.Name.Should().Be(input.Name);
                 dbCategory.Description.Should().Be(input.Description);
