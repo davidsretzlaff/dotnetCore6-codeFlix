@@ -8,6 +8,7 @@ using MyFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 using MyFlix.Catalog.Application.UseCases.Category.ListCategories;
 using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using MyFlix.Catalog.Api.ApiModels.Category;
+using MyFlix.Catalog.Api.ApiModels.Response;
 
 namespace MyFlix.Catalog.Api.Controllers
 {
@@ -39,12 +40,12 @@ namespace MyFlix.Catalog.Api.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        [ProducesResponseType(typeof(CategoryModelOutput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<CategoryModelOutput>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             var output = await _mediator.Send(new GetCategoryInput(id), cancellationToken);
-            return Ok(output);
+            return Ok(new ApiResponse<CategoryModelOutput>(output));
         }
 
         [HttpDelete("{id:guid}")]
@@ -72,7 +73,7 @@ namespace MyFlix.Catalog.Api.Controllers
         public async Task<IActionResult> List(
             CancellationToken cancellationToken,
             [FromQuery] int? page = null,
-            [FromQuery] int? perPage = null,
+            [FromQuery(Name = "per_page")] int? perPage = null,
             [FromQuery] string? search = null,
             [FromQuery] string? sort = null,
             [FromQuery] SearchOrder? dir = null

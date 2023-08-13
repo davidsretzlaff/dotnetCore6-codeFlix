@@ -101,9 +101,8 @@ namespace MyFlix.Catalog.EndToEndTest.Base
             if (queryStringParametersObject is null)
                 return route;
 
-            var parametersJson = JsonSerializer.Serialize(queryStringParametersObject);
-            var parametersDictionary = Newtonsoft.Json.JsonConvert
-                .DeserializeObject<Dictionary<string, string>>(parametersJson);
+            var parametersJson = JsonSerializer.Serialize(queryStringParametersObject, _defaultSerializeOptions);
+            var parametersDictionary = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(parametersJson);
             return QueryHelpers.AddQueryString(route, parametersDictionary!);
         }
     }
