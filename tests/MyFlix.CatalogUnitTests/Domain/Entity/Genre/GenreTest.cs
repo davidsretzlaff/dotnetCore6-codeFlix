@@ -64,5 +64,22 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
             genre.IsActive.Should().BeTrue();
             genre.CreatedAt.Should().NotBeSameDateAs(default);
         }
+
+        [Theory(DisplayName = nameof(Deactivate))]
+        [InlineData(true)]
+        [InlineData(false)]
+        [Trait("Domain", "Genre - Aggregates")]
+        public void Deactivate(bool isActive)
+        {
+            var genreName = _fixture.GetValidName();
+            var genre = new DomainEntity.Genre(genreName, isActive);
+
+            genre.Deactivate();
+
+            genre.Should().NotBeNull();
+            genre.Name.Should().Be(genreName);
+            genre.IsActive.Should().BeFalse();
+            genre.CreatedAt.Should().NotBeSameDateAs(default);
+        }
     }
 }
