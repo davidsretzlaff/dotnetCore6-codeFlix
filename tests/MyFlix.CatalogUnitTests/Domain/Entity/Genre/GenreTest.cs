@@ -6,12 +6,15 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
     [Collection(nameof(GenreTestFixture))]
     public class GenreTest
     {
+        private readonly GenreTestFixture _fixture;
+
+        public GenreTest(GenreTestFixture fixture) => _fixture = fixture;
 
         [Fact(DisplayName = nameof(Instantiate))]
         [Trait("Domain", "Genre - Aggregates")]
         public void Instantiate()
         {
-            var genreName = "Horror";
+            var genreName = _fixture.GetValidName();
 
             var datetimeBefore = DateTime.Now;
             var genre = new DomainEntity.Genre(genreName);
@@ -25,13 +28,13 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
             (genre.CreatedAt <= datetimeAfter).Should().BeTrue();
         }
 
-        [Theory(DisplayName = nameof(Instantiate))]
+        [Theory(DisplayName = nameof(InstantiateWithIsActive))]
         [InlineData(true)]
         [InlineData(false)]
         [Trait("Domain", "Genre - Aggregates")]
         public void InstantiateWithIsActive(bool isActive)
         {
-            var genreName = "Horror";
+            var genreName = _fixture.GetValidName();
 
             var datetimeBefore = DateTime.Now;
             var genre = new DomainEntity.Genre(genreName, isActive);
@@ -43,6 +46,23 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
             genre.CreatedAt.Should().NotBeSameDateAs(default);
             (genre.CreatedAt >= datetimeBefore).Should().BeTrue();
             (genre.CreatedAt <= datetimeAfter).Should().BeTrue();
+        }
+
+        [Theory(DisplayName = nameof(Activate))]
+        [InlineData(true)]
+        [InlineData(false)]
+        [Trait("Domain", "Genre - Aggregates")]
+        public void Activate(bool isActive)
+        {
+            var genreName = _fixture.GetValidName();
+            var genre = new DomainEntity.Genre(genreName, isActive);
+
+            genre.Activate();
+
+            genre.Should().NotBeNull();
+            genre.Name.Should().Be(genreName);
+            genre.IsActive.Should().BeTrue();
+            genre.CreatedAt.Should().NotBeSameDateAs(default);
         }
     }
 }
