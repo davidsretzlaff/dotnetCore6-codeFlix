@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using FluentAssertions;
+using Xunit;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
 namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
 {
