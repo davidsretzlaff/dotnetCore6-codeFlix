@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using MyFlix.Catalog.Domain.Exceptions;
 using Xunit;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
 namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
@@ -41,6 +42,17 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
             genre.CreatedAt.Should().NotBeSameDateAs(default);
             (genre.CreatedAt >= datetimeBefore).Should().BeTrue();
             (genre.CreatedAt <= datetimeAfter).Should().BeTrue();
+        }
+
+        [Theory(DisplayName = nameof(InstantiateThrowWhenNameEmpty))]
+        [InlineData(" ")]
+        [InlineData("")]
+        [Trait("Domain", "Genre - Aggregates")]
+        public void InstantiateThrowWhenNameEmpty(string name)
+        {
+            var action = () => new DomainEntity.Genre(name);
+
+            action.Should().Throw<EntityValidationException>().WithMessage("Name should not be empty or null");
         }
 
         [Theory(DisplayName = nameof(Activate))]
