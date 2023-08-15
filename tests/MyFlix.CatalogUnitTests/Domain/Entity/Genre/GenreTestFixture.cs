@@ -11,7 +11,14 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
     public class GenreTestFixture : BaseFixture
     {
         public string GetValidName() => Faker.Commerce.Categories(1)[0];
-        public DomainEntity.Genre GetExampleGenre(bool isActive = true) 
-            => new DomainEntity.Genre(GetValidName(), isActive);
+        public DomainEntity.Genre GetExampleGenre(bool isActive = true, List<Guid>? categoriesIdsList = null)
+        {
+            var genre = new DomainEntity.Genre(GetValidName(), isActive);
+            if (categoriesIdsList is not null)
+                foreach (var categoryId in categoriesIdsList)
+                    genre.AddCategory(categoryId);
+         
+            return genre;
+        }
     }
 }
