@@ -45,5 +45,10 @@ namespace MyFlix.Catalog.Domain.Entity
             _categories.Add(categoryId);
             Validate();
         }
+        public void RemoveCategory(Guid categoryId)
+        {
+            _categories.Remove(categoryId);
+            Validate();
+        }
     }
 }
