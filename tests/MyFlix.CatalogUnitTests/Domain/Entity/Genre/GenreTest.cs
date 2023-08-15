@@ -74,6 +74,22 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
             genre.Name.Should().Be(oldName);
             genre.IsActive.Should().BeFalse();
             genre.CreatedAt.Should().NotBeSameDateAs(default);
-        }       
+        }
+
+        [Fact(DisplayName = (nameof(Update)))]
+        [Trait("Domain", "Genre - Aggregates")]
+        public void Update()
+        {
+            var genre = _fixture.GetExampleGenre();
+            var newName = _fixture.GetValidName();
+            var oldIsActive = genre.IsActive;
+
+            genre.Update(newName);
+
+            genre.Should().NotBeNull();
+            genre.Name.Should().Be(newName);
+            genre.IsActive.Should().Be(oldIsActive);
+            genre.CreatedAt.Should().NotBeSameDateAs(default);
+        }
     }
 }
