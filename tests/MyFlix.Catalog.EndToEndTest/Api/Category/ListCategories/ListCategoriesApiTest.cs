@@ -1,12 +1,10 @@
 ﻿
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
 using MyFlix.Catalog.Application.UseCases.Category.Common;
 using MyFlix.Catalog.Application.UseCases.Category.ListCategories;
 using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using MyFlix.Catalog.EndToEndTest.Extensions.DataTime;
-using MyFlix.Catalog.EndToEndTest.FC.Codeflix.Catalog.EndToEndTests.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

@@ -14,14 +14,12 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
         [Trait("Domain", "Genre - Aggregates")]
         public void Instantiate()
         {
-            var genreName = _fixture.GetValidName();
-
             var datetimeBefore = DateTime.Now;
-            var genre = new DomainEntity.Genre(genreName);
-            var datetimeAfter = DateTime.Now.AddSeconds(1);
+            var genre = _fixture.GetExampleGenre();
+            var datetimeAfter = DateTime.Now.AddSeconds(3);
 
             genre.Should().NotBeNull();
-            genre.Name.Should().Be(genreName);
+            genre.Name.Should().Be(genre.Name);
             genre.IsActive.Should().BeTrue();
             genre.CreatedAt.Should().NotBeSameDateAs(default);
             (genre.CreatedAt >= datetimeBefore).Should().BeTrue();
@@ -34,14 +32,11 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
         [Trait("Domain", "Genre - Aggregates")]
         public void InstantiateWithIsActive(bool isActive)
         {
-            var genreName = _fixture.GetValidName();
-
             var datetimeBefore = DateTime.Now;
-            var genre = new DomainEntity.Genre(genreName, isActive);
+            var genre = _fixture.GetExampleGenre(isActive);
             var datetimeAfter = DateTime.Now.AddSeconds(1);
 
             genre.Should().NotBeNull();
-            genre.Name.Should().Be(genreName);
             genre.IsActive.Should().Be(isActive);
             genre.CreatedAt.Should().NotBeSameDateAs(default);
             (genre.CreatedAt >= datetimeBefore).Should().BeTrue();
@@ -54,13 +49,12 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
         [Trait("Domain", "Genre - Aggregates")]
         public void Activate(bool isActive)
         {
-            var genreName = _fixture.GetValidName();
-            var genre = new DomainEntity.Genre(genreName, isActive);
-
+            var genre = _fixture.GetExampleGenre(isActive);
+            var oldName = genre.Name;
             genre.Activate();
 
             genre.Should().NotBeNull();
-            genre.Name.Should().Be(genreName);
+            genre.Name.Should().Be(oldName);
             genre.IsActive.Should().BeTrue();
             genre.CreatedAt.Should().NotBeSameDateAs(default);
         }
@@ -71,15 +65,15 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
         [Trait("Domain", "Genre - Aggregates")]
         public void Deactivate(bool isActive)
         {
-            var genreName = _fixture.GetValidName();
-            var genre = new DomainEntity.Genre(genreName, isActive);
+            var genre = _fixture.GetExampleGenre(isActive);
+            var oldName = genre.Name;
 
             genre.Deactivate();
 
             genre.Should().NotBeNull();
-            genre.Name.Should().Be(genreName);
+            genre.Name.Should().Be(oldName);
             genre.IsActive.Should().BeFalse();
             genre.CreatedAt.Should().NotBeSameDateAs(default);
-        }
+        }       
     }
 }
