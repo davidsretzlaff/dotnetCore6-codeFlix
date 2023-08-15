@@ -104,17 +104,33 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
             genre.CreatedAt.Should().NotBeSameDateAs(default);
         }
 
-        [Theory(DisplayName = (nameof(UpdateThrowWhenNameIsEmpty)))]
-        [InlineData(" ")]
-        [InlineData("")]
+        //[Theory(DisplayName = (nameof(UpdateThrowWhenNameIsEmpty)))]
+        //[InlineData(" ")]
+        //[InlineData("")]
+        //[Trait("Domain", "Genre - Aggregates")]
+        //public void UpdateThrowWhenNameIsEmpty(string name)
+        //{
+        //    var genre = _fixture.GetExampleGenre();
+
+        //    var action = () => genre.Update(name);
+
+        //    action.Should().Throw<EntityValidationException>().WithMessage("Name should not be empty or null");
+        //}
+
+        [Theory(DisplayName = nameof(UpdateThrowWhenNameIsEmpty))]
         [Trait("Domain", "Genre - Aggregates")]
-        public void UpdateThrowWhenNameIsEmpty(string name)
+        [InlineData("")]
+        [InlineData("  ")]
+        [InlineData(null)]
+        public void UpdateThrowWhenNameIsEmpty(string? name)
         {
             var genre = _fixture.GetExampleGenre();
 
-            var action = () => genre.Update(name);
+            var action =
+                () => genre.Update(name!);
 
-            action.Should().Throw<EntityValidationException>().WithMessage("Name should not be empty or null");
+            action.Should().Throw<EntityValidationException>()
+                .WithMessage("Name should not be empty or null");
         }
     }
 }
