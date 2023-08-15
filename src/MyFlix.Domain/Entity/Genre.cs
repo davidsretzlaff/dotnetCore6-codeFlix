@@ -7,12 +7,16 @@ namespace MyFlix.Catalog.Domain.Entity
         public string Name { get; private set; }
         public bool IsActive { get; private set; }
         public DateTime CreatedAt { get; private set; }
+        public IReadOnlyList<Guid> Categories => _categories.AsReadOnly();
+        
+        private List<Guid> _categories;
 
         public Genre(string name, bool isActive = true)
         {
             Name = name;
             IsActive = isActive;
             CreatedAt = DateTime.Now;
+            _categories = new List<Guid>();
             Validate();
         }
 
@@ -34,6 +38,12 @@ namespace MyFlix.Catalog.Domain.Entity
         public void Validate()
         {
             DomainValidation.NotNullOrEmpty(Name, nameof(Name));
+        }
+
+        public void AddCategory(Guid categoryId)
+        {
+            _categories.Add(categoryId);
+            Validate();
         }
     }
 }
