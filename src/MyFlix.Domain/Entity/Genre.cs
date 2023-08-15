@@ -39,7 +39,6 @@ namespace MyFlix.Catalog.Domain.Entity
         {
             DomainValidation.NotNullOrEmpty(Name, nameof(Name));
         }
-
         public void AddCategory(Guid categoryId)
         {
             _categories.Add(categoryId);
@@ -48,6 +47,11 @@ namespace MyFlix.Catalog.Domain.Entity
         public void RemoveCategory(Guid categoryId)
         {
             _categories.Remove(categoryId);
+            Validate();
+        }
+        public void RemoveAllCategories()
+        {
+            _categories.Clear();
             Validate();
         }
     }
