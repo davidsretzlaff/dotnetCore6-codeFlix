@@ -1,5 +1,7 @@
 ﻿using Moq;
 using MyFlix.Catalog.Application.Interfaces;
+using MyFlix.Catalog.Application.UseCases.Genre.CreateGenre;
+using MyFlix.Catalog.Domain.Repository;
 using MyFlix.Catalog.UnitTests.Application.Genre.Common;
 using Xunit;
 

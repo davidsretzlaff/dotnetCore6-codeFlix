@@ -1,8 +1,9 @@
-﻿using MyFlix.Catalog.Domain.Validation;
+﻿using MyFlix.Catalog.Domain.SeedWork;
+using MyFlix.Catalog.Domain.Validation;
 
 namespace MyFlix.Catalog.Domain.Entity
 {
-    public class Genre
+    public class Genre : AggregateRoot
     {
         public string Name { get; private set; }
         public bool IsActive { get; private set; }

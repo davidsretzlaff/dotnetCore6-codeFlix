@@ -22,6 +22,7 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
             genre.Should().NotBeNull();
             genre.Name.Should().Be(genre.Name);
             genre.IsActive.Should().BeTrue();
+            genre.Id.Should().NotBeEmpty();
             genre.CreatedAt.Should().NotBeSameDateAs(default);
             (genre.CreatedAt >= datetimeBefore).Should().BeTrue();
             (genre.CreatedAt <= datetimeAfter).Should().BeTrue();
@@ -39,6 +40,7 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
 
             genre.Should().NotBeNull();
             genre.IsActive.Should().Be(isActive);
+            genre.Id.Should().NotBeEmpty();
             genre.CreatedAt.Should().NotBeSameDateAs(default);
             (genre.CreatedAt >= datetimeBefore).Should().BeTrue();
             (genre.CreatedAt <= datetimeAfter).Should().BeTrue();
@@ -66,6 +68,7 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
             genre.Activate();
 
             genre.Should().NotBeNull();
+            genre.Id.Should().NotBeEmpty();
             genre.Name.Should().Be(oldName);
             genre.IsActive.Should().BeTrue();
             genre.CreatedAt.Should().NotBeSameDateAs(default);
@@ -83,6 +86,7 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
             genre.Deactivate();
 
             genre.Should().NotBeNull();
+            genre.Id.Should().NotBeEmpty();
             genre.Name.Should().Be(oldName);
             genre.IsActive.Should().BeFalse();
             genre.CreatedAt.Should().NotBeSameDateAs(default);
@@ -99,23 +103,11 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Genre
             genre.Update(newName);
 
             genre.Should().NotBeNull();
+            genre.Id.Should().NotBeEmpty();
             genre.Name.Should().Be(newName);
             genre.IsActive.Should().Be(oldIsActive);
             genre.CreatedAt.Should().NotBeSameDateAs(default);
         }
-
-        //[Theory(DisplayName = (nameof(UpdateThrowWhenNameIsEmpty)))]
-        //[InlineData(" ")]
-        //[InlineData("")]
-        //[Trait("Domain", "Genre - Aggregates")]
-        //public void UpdateThrowWhenNameIsEmpty(string name)
-        //{
-        //    var genre = _fixture.GetExampleGenre();
-
-        //    var action = () => genre.Update(name);
-
-        //    action.Should().Throw<EntityValidationException>().WithMessage("Name should not be empty or null");
-        //}
 
         [Theory(DisplayName = nameof(UpdateThrowWhenNameIsEmpty))]
         [Trait("Domain", "Genre - Aggregates")]
