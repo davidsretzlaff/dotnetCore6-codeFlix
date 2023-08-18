@@ -35,8 +35,5 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.CreateGenre
                 categoriesIds
             );
         }
-        public Mock<IGenreRepository> GetGenreRepositoryMock()=> new();
-        public Mock<IUnitOfWork> GetUnitOfWorkMock() => new();
-        public Mock<ICategoryRepository> GetCategoryRepositoryMock() => new();
     }
 }
