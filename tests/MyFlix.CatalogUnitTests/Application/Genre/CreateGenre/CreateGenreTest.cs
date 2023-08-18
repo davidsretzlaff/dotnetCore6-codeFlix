@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Moq;
+using MyFlix.Catalog.Application.Exceptions;
 using Xunit;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
 using UseCase = MyFlix.Catalog.Application.UseCases.Genre.CreateGenre;
@@ -20,7 +21,8 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.CreateGenre
             var genreRepositoryMock = _fixture.GetGenreRepositoryMock();
             var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
             var input= _fixture.GetExampleInput();
-            var useCase = new UseCase.CreateGenre(genreRepositoryMock.Object, unitOfWorkMock.Object);
+            var categoryRepositoryMock = _fixture.GetCategoryRepositoryMock();
+            var useCase = new UseCase.CreateGenre(genreRepositoryMock.Object, unitOfWorkMock.Object, categoryRepositoryMock.Object);
             
             var datetimeBefore = DateTime.Now;
             var output = await useCase.Handle(input, CancellationToken.None);
@@ -48,14 +50,21 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.CreateGenre
         [Trait("Application", "CreateGenre - Use Cases")]
         public async Task CreateWithRelatedCategories()
         {
+            var input = _fixture.GetExampleInputWithCategories();
             var genreRepositoryMock = _fixture.GetGenreRepositoryMock();
             var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
+            var categoryRepositoryMock = _fixture.GetCategoryRepositoryMock();
+            categoryRepositoryMock.Setup( x => x.GetIdsListByIds(
+                It.IsAny<List<Guid>>(), 
+                It.IsAny<CancellationToken>())
+            ).ReturnsAsync((IReadOnlyList<Guid>)input.CategoriesIds!);
+
             var useCase = new UseCase.CreateGenre(
                 genreRepositoryMock.Object,
-                unitOfWorkMock.Object
+                unitOfWorkMock.Object,
+                categoryRepositoryMock.Object
             );
-            var input = _fixture.GetExampleInputWithCategories();
-
+            
             var output = await useCase
                 .Handle(input, CancellationToken.None);
 

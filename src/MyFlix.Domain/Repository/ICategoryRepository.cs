@@ -8,5 +8,6 @@ namespace MyFlix.Catalog.Domain.Repository
         IGenericRepository<Category>, 
         ISearchableRepository<Category>
     {
+        public Task<IReadOnlyList<Guid>> GetIdsListByIds(List<Guid> ids, CancellationToken cancellationToken);
     }
 }
