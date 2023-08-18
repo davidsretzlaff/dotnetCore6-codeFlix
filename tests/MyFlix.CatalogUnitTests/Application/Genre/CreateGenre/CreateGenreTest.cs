@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using MyFlix.Catalog.Application.Exceptions;
+using MyFlix.Catalog.Domain.Exceptions;
 using Xunit;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
 using UseCase = MyFlix.Catalog.Application.UseCases.Genre.CreateGenre;
@@ -123,6 +124,28 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.CreateGenre
                 ),
                 Times.Once
             );
+        }
+
+        [Theory(DisplayName = nameof(ThrowWhenNameIsInvalid))]
+        [Trait("Application", "CreateGenre - Use Cases")]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData("  ")]
+        public async Task ThrowWhenNameIsInvalid(string name)
+        {
+            var input = _fixture.GetExampleInput(name);
+            var genreRepositoryMock = _fixture.GetGenreRepositoryMock();
+            var categoryRepositoryMock = _fixture.GetCategoryRepositoryMock();
+            var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
+            var useCase = new UseCase.CreateGenre(
+                genreRepositoryMock.Object,
+                unitOfWorkMock.Object,
+                categoryRepositoryMock.Object
+            );
+
+            var action = async () => await useCase.Handle(input, CancellationToken.None);
+
+            await action.Should().ThrowAsync<EntityValidationException>().WithMessage($"Name should not be empty or null");
         }
     }
 }
