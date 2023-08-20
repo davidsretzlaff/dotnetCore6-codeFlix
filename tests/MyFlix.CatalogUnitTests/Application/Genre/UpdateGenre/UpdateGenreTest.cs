@@ -31,7 +31,9 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.UpdateGenre
                 unitOfWorkMock.Object,
                 _fixture.GetCategoryRepositoryMock().Object
             );
+
             var input = new UseCase.UpdateGenreInput(
+                exampleGenre.Id,
                 newNameExample,
                 newIsActive
             );
