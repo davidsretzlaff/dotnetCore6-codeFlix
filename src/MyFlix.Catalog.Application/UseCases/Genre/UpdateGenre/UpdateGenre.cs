@@ -1,4 +1,5 @@
-﻿using MyFlix.Catalog.Application.Interfaces;
+﻿using MyFlix.Catalog.Application.Exceptions;
+using MyFlix.Catalog.Application.Interfaces;
 using MyFlix.Catalog.Application.UseCases.Genre.Common;
 using MyFlix.Catalog.Domain.Repository;
 
@@ -26,6 +27,7 @@ namespace MyFlix.Catalog.Application.UseCases.Genre.UpdateGenre
             genre.Update(request.Name);
             if ( request.IsActive is not null && request.IsActive != genre.IsActive)
             {
+                await ValidateCategoriesIds(request, cancellationToken);
                 if ((bool)request.IsActive) genre.Activate();
                 else genre.Deactivate();
             }
@@ -37,6 +39,19 @@ namespace MyFlix.Catalog.Application.UseCases.Genre.UpdateGenre
             await _genreRepository.Update(genre, cancellationToken);
             await _unitOfWork.Commit(cancellationToken);
             return GenreModelOutput.FromGenre(genre);
+        }
+
+        private async Task ValidateCategoriesIds(UpdateGenreInput request, CancellationToken cancellationToken)
+        {
+            var IdsInPersistence = await _categoryRepository.GetIdsListByIds(request.CategoriesIds!, cancellationToken);
+
+            if (IdsInPersistence.Count < request.CategoriesIds!.Count)
+            {
+                var notFoundIds = request.CategoriesIds.FindAll(x => !IdsInPersistence.Contains(x));
+                var notFoundIdsAsString = String.Join(", ", notFoundIds);
+                
+                throw new RelatedAggregateException( $"Related category id (or ids) not found: {notFoundIdsAsString}");
+            }
         }
     }
 }
