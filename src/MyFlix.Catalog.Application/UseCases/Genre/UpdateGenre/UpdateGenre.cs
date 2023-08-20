@@ -45,7 +45,7 @@ namespace MyFlix.Catalog.Application.UseCases.Genre.UpdateGenre
         {
             var IdsInPersistence = await _categoryRepository.GetIdsListByIds(request.CategoriesIds!, cancellationToken);
 
-            if (IdsInPersistence.Count < request.CategoriesIds!.Count)
+            if (IdsInPersistence != null && IdsInPersistence.Count < request.CategoriesIds!.Count)
             {
                 var notFoundIds = request.CategoriesIds.FindAll(x => !IdsInPersistence.Contains(x));
                 var notFoundIdsAsString = String.Join(", ", notFoundIds);
