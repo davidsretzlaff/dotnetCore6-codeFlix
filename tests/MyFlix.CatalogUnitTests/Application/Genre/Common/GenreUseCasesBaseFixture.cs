@@ -11,10 +11,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.Common
         public Mock<IUnitOfWork> GetUnitOfWorkMock() => new();
         public Mock<ICategoryRepository> GetCategoryRepositoryMock() => new();
         public string GetValidGenreName() => Faker.Commerce.Categories(1)[0];
-        public DomainEntity.Genre GetExampleGenre()
-            => new(
-                GetValidGenreName(),
-                GetRandomBoolean()
-            );
+        public DomainEntity.Genre GetExampleGenre(bool? isActive = null)
+            => new( GetValidGenreName(), isActive ?? GetRandomBoolean());
         }
 }
