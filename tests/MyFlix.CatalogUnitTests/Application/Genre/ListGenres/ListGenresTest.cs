@@ -43,15 +43,14 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.ListGenres
             output.Items.Should().HaveCount(outputRepositorySearch.Items.Count);
             ((List<DomainEntity.Genre>)output.Items).ForEach(outputItem =>
             {
-                var repositoryGenre = outputRepositorySearch.Items
-                    .FirstOrDefault(x => x.Id == outputItem.Id);
+                var repositoryGenre = outputRepositorySearch.Items.FirstOrDefault(x => x.Id == outputItem.Id);
                 outputItem.Should().NotBeNull();
                 repositoryGenre.Should().NotBeNull();
                 outputItem.Name.Should().Be(repositoryGenre!.Name);
                 outputItem.IsActive.Should().Be(repositoryGenre.IsActive);
                 outputItem.CreatedAt.Should().Be(repositoryGenre!.CreatedAt);
-                outputItem.Categories.Should()
-                    .HaveCount(repositoryGenre.Categories.Count);
+                outputItem.Categories.Should().HaveCount(repositoryGenre.Categories.Count);
+
                 foreach (var expectedId in repositoryGenre.Categories)
                     outputItem.Categories.Should().Contain(expectedId);
             });
