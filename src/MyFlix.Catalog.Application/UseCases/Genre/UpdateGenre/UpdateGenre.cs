@@ -25,16 +25,20 @@ namespace MyFlix.Catalog.Application.UseCases.Genre.UpdateGenre
                 cancellationToken
             );
             genre.Update(request.Name);
-            if ( request.IsActive is not null && request.IsActive != genre.IsActive)
+            if (request.IsActive is not null && request.IsActive != genre.IsActive)
             {
                 await ValidateCategoriesIds(request, cancellationToken);
                 if ((bool)request.IsActive) genre.Activate();
                 else genre.Deactivate();
             }
-            if ((request.CategoriesIds?.Count ?? 0) > 0)
+            if (request.CategoriesIds is not null)
             {
                 genre.RemoveAllCategories();
-                request.CategoriesIds?.ForEach(genre.AddCategory);
+                if (request.CategoriesIds.Count > 0)
+                {
+                    await ValidateCategoriesIds(request, cancellationToken);
+                    request.CategoriesIds?.ForEach(genre.AddCategory);
+                }
             }
             await _genreRepository.Update(genre, cancellationToken);
             await _unitOfWork.Commit(cancellationToken);
