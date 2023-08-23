@@ -1,8 +1,9 @@
 ﻿using FluentAssertions;
 using Moq;
+using MyFlix.Catalog.Application.Exceptions;
 using MyFlix.Catalog.Application.UseCases.Genre.Common;
-using MyFlix.Catalog.UnitTests.Domain.Entity.Genre;
 using Xunit;
+using UseCase = MyFlix.Catalog.Application.UseCases.Genre.GetGenre;
 
 namespace MyFlix.Catalog.UnitTests.Application.Genre.GetGenre
 {
@@ -41,6 +42,33 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.GetGenre
             genreRepositoryMock.Verify(
                 x => x.Get(
                     It.Is<Guid>(x => x == exampleGenre.Id),
+                    It.IsAny<CancellationToken>()
+                ),
+                Times.Once
+            );
+        }
+
+        [Fact(DisplayName = nameof(ThrowWhenNotFound))]
+        [Trait("Application", "GetGenre - Use Cases")]
+        public async Task ThrowWhenNotFound()
+        {
+            var genreRepositoryMock = _fixture.GetGenreRepositoryMock();
+            var exampleId = Guid.NewGuid();
+            genreRepositoryMock.Setup(x => x.Get(
+                It.Is<Guid>(x => x == exampleId),
+                It.IsAny<CancellationToken>()
+            )).ThrowsAsync(new NotFoundException(
+                $"Genre '{exampleId}' not found"
+            ));
+            var useCase = new UseCase.GetGenre(genreRepositoryMock.Object);
+            var input = new UseCase.GetGenreInput(exampleId);
+
+            var action = async () => await useCase.Handle(input, CancellationToken.None);
+
+            await action.Should().ThrowAsync<NotFoundException>().WithMessage($"Genre '{exampleId}' not found");
+            genreRepositoryMock.Verify(
+                x => x.Get(
+                    It.Is<Guid>(x => x == exampleId),
                     It.IsAny<CancellationToken>()
                 ),
                 Times.Once
