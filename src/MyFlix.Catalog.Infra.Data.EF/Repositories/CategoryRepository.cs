@@ -32,7 +32,7 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
         public Task Delete(Category aggregate, CancellationToken cancelationToken)
             => Task.FromResult(_categories.Remove(aggregate));
 
-        public async Task<SearchOuput<Category>> Search(SearchInput input, CancellationToken cancellationToken)
+        public async Task<SearchOutput<Category>> Search(SearchInput input, CancellationToken cancellationToken)
         {
             var toSkip = (input.Page - 1) * input.PerPage;
             var query = _categories.AsNoTracking();
@@ -49,7 +49,7 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
                 .Take(input.PerPage)
                 .ToListAsync();
 
-            return new SearchOuput<Category>(input.Page, input.PerPage, total, items);
+            return new SearchOutput<Category>(input.Page, input.PerPage, total, items);
         }
 
         private IQueryable<Category> AddOrderToQuery(

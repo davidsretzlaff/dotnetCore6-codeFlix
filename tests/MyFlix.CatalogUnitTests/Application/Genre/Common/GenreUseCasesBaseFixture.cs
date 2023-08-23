@@ -23,5 +23,13 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.Common
                 .Range(1, count ?? (new Random()).Next(1, 10))
                 .Select(_ => Guid.NewGuid())
                 .ToList();
+
+        public List<DomainEntity.Genre> GetExampleGenresList(int count = 10)
+            => Enumerable.Range(1, count).Select(_ =>
+            {
+                var genre = new DomainEntity.Genre(GetValidGenreName(), GetRandomBoolean());
+                GetRandomIdsList().ForEach(genre.AddCategory);
+                return genre;
+            }).ToList();
     }
 }

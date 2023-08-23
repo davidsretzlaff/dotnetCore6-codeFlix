@@ -24,7 +24,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Category.ListCategories
             var repositoryMock = _fixture.GetRepositoryMock();
             var categoriesExampleList = _fixture.GetExampleCategoriesList();
             var input = _fixture.GetExampleInput();
-            var outputRepositorySearch = new SearchOuput<DomainEntity.Category>(
+            var outputRepositorySearch = new SearchOutput<DomainEntity.Category>(
                 currentPage: input.Page,
                 perPage: input.PerPage,
                 items: (IReadOnlyList<DomainEntity.Category>)categoriesExampleList,
@@ -86,7 +86,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Category.ListCategories
         {
             var repositoryMock = _fixture.GetRepositoryMock();
             var categoriesExampleList = _fixture.GetExampleCategoriesList();
-            var outputRepositorySearch = new SearchOuput<DomainEntity.Category>(
+            var outputRepositorySearch = new SearchOutput<DomainEntity.Category>(
                 currentPage: input.Page,
                 perPage: input.PerPage,
                 items: (IReadOnlyList<DomainEntity.Category>)categoriesExampleList,
@@ -144,7 +144,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Category.ListCategories
         {
             var repositoryMock = _fixture.GetRepositoryMock();
             var input = _fixture.GetExampleInput();
-            var outputRepositorySearch = new SearchOuput<DomainEntity.Category>(
+            var outputRepositorySearch = new SearchOutput<DomainEntity.Category>(
                   currentPage: input.Page,
                   perPage: input.PerPage,
                   items: new List<DomainEntity.Category>().AsReadOnly(),

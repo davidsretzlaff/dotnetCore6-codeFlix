@@ -1,9 +1,9 @@
 ﻿namespace MyFlix.Catalog.Domain.SeedWork.SearchableRepository
 {
-    public class SearchOuput<TAggregate>
+    public class SearchOutput<TAggregate>
          where TAggregate : AggregateRoot
     {
-        public SearchOuput(int currentPage, int perPage, int total, IReadOnlyList<TAggregate> items)
+        public SearchOutput(int currentPage, int perPage, int total, IReadOnlyList<TAggregate> items)
         {
             CurrentPage = currentPage;
             PerPage = perPage;
