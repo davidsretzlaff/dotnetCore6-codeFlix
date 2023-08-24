@@ -1,9 +1,10 @@
 ﻿using FluentAssertions;
 using Moq;
+using MyFlix.Catalog.Application.UseCases.Genre.Common;
 using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using Xunit;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
-using UseCase = MyFlix.Catalog.Application.UseCases.Genre;
+using UseCase = MyFlix.Catalog.Application.UseCases.Genre.ListGenres;
 
 namespace MyFlix.Catalog.UnitTests.Application.Genre.ListGenres
 {
@@ -30,18 +31,19 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.ListGenres
                 total: new Random().Next(50, 200)
             );
             genreRepositoryMock.Setup(x => x.Search(
-                It.IsAny<SearchInput>(),
-                It.IsAny<CancellationToken>()
-            )).ReturnsAsync(outputRepositorySearch);
+                 It.IsAny<SearchInput>(),
+                 It.IsAny<CancellationToken>()
+             )).ReturnsAsync(outputRepositorySearch);
+
             var useCase = new UseCase.ListGenres(genreRepositoryMock.Object);
 
-            ListGenresOutput output = await useCase.Handle(input, CancellationToken.None);
+            UseCase.ListGenresOutput output = await useCase.Handle(input, CancellationToken.None);
 
             output.Page.Should().Be(outputRepositorySearch.CurrentPage);
             output.PerPage.Should().Be(outputRepositorySearch.PerPage);
             output.Total.Should().Be(outputRepositorySearch.Total);
             output.Items.Should().HaveCount(outputRepositorySearch.Items.Count);
-            ((List<DomainEntity.Genre>)output.Items).ForEach(outputItem =>
+            ((List<GenreModelOutput>)output.Items).ForEach(outputItem =>
             {
                 var repositoryGenre = outputRepositorySearch.Items.FirstOrDefault(x => x.Id == outputItem.Id);
                 outputItem.Should().NotBeNull();

@@ -1,5 +1,6 @@
 ﻿
 using Bogus;
+using MyFlix.Catalog.Application.UseCases.Genre.ListGenres;
 using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using MyFlix.Catalog.UnitTests.Application.Genre.Common;
 using Xunit;
