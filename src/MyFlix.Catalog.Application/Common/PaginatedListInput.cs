@@ -12,6 +12,7 @@ namespace MyFlix.Catalog.Application.Common
             Sort = sort;
             Dir = dir;
         }
+        public SearchInput ToSearchInput() => new(Page, PerPage, Search, Sort, Dir);
 
         public int Page { get; set; }
         public int PerPage { get; set; }

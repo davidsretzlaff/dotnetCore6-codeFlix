@@ -11,22 +11,8 @@ namespace MyFlix.Catalog.Application.UseCases.Genre.ListGenres
         
         public async Task<ListGenresOutput> Handle(ListGenresInput input, CancellationToken cancellationToken)
         {
-            var searchInput = new SearchInput(
-                input.Page,
-                input.PerPage,
-                input.Search,
-                input.Sort,
-                input.Dir
-            );
-            var searchOutput = await _genreRepository.Search(searchInput,cancellationToken);
-            return new ListGenresOutput(
-                searchOutput.CurrentPage,
-                searchOutput.PerPage,
-                searchOutput.Total,
-                searchOutput.Items
-                    .Select(GenreModelOutput.FromGenre)
-                    .ToList()
-            );
+            var searchOutput = await _genreRepository.Search(input.ToSearchInput(), cancellationToken);
+            return ListGenresOutput.FromSearchOutput(searchOutput);
         }
     }
 }
