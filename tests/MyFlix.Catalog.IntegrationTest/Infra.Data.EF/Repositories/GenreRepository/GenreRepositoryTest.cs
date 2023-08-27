@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using MyFlix.Catalog.Infra.Data.EF;
+using MyFlix.Catalog.Infra.Data.EF.Models;
 using Xunit;
 using Repository = MyFlix.Catalog.Infra.Data.EF.Repositories;
 
@@ -56,6 +57,47 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.GenreReposit
                 var expectedCategory = categoriesListExample.FirstOrDefault(x => x.Id == relation.CategoryId);
                 expectedCategory.Should().NotBeNull();
             });
+        }
+
+        [Fact(DisplayName = nameof(Get))]
+        [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
+        public async Task Get()
+        {
+            // Arrange
+            CatalogDbContext dbContext = _fixture.CreateDbContext();
+            var exampleGenre = _fixture.GetExampleGenre();
+            var categoriesListExample = _fixture.GetExampleCategoriesList(3);
+            
+            categoriesListExample.ForEach(
+                category => exampleGenre.AddCategory(category.Id)
+            );
+            
+            await dbContext.Categories.AddRangeAsync(categoriesListExample);
+            await dbContext.Genres.AddAsync(exampleGenre);
+
+            foreach (var categoryId in exampleGenre.Categories)
+            {
+                var relation = new GenresCategories(categoryId, exampleGenre.Id);
+                await dbContext.GenresCategories.AddAsync(relation);
+            }            
+            dbContext.SaveChanges();
+            
+            // Act            
+            var genreRepository = new Repository.GenreRepository(_fixture.CreateDbContext(true));
+            var genreFromRepository = await genreRepository.Get(exampleGenre.Id, CancellationToken.None);
+            
+            // Assert
+            genreFromRepository.Should().NotBeNull();
+            genreFromRepository!.Name.Should().Be(exampleGenre.Name);
+            genreFromRepository.IsActive.Should().Be(exampleGenre.IsActive);
+            genreFromRepository.CreatedAt.Should().Be(exampleGenre.CreatedAt);
+            genreFromRepository.Categories.Should().HaveCount(categoriesListExample.Count);
+
+            foreach (var categoryId in genreFromRepository.Categories)
+            {
+                var expectedCategory = categoriesListExample.FirstOrDefault(x => x.Id == categoryId);
+                expectedCategory.Should().NotBeNull();
+            };
         }
     }
 }

@@ -31,12 +31,20 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
             }
         }
 
-        public Task Delete(Genre aggregate, CancellationToken cancellationToken)
+
+        public async Task<Genre> Get(Guid id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var genre = await _genres.FindAsync(id);
+            var categoryIds = await _genresCategories
+                .Where(x => x.GenreId == genre.Id)
+                .Select(x => x.CategoryId)
+                .ToListAsync();
+            categoryIds.ForEach(genre.AddCategory);
+            
+            return genre;
         }
 
-        public Task<Genre> Get(Guid id, CancellationToken cancellationToken)
+        public Task Delete(Genre aggregate, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
