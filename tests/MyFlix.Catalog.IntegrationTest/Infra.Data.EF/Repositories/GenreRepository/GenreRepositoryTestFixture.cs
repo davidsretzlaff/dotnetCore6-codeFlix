@@ -1,13 +1,12 @@
 ﻿using MyFlix.Catalog.Domain.Entity;
 using MyFlix.Catalog.IntegrationTest.Base;
+using Xunit;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
 namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.GenreRepository
 {
 
     [CollectionDefinition(nameof(GenreRepositoryTestFixture))]
-    public class GenreRepositoryTestFixtureCollection
-        : ICollectionFixture<GenreRepositoryTestFixture>
-    { }
+    public class GenreRepositoryTestFixtureCollection : ICollectionFixture<GenreRepositoryTestFixture> { }
 
     public class GenreRepositoryTestFixture : BaseFixture
     {
@@ -25,6 +24,7 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.GenreReposit
         public string GetValidCategoryName()
         {
             var categoryName = "";
+
             while (categoryName.Length < 3)
                 categoryName = Faker.Commerce.Categories(1)[0];
             
@@ -37,6 +37,7 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.GenreReposit
         public string GetValidCategoryDescription()
         {
             var categoryDescription = Faker.Commerce.ProductDescription();
+
             if (categoryDescription.Length > 10_000)
                 categoryDescription = categoryDescription[..10_000];
             
@@ -51,7 +52,8 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.GenreReposit
             );
 
         public List<Category> GetExampleCategoriesList(int length = 10)
-            => Enumerable.Range(1, length).Select(_ => GetExampleCategory()).ToList();
-
+            => Enumerable.Range(1, length)
+            .Select(_ => GetExampleCategory())
+            .ToList();
     }
 }

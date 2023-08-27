@@ -23,6 +23,5 @@ namespace MyFlix.Catalog.IntegrationTest.Base
 
             return context;
         }
-
     }
 }

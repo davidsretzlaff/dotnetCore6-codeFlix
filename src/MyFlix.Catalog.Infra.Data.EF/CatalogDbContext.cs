@@ -2,16 +2,18 @@
 using MyFlix.Catalog.Infra.Data.EF.Configurations;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using MyFlix.Catalog.Infra.Data.EF.Models;
 
 namespace MyFlix.Catalog.Infra.Data.EF
 {
     public class CatalogDbContext : DbContext
     {
         public DbSet<Category> Categories => Set<Category>();
+        public DbSet<Genre> Genres => Set<Genre>();
 
-        public CatalogDbContext(
-            DbContextOptions<CatalogDbContext> options) 
-            : base(options) {}
+        public DbSet<GenresCategories> GenresCategories => Set<GenresCategories>();
+
+        public CatalogDbContext(DbContextOptions<CatalogDbContext> options) : base(options) {}
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -21,6 +23,9 @@ namespace MyFlix.Catalog.Infra.Data.EF
             // here applies the configuration only for what you want
             // more control
             builder.ApplyConfiguration(new CategoryConfiguration());
+            builder.ApplyConfiguration(new GenreConfiguration());
+
+            builder.ApplyConfiguration(new GenresCategoriesConfiguration());
         }
     }
 }
