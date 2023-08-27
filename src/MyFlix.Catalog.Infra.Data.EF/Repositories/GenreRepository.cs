@@ -47,7 +47,9 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
 
         public Task Delete(Genre aggregate, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _genresCategories.RemoveRange(_genresCategories.Where(x => x.GenreId == aggregate.Id));
+            _genres.Remove(aggregate);
+            return Task.CompletedTask;
         }
 
         public Task<SearchOutput<Genre>> Search(SearchInput input, CancellationToken cancellationToken)
