@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyFlix.Catalog.Application.Exceptions;
 using MyFlix.Catalog.Domain.Entity;
 using MyFlix.Catalog.Domain.Repository;
 using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
@@ -34,13 +35,13 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
 
         public async Task<Genre> Get(Guid id, CancellationToken cancellationToken)
         {
-            var genre = await _genres.FindAsync(id);
+            var genre = await _genres.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            NotFoundException.ThrowIfNull(genre, $"Genre '{id}' not found.");
             var categoryIds = await _genresCategories
                 .Where(x => x.GenreId == genre.Id)
                 .Select(x => x.CategoryId)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
             categoryIds.ForEach(genre.AddCategory);
-            
             return genre;
         }
 
