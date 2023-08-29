@@ -33,6 +33,8 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.GenreReposit
             
             return categoryName;
         }
+        public List<DomainEntity.Genre> GetExampleListGenres(int count = 10)
+            => Enumerable.Range(1, count).Select(_ => GetExampleGenre()).ToList();
 
         public string GetValidCategoryDescription()
         {
@@ -52,8 +54,6 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.GenreReposit
             );
 
         public List<Category> GetExampleCategoriesList(int length = 10)
-            => Enumerable.Range(1, length)
-            .Select(_ => GetExampleCategory())
-            .ToList();
+            => Enumerable.Range(1, length).Select(_ => GetExampleCategory()).ToList();
     }
 }
