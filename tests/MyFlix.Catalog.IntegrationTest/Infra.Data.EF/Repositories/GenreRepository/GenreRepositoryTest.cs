@@ -181,7 +181,8 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.GenreReposit
                 await dbContext.GenresCategories.AddAsync(relation);
             }
             dbContext.SaveChanges();
-            var genreRepository = new Repository.GenreRepository(_fixture.CreateDbContext(true));
+            var actDbContext = _fixture.CreateDbContext(true);
+            var genreRepository = new Repository.GenreRepository(actDbContext);
 
             exampleGenre.Update(_fixture.GetValidGenreName());
             if (exampleGenre.IsActive)
@@ -189,6 +190,7 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.GenreReposit
             else
                 exampleGenre.Activate();
             await genreRepository.Update(exampleGenre, CancellationToken.None);
+            await actDbContext.SaveChangesAsync();
 
             var assertsDbContext = _fixture.CreateDbContext(true);
             var dbGenre = await assertsDbContext.Genres.FindAsync(exampleGenre.Id);
