@@ -54,7 +54,10 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
 
         public async Task<SearchOutput<Genre>> Search(SearchInput input, CancellationToken cancellationToken)
         {
-            var genres = await _genres.ToListAsync();
+            var toSkip = (input.Page - 1) * input.PerPage;
+            var genres = await _genres.Skip(toSkip).Take(input.PerPage).ToListAsync();
+            var total = await _genres.CountAsync();
+
             var genresIds = genres.Select(genre => genre.Id).ToList();
             var relations = await _genresCategories.Where(relation => genresIds.Contains(relation.GenreId)).ToListAsync();
             var relationsByGenreIdGroup = relations.GroupBy(x => x.GenreId).ToList();
@@ -70,7 +73,7 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
             return new SearchOutput<Genre>(
                 input.Page,
                 input.PerPage,
-                genres.Count,
+                total,
                 genres
             );
         }
@@ -79,10 +82,13 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
         {
             _genres.Update(genre);
             _genresCategories.RemoveRange(_genresCategories.Where(x => x.GenreId == genre.Id));
-
             if (genre.Categories.Count > 0)
             {
-                var relations = genre.Categories.Select(categoryId => new GenresCategories(categoryId, genre.Id));
+                var relations = genre.Categories
+                    .Select(categoryId => new GenresCategories(
+                        categoryId,
+                        genre.Id
+                    ));
                 await _genresCategories.AddRangeAsync(relations);
             }
         }
