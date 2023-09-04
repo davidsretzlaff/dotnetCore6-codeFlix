@@ -14,12 +14,14 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.GenreReposit
 
         public bool GetRandomBoolean() => new Random().NextDouble() < 0.5;
 
-        public DomainEntity.Genre GetExampleGenre(bool? isActive = null, List<Guid>? categoriesIds = null)
+        public DomainEntity.Genre GetExampleGenre(bool? isActive = null, List<Guid>? categoriesIds = null, string? name = null)
         {
-            var genre = new DomainEntity.Genre(GetValidGenreName(), isActive ?? GetRandomBoolean());
+            var genre = new DomainEntity.Genre(name ?? GetValidGenreName(), isActive ?? GetRandomBoolean());
             categoriesIds?.ForEach(genre.AddCategory);
             return genre;
         }
+        public List<DomainEntity.Genre> GetExampleListGenresByNames(List<string> names)
+            => names.Select(name => GetExampleGenre(name: name)).ToList();
 
         public string GetValidCategoryName()
         {
