@@ -1,4 +1,5 @@
 ﻿using MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using MyFlix.Catalog.IntegrationTest.Base;
 using Xunit;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
@@ -57,5 +58,21 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.GenreReposit
 
         public List<Category> GetExampleCategoriesList(int length = 10)
             => Enumerable.Range(1, length).Select(_ => GetExampleCategory()).ToList();
+
+        public List<Genre> CloneGenreListOrdered(List<Genre> genreList, string orderBy, SearchOrder order)
+        {
+            var listClone = new List<Genre>(genreList);
+            var orderedEnumerable = (orderBy.ToLower(), order) switch
+            {
+                ("name", SearchOrder.Asc) => listClone.OrderBy(x => x.Name).ThenBy(x => x.Id),
+                ("name", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Name).ThenByDescending(x => x.Id),
+                ("id", SearchOrder.Asc) => listClone.OrderBy(x => x.Id),
+                ("id", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Id),
+                ("createdat", SearchOrder.Asc) => listClone.OrderBy(x => x.CreatedAt),
+                ("createdat", SearchOrder.Desc) => listClone.OrderByDescending(x => x.CreatedAt),
+                _ => listClone.OrderBy(x => x.Name).ThenBy(x => x.Id),
+            };
+            return orderedEnumerable.ToList();
+        }
     }
 }

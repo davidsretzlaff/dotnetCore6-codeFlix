@@ -56,6 +56,8 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
         {
             var toSkip = (input.Page - 1) * input.PerPage;
             var query = _genres.AsNoTracking();
+            
+            query = AddOrderToQuery(query, input.OrderBy, input.Order);
 
             if (!String.IsNullOrWhiteSpace(input.Search))
                 query = query.Where(genre => genre.Name.Contains(input.Search));
@@ -96,6 +98,21 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
                     ));
                 await _genresCategories.AddRangeAsync(relations);
             }
+        }
+
+        private IQueryable<Genre> AddOrderToQuery(IQueryable<Genre> query, string orderProperty, SearchOrder order)
+        {
+            var orderedQuery = (orderProperty.ToLower(), order) switch
+            {
+                ("name", SearchOrder.Asc) => query.OrderBy(x => x.Name).ThenBy(x => x.Id),
+                ("name", SearchOrder.Desc) => query.OrderByDescending(x => x.Name).ThenByDescending(x => x.Id),
+                ("id", SearchOrder.Asc) => query.OrderBy(x => x.Id),
+                ("id", SearchOrder.Desc) => query.OrderByDescending(x => x.Id),
+                ("createdat", SearchOrder.Asc) => query.OrderBy(x => x.CreatedAt),
+                ("createdat", SearchOrder.Desc) => query.OrderByDescending(x => x.CreatedAt),
+                _ => query.OrderBy(x => x.Name).ThenBy(x => x.Id)
+            };
+            return orderedQuery;
         }
     }
 }
