@@ -375,7 +375,7 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.GenreReposit
         [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
         public async Task SearchReturnsEmptyWhenPersistenceIsEmpty()
         {
-            var actDbContext = _fixture.CreateDbContext(true);
+            var actDbContext = _fixture.CreateDbContext();
             var genreRepository = new Repository.GenreRepository(actDbContext);
             var searchInput = new SearchInput(1, 20, "", "", SearchOrder.Asc);
 
