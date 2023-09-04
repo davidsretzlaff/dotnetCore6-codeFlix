@@ -1,6 +1,7 @@
 ﻿using MyFlix.Catalog.Application.UseCases.Category.GetCategory;
 using Xunit;
 using FluentAssertions;
+using FluentValidation;
 
 namespace MyFlix.Catalog.UnitTests.Application.Category.GetCategory
 {
@@ -31,6 +32,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Category.GetCategory
         [Trait("Application", "InvalidWhenEmptyId - UseCases")]
         public void InvalidWhenEmptyGuidId()
         {
+            ValidatorOptions.Global.LanguageManager.Enabled = false;
             var invalidInput = new GetCategoryInput(Guid.Empty);
             var validator = new GetCategoryInputValidator();
 

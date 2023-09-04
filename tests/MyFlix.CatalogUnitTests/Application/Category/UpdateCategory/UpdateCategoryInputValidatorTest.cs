@@ -1,6 +1,7 @@
 ﻿using Xunit;
 using MyFlix.Catalog.Application.UseCases.Category.UpdateCategory;
 using FluentAssertions;
+using FluentValidation;
 
 namespace MyFlix.Catalog.UnitTests.Application.Category.UpdateCategory
 {
@@ -18,6 +19,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Category.UpdateCategory
         [Trait("Application", "UpdateCategoryInputValidator - Use Cases")]
         public void DontValidateWhenEmptyGuid()
         {
+            ValidatorOptions.Global.LanguageManager.Enabled = false;
             var input = _fixture.GetValidInput(Guid.Empty);
             var validator = new UpdateCategoryInputValidator();
             var validateResult = validator.Validate(input);
