@@ -1,6 +1,8 @@
-﻿using MyFlix.Catalog.Infra.Data.EF.Repositories;
+﻿using FluentAssertions;
+using MyFlix.Catalog.Application.Exceptions;
+using MyFlix.Catalog.Infra.Data.EF.Repositories;
 using Xunit;
-using UseCase = MyFlix.Catalog.Application.UseCases;
+using UseCase = MyFlix.Catalog.Application.UseCases.Genre.GetGenre;
 namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.GetGenre
 {
 
@@ -33,5 +35,24 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.GetGenre
             output.IsActive.Should().Be(expectedGenre.IsActive);
             output.CreatedAt.Should().Be(expectedGenre.CreatedAt);
         }
+
+        [Fact(DisplayName = nameof(GetGenreThrowsWhenNotFound))]
+        [Trait("Integration/Application", "GetGenre - Use Cases")]
+        public async Task GetGenreThrowsWhenNotFound()
+        {
+            var genresExampleList = _fixture.GetExampleListGenres(10);
+            var randomGuid = Guid.NewGuid();
+            var dbArrangeContext = _fixture.CreateDbContext();
+            await dbArrangeContext.Genres.AddRangeAsync(genresExampleList);
+            await dbArrangeContext.SaveChangesAsync();
+            var genreRepository = new GenreRepository(_fixture.CreateDbContext(true));
+            var useCase = new UseCase.GetGenre(genreRepository);
+            var input = new UseCase.GetGenreInput(randomGuid);
+
+            var action = async () => await useCase.Handle(input, CancellationToken.None);
+
+            await action.Should().ThrowAsync<NotFoundException>().WithMessage($"Genre '{randomGuid}' not found.");
+        }
+
     }
 }
