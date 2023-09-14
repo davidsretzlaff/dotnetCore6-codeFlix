@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using MyFlix.Catalog.Application.Exceptions;
+using MyFlix.Catalog.Infra.Data.EF.Models;
 using MyFlix.Catalog.Infra.Data.EF.Repositories;
 using Xunit;
 using UseCase = MyFlix.Catalog.Application.UseCases.Genre.GetGenre;
@@ -52,6 +53,42 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.GetGenre
             var action = async () => await useCase.Handle(input, CancellationToken.None);
 
             await action.Should().ThrowAsync<NotFoundException>().WithMessage($"Genre '{randomGuid}' not found.");
+        }
+
+        [Fact(DisplayName = nameof(GetGenreWithCategoryRelations))]
+        [Trait("Integration/Application", "GetGenre - Use Cases")]
+        public async Task GetGenreWithCategoryRelations()
+        {
+            var genresExampleList = _fixture.GetExampleListGenres(10);
+            var categoriesExampleList = _fixture.GetExampleCategoriesList(5);
+            var expectedGenre = genresExampleList[5];
+            categoriesExampleList.ForEach(
+                category => expectedGenre.AddCategory(category.Id)
+            );
+            var dbArrangeContext = _fixture.CreateDbContext();
+            await dbArrangeContext.Categories.AddRangeAsync(categoriesExampleList);
+            await dbArrangeContext.Genres.AddRangeAsync(genresExampleList);
+            await dbArrangeContext.GenresCategories.AddRangeAsync(
+                expectedGenre.Categories.Select(
+                    categoryId => new GenresCategories(categoryId, expectedGenre.Id)
+                )
+            );
+            await dbArrangeContext.SaveChangesAsync();
+            var genreRepository = new GenreRepository(_fixture.CreateDbContext(true));
+            var useCase = new UseCase.GetGenre(genreRepository);
+            var input = new UseCase.GetGenreInput(expectedGenre.Id);
+
+            var output = await useCase.Handle(input, CancellationToken.None);
+
+            output.Should().NotBeNull();
+            output.Id.Should().Be(expectedGenre.Id);
+            output.Name.Should().Be(expectedGenre.Name);
+            output.IsActive.Should().Be(expectedGenre.IsActive);
+            output.CreatedAt.Should().Be(expectedGenre.CreatedAt);
+            output.Categories.Should().HaveCount(expectedGenre.Categories.Count);
+            output.Categories.ToList().ForEach(
+                id => expectedGenre.Categories.Should().Contain(id)
+            );
         }
 
     }
