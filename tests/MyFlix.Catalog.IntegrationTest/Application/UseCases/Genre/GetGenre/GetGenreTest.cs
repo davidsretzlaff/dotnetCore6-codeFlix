@@ -87,7 +87,11 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.GetGenre
             output.CreatedAt.Should().Be(expectedGenre.CreatedAt);
             output.Categories.Should().HaveCount(expectedGenre.Categories.Count);
             output.Categories.ToList().ForEach(
-                id => expectedGenre.Categories.Should().Contain(id)
+                relationModel =>
+                {
+                    expectedGenre.Categories.Should().Contain(relationModel.Id);
+                    relationModel.Name.Should().BeNull();
+                }
             );
         }
 
