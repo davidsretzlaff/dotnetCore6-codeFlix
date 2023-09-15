@@ -39,12 +39,9 @@ namespace MyFlix.Catalog.Application.UseCases.Genre.CreateGenre
             
             if (IdsInPersistence.Count < request.CategoriesIds!.Count)
             {
-                var notFoundIds = request.CategoriesIds
-                    .FindAll(x => !IdsInPersistence.Contains(x));
+                var notFoundIds = request.CategoriesIds.FindAll(x => !IdsInPersistence.Contains(x));
                 var notFoundIdsAsString = String.Join(", ", notFoundIds);
-                throw new RelatedAggregateException(
-                    $"Related category id (or ids) not found: {notFoundIdsAsString}"
-                );
+                throw new RelatedAggregateException($"Related category id (or ids) not found: {notFoundIdsAsString}");
             }
         }
     }

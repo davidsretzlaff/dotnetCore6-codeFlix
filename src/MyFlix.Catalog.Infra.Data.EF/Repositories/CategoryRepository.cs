@@ -71,9 +71,11 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
             return orderedQuery;
         }
 
-        public Task<IReadOnlyList<Guid>> GetIdsListByIds(List<Guid> ids, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<Guid>> GetIdsListByIds(List<Guid> ids, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _categories.AsNoTracking()
+                .Where(category => ids.Contains(category.Id))
+                .Select(category => category.Id).ToListAsync();
         }
     }
 }
