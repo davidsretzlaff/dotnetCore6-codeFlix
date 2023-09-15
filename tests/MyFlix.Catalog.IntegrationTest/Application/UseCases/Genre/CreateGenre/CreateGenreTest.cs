@@ -7,6 +7,7 @@ using Xunit;
 using MyFlix.Catalog.Application.UseCases.Genre.CreateGenre;
 using MyFlix.Catalog.Infra.Data.EF.Models;
 using Microsoft.EntityFrameworkCore;
+using MyFlix.Catalog.Application.Exceptions;
 
 namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.CreateGenre
 {
@@ -80,6 +81,30 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.CreateGenre
             relations.Should().HaveCount(input.CategoriesIds.Count);
             var categoryIdsRelatedFromDb = relations.Select(relation => relation.CategoryId).ToList();
             categoryIdsRelatedFromDb.Should().BeEquivalentTo(input.CategoriesIds);
+        }
+
+        [Fact(DisplayName = nameof(CreateGenreThrowsWhenCategoryDoesntExists))]
+        [Trait("Integration/Application", "CreateGenre - Use Cases")]
+        public async Task CreateGenreThrowsWhenCategoryDoesntExists()
+        {
+            var exampleCategories = _fixture.GetExampleCategoriesList(5);
+            var arrangeDbContext = _fixture.CreateDbContext();
+            await arrangeDbContext.Categories.AddRangeAsync(exampleCategories);
+            await arrangeDbContext.SaveChangesAsync();
+            CreateGenreInput input = _fixture.GetExampleInput();
+            input.CategoriesIds = exampleCategories.Select(category => category.Id).ToList();
+            Guid randomGuid = Guid.NewGuid();
+            input.CategoriesIds.Add(randomGuid);
+            var actDbContext = _fixture.CreateDbContext(true);
+            UseCase.CreateGenre createGenre = new UseCase.CreateGenre(
+                new GenreRepository(actDbContext),
+                new UnitOfWork(actDbContext),
+                new CategoryRepository(actDbContext)
+            );
+
+            var action = async () => await createGenre.Handle(input, CancellationToken.None);
+
+            await action.Should().ThrowAsync<RelatedAggregateException>().WithMessage($"Related category id (or ids) not found: {randomGuid}");
         }
     }
 }
