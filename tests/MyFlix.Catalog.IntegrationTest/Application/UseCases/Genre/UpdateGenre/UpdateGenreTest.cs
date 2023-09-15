@@ -4,6 +4,7 @@ using UseCase = MyFlix.Catalog.Application.UseCases.Genre.UpdateGenre;
 using MyFlix.Catalog.Infra.Data.EF.Repositories;
 using MyFlix.Catalog.Infra.Data.EF;
 using Xunit;
+using MyFlix.Catalog.Application.UseCases.Genre.UpdateGenre;
 
 namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.UpdateGenre
 {
@@ -30,7 +31,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.UpdateGenre
                 new UnitOfWork(actDbContext),
                 new CategoryRepository(actDbContext)
             );
-            UpdateGenreInput input = new UpdateGenreInput(
+            var input = new UpdateGenreInput(
                 targetGenre.Id,
                 _fixture.GetValidGenreName(),
                 !targetGenre.IsActive
