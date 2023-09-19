@@ -47,14 +47,17 @@ namespace MyFlix.Catalog.Application.UseCases.Genre.UpdateGenre
 
         private async Task ValidateCategoriesIds(UpdateGenreInput request, CancellationToken cancellationToken)
         {
-            var IdsInPersistence = await _categoryRepository.GetIdsListByIds(request.CategoriesIds!, cancellationToken);
+            if (request.CategoriesIds != null) 
+            { 
+                var IdsInPersistence = await _categoryRepository.GetIdsListByIds(request.CategoriesIds, cancellationToken);
 
-            if (IdsInPersistence != null && IdsInPersistence.Count < request.CategoriesIds!.Count)
-            {
-                var notFoundIds = request.CategoriesIds.FindAll(x => !IdsInPersistence.Contains(x));
-                var notFoundIdsAsString = String.Join(", ", notFoundIds);
+                if (IdsInPersistence != null && IdsInPersistence.Count < request.CategoriesIds?.Count)
+                {
+                    var notFoundIds = request.CategoriesIds.FindAll(x => !IdsInPersistence.Contains(x));
+                    var notFoundIdsAsString = String.Join(", ", notFoundIds);
                 
-                throw new RelatedAggregateException( $"Related category id (or ids) not found: {notFoundIdsAsString}");
+                    throw new RelatedAggregateException( $"Related category id (or ids) not found: {notFoundIdsAsString}");
+                }
             }
         }
     }
