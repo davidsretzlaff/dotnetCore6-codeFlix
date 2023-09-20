@@ -341,7 +341,7 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRepo
             await dbContext.AddRangeAsync(exampleCategoriesList);
             await dbContext.SaveChangesAsync(CancellationToken.None);
             var categoryRepository = new Repository.CategoryRepository(dbContext);
-            var categoriesList = await categoryRepository.ListByIds(categoryIdsToGet);
+            var categoriesList = await categoryRepository.GetListByIds(categoriesIdsToGet,CancellationToken.None);
 
             categoriesList.Should().NotBeNull();
             categoriesList.Should().HaveCount(categoriesIdsToGet.Count);
