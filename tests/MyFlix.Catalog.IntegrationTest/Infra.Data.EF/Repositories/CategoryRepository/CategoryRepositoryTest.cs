@@ -327,5 +327,35 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CategoryRepo
 
             }
         }
+
+        [Fact(DisplayName = nameof(ListByIds))]
+        [Trait("Integration/Infra.Data", "CategoryRepository - Repositories")]
+        public async Task ListByIds()
+        {
+            var dbContext = _fixture.CreateDbContext();
+            var exampleCategoriesList = _fixture.GetExampleCategoriesList(15);
+            var categoriesIdsToGet = Enumerable.Range(1, 3).Select(_ => {
+                int indexToGet = (new Random()).Next(0, exampleCategoriesList.Count - 1);
+                return exampleCategoriesList[indexToGet].Id;
+            }).Distinct().ToList();
+            await dbContext.AddRangeAsync(exampleCategoriesList);
+            await dbContext.SaveChangesAsync(CancellationToken.None);
+            var categoryRepository = new Repository.CategoryRepository(dbContext);
+            var categoriesList = await categoryRepository.ListByIds(categoryIdsToGet);
+
+            categoriesList.Should().NotBeNull();
+            categoriesList.Should().HaveCount(categoriesIdsToGet.Count);
+            foreach (Category outputItem in categoriesList)
+            {
+                var exampleItem = exampleCategoriesList.Find(
+                    category => category.Id == outputItem.Id
+                );
+                exampleItem.Should().NotBeNull();
+                outputItem.Name.Should().Be(exampleItem!.Name);
+                outputItem.Description.Should().Be(exampleItem.Description);
+                outputItem.IsActive.Should().Be(exampleItem.IsActive);
+                outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
+            }
+        }
     }
 }
