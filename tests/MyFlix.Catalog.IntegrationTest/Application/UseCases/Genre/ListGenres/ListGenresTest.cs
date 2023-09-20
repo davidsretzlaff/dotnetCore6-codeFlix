@@ -22,8 +22,10 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.ListGenres
             var arrangeDbContext = _fixture.CreateDbContext();
             await arrangeDbContext.AddRangeAsync(exampleGenres);
             await arrangeDbContext.SaveChangesAsync();
+            var actDbContext = _fixture.CreateDbContext(true);
             var useCase = new UseCase.ListGenres(
-                new GenreRepository(_fixture.CreateDbContext(true))
+                new GenreRepository(actDbContext),
+                new CategoryRepository(actDbContext)
             );
             var input = new UseCase.ListGenresInput(1, 20);
 
@@ -46,7 +48,11 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.ListGenres
         [Trait("Integration/Application", "ListGenres - UseCases")]
         public async Task ListGenresReturnsEmptyWhenPersistenceIsEmpty()
         {
-            var useCase = new UseCase.ListGenres(new GenreRepository(_fixture.CreateDbContext()));
+            var actDbContext = _fixture.CreateDbContext(true);
+            var useCase = new UseCase.ListGenres(
+                new GenreRepository(actDbContext),
+                new CategoryRepository(actDbContext)
+            );
             var input = new UseCase.ListGenresInput(1, 20);
 
             var output = await useCase.Handle(input, CancellationToken.None);
@@ -87,7 +93,11 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.ListGenres
             await arrangeDbContext.AddRangeAsync(exampleCategories);
             await arrangeDbContext.AddRangeAsync(genresCategories);
             await arrangeDbContext.SaveChangesAsync();
-            var useCase = new UseCase.ListGenres(new GenreRepository(_fixture.CreateDbContext(true)));
+            var actDbContext = _fixture.CreateDbContext(true);
+            var useCase = new UseCase.ListGenres(
+                new GenreRepository(actDbContext),
+                new CategoryRepository(actDbContext)
+            );
             var input = new UseCase.ListGenresInput(1, 20);
 
             var output = await useCase.Handle(input, CancellationToken.None);
