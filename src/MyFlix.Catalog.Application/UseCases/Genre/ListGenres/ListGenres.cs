@@ -1,4 +1,5 @@
 ﻿using MyFlix.Catalog.Domain.Repository;
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
 
 namespace MyFlix.Catalog.Application.UseCases.Genre.ListGenres
 {
@@ -13,13 +14,15 @@ namespace MyFlix.Catalog.Application.UseCases.Genre.ListGenres
         public async Task<ListGenresOutput> Handle(ListGenresInput input, CancellationToken cancellationToken)
         {
             var searchOutput = await _genreRepository.Search(input.ToSearchInput(), cancellationToken);
-            List<Guid> relatedCategoriesIds = searchOutput.Items
-           .SelectMany(item => item.Categories)
-           .Distinct()
-           .ToList();
-            var categories = await _categoryRepository.GetListByIds(relatedCategoriesIds, cancellationToken);
-            ListGenresOutput output = ListGenresOutput.FromSearchOutput(searchOutput);
-            output.FillWithCategoryNames(categories);
+            var output = ListGenresOutput.FromSearchOutput(searchOutput);
+
+            var relatedCategoriesIds = searchOutput.Items.SelectMany(item => item.Categories).Distinct().ToList();
+
+            if (relatedCategoriesIds.Count > 0)
+            {
+                var categories = await _categoryRepository.GetListByIds(relatedCategoriesIds, cancellationToken);
+                output.FillWithCategoryNames(categories);
+            }
             return output;
         }
     }

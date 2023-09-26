@@ -22,6 +22,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.ListGenres
         public async Task ListGenres()
         {
             var genreRepositoryMock = _fixture.GetGenreRepositoryMock();
+            var categoryRepositoryMock = _fixture.GetCategoryRepositoryMock();
             var genresListExample = _fixture.GetExampleGenresList();
             var input = _fixture.GetExampleInput();
             var outputRepositorySearch = new SearchOutput<DomainEntity.Genre>(
@@ -35,7 +36,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.ListGenres
                  It.IsAny<CancellationToken>()
              )).ReturnsAsync(outputRepositorySearch);
 
-            var useCase = new UseCase.ListGenres(genreRepositoryMock.Object);
+            var useCase = new UseCase.ListGenres(genreRepositoryMock.Object, categoryRepositoryMock.Object);
 
             UseCase.ListGenresOutput output = await useCase.Handle(input, CancellationToken.None);
 
@@ -69,6 +70,17 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.ListGenres
                 ),
                 Times.Once
             );
+            var expectedIds = genresListExample.SelectMany(genre => genre.Categories).Distinct().ToList();
+            categoryRepositoryMock.Verify(
+                x => x.GetListByIds(
+                    It.Is<List<Guid>>(parameterList =>
+                        parameterList.All(id => expectedIds.Contains(id)
+                        && parameterList.Count == expectedIds.Count
+                    )),
+                    It.IsAny<CancellationToken>()
+                ),
+                Times.Once
+            );
         }
 
         [Fact(DisplayName = nameof(ListEmpty))]
@@ -76,6 +88,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.ListGenres
         public async Task ListEmpty()
         {
             var genreRepositoryMock = _fixture.GetGenreRepositoryMock();
+            var categoryRepositoryMock = _fixture.GetCategoryRepositoryMock();
             var input = _fixture.GetExampleInput();
             var outputRepositorySearch = new SearchOutput<DomainEntity.Genre>(
                 currentPage: input.Page,
@@ -87,7 +100,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.ListGenres
                 It.IsAny<SearchInput>(),
                 It.IsAny<CancellationToken>()
             )).ReturnsAsync(outputRepositorySearch);
-            var useCase = new UseCase.ListGenres(genreRepositoryMock.Object);
+            var useCase = new UseCase.ListGenres(genreRepositoryMock.Object, categoryRepositoryMock.Object);
 
             UseCase.ListGenresOutput output = await useCase.Handle(input, CancellationToken.None);
 
@@ -115,6 +128,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.ListGenres
         public async Task ListUsingDefaultInputValues()
         {
             var genreRepositoryMock = _fixture.GetGenreRepositoryMock();
+            var categoryRepositoryMock = _fixture.GetCategoryRepositoryMock();
             var outputRepositorySearch = new SearchOutput<DomainEntity.Genre>(
                 currentPage: 1,
                 perPage: 15,
@@ -125,7 +139,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Genre.ListGenres
                 It.IsAny<SearchInput>(),
                 It.IsAny<CancellationToken>()
             )).ReturnsAsync(outputRepositorySearch);
-            var useCase = new UseCase.ListGenres(genreRepositoryMock.Object);
+            var useCase = new UseCase.ListGenres(genreRepositoryMock.Object, categoryRepositoryMock.Object);
 
             UseCase.ListGenresOutput output = await useCase.Handle(new UseCase.ListGenresInput(), CancellationToken.None);
 

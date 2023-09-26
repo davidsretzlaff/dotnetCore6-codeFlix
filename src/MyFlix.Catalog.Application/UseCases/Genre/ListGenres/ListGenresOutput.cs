@@ -23,8 +23,8 @@ namespace MyFlix.Catalog.Application.UseCases.Genre.ListGenres
         internal void FillWithCategoryNames(IReadOnlyList<DomainEntity.Category> categories)
         {
             foreach (GenreModelOutput item in Items)
-                foreach (GenreModelOutputCategory categoryOutput in item.Categories)
-                    categoryOutput.Name = categories.FirstOrDefault(
+                foreach (GenreModelOutputCategory categoryOutput in item.Categories) 
+                    categoryOutput.Name = categories?.FirstOrDefault(
                         category => category.Id == categoryOutput.Id
                     )?.Name;
         }
