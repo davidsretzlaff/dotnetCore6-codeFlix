@@ -112,7 +112,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.ListGenres
                 exampleItem.Should().NotBeNull();
                 outputItem.Name.Should().Be(exampleItem!.Name);
                 outputItem.IsActive.Should().Be(exampleItem.IsActive);
-                var outputItemCategoryIds = outputItem.Categories.Select(x => x.Id).ToList();
+                IReadOnlyList<Guid> outputItemCategoryIds = outputItem.Categories.Select(x => x.Id).ToList();
                 outputItemCategoryIds.Should().BeEquivalentTo(exampleItem.Categories);
             });
         }
