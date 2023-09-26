@@ -43,7 +43,10 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.Common
             => new(GetValidCategoryName(), GetValidCategoryDescription(), GetRandomBoolean() );
 
         public List<DomainEntity.Category> GetExampleCategoriesList(int length = 10)
-            => Enumerable.Range(1, length)
-                .Select(_ => GetExampleCategory()).ToList();
+            => Enumerable.Range(1, length).Select(_ => GetExampleCategory()).ToList();
+
+        public List<DomainEntity.Genre> GetExampleListGenresByNames(List<string> names)
+            => names.Select(name => GetExampleGenre(name: name)).ToList();
+
     }
 }
