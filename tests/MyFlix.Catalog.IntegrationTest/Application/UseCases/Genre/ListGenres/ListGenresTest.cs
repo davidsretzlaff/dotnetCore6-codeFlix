@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using MyFlix.Catalog.Application.UseCases.Genre.ListGenres;
+using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using MyFlix.Catalog.Infra.Data.EF.Models;
 using MyFlix.Catalog.Infra.Data.EF.Repositories;
 using Xunit;
@@ -257,6 +258,83 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.ListGenres
                     outputCategory.Name.Should().Be(exampleCategory!.Name);
                 });
             });
+        }
+
+        [Theory(DisplayName = nameof(Ordered))]
+        [Trait("Integration/Application", "ListGenres - UseCases")]
+        [InlineData("name", "asc")]
+        [InlineData("name", "desc")]
+        [InlineData("id", "asc")]
+        [InlineData("id", "desc")]
+        [InlineData("createdAt", "asc")]
+        [InlineData("createdAt", "desc")]
+        [InlineData("", "asc")]
+        public async Task Ordered(
+        string orderBy,
+        string order
+    )
+        {
+            var exampleGenres = _fixture.GetExampleListGenres(10);
+            var exampleCategories = _fixture.GetExampleCategoriesList(10);
+            var random = new Random();
+            exampleGenres.ForEach(genre =>
+            {
+                var relationsCount = random.Next(0, 3);
+                for (int i = 0; i < relationsCount; i++)
+                {
+                    var selectedCategoryIndex = random.Next(0, exampleCategories.Count - 1);
+                    var selected = exampleCategories[selectedCategoryIndex];
+                    if (!genre.Categories.Contains(selected.Id))
+                        genre.AddCategory(selected.Id);
+                }
+            });
+            var genresCategories = new List<GenresCategories>();
+            exampleGenres.ForEach(
+                genre => genre.Categories.ToList().ForEach(
+                    categoryId => genresCategories.Add(new GenresCategories(categoryId, genre.Id))
+                )
+            );
+            var arrangeDbContext = _fixture.CreateDbContext();
+            await arrangeDbContext.AddRangeAsync(exampleGenres);
+            await arrangeDbContext.AddRangeAsync(exampleCategories);
+            await arrangeDbContext.AddRangeAsync(genresCategories);
+            await arrangeDbContext.SaveChangesAsync();
+            var actDbContext = _fixture.CreateDbContext(true);
+            var useCase = new UseCase.ListGenres(
+                new GenreRepository(actDbContext),
+                new CategoryRepository(actDbContext)
+            );
+            var orderEnum = order == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
+            var input = new UseCase.ListGenresInput(
+                1, 20, sort: orderBy, dir: orderEnum
+            );
+
+            ListGenresOutput output = await useCase.Handle(input,CancellationToken.None);
+
+            output.Should().NotBeNull();
+            output.Page.Should().Be(input.Page);
+            output.PerPage.Should().Be(input.PerPage);
+            output.Total.Should().Be(exampleGenres.Count);
+            output.Items.Should().HaveCount(exampleGenres.Count);
+            var expectedOrderedList = _fixture.CloneGenreListOrdered(
+                exampleGenres, orderBy, orderEnum
+            );
+            for (int indice = 0; indice < expectedOrderedList.Count; indice++)
+            {
+                var expectedItem = expectedOrderedList[indice];
+                var outputItem = output.Items[indice];
+                expectedItem.Should().NotBeNull();
+                outputItem.Name.Should().Be(expectedItem!.Name);
+                outputItem.IsActive.Should().Be(expectedItem.IsActive);
+                List<Guid> outputItemCategoryIds = outputItem.Categories.Select(x => x.Id).ToList();
+                outputItemCategoryIds.Should().BeEquivalentTo(expectedItem.Categories);
+                outputItem.Categories.ToList().ForEach(outputCategory =>
+                {
+                    var exampleCategory = exampleCategories.Find(x => x.Id == outputCategory.Id);
+                    exampleCategory.Should().NotBeNull();
+                    outputCategory.Name.Should().Be(exampleCategory!.Name);
+                });
+            }
         }
     }
 }
