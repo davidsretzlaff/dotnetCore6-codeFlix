@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyFlix.Catalog.Api.ApiModels.Response;
 using MyFlix.Catalog.Application.UseCases.Genre.Common;
+using MyFlix.Catalog.Application.UseCases.Genre.DeleteGenre;
 using MyFlix.Catalog.Application.UseCases.Genre.GetGenre;
 
 namespace MyFlix.Catalog.Api.Controllers
@@ -22,6 +23,15 @@ namespace MyFlix.Catalog.Api.Controllers
         {
             var output = await _mediator.Send(new GetGenreInput(id), cancellationToken);
             return Ok(new ApiResponse<GenreModelOutput>(output));
+        }
+
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteById([FromRoute] Guid id, CancellationToken cancellationToken)
+        {
+            await _mediator.Send(new DeleteGenreInput(id), cancellationToken);
+            return NoContent();
         }
     }
 }
