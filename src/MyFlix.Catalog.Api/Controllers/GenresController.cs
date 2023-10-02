@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyFlix.Catalog.Api.ApiModels.Response;
 using MyFlix.Catalog.Application.UseCases.Genre.Common;
+using MyFlix.Catalog.Application.UseCases.Genre.CreateGenre;
 using MyFlix.Catalog.Application.UseCases.Genre.DeleteGenre;
 using MyFlix.Catalog.Application.UseCases.Genre.GetGenre;
 
@@ -32,6 +33,19 @@ namespace MyFlix.Catalog.Api.Controllers
         {
             await _mediator.Send(new DeleteGenreInput(id), cancellationToken);
             return NoContent();
+        }
+
+        [HttpPost()]
+        [ProducesResponseType(typeof(ApiResponse<GenreModelOutput>), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateGenre([FromBody] CreateGenreInput input, CancellationToken cancellationToken)
+        {
+            var output = await _mediator.Send(input, cancellationToken);
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = output.Id },
+                new ApiResponse<GenreModelOutput>(output)
+            );
         }
     }
 }
