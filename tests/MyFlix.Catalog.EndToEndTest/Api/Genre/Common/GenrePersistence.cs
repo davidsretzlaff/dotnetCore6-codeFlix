@@ -3,6 +3,7 @@ using MyFlix.Catalog.Infra.Data.EF;
 using MyFlix.Catalog.Infra.Data.EF.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
 
@@ -27,5 +28,8 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Genre.Common
 
         public async Task<DomainEntity.Genre?> GetById(Guid id)
             => await _context.Genres.AsNoTracking().FirstOrDefaultAsync(genre => genre.Id == id);
+
+        internal async Task<List<GenresCategories>> GetGenresCategoriesRelationsByGenreId(Guid id)
+            => await _context.GenresCategories.AsNoTracking().Where(relation => relation.GenreId == id).ToListAsync();
     }
 }
