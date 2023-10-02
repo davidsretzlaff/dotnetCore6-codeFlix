@@ -9,21 +9,17 @@ namespace MyFlix.Catalog.Api.Configuration
 {
     public static class UseCasesConfiguration
     {
-        public static IServiceCollection AddUseCases(
-       this IServiceCollection services
-   )
+        public static IServiceCollection AddUseCases(this IServiceCollection services)
         {
             services.AddMediatR(typeof(CreateCategory));
             services.AddRepositories();
             return services;
         }
 
-        private static IServiceCollection AddRepositories(
-                this IServiceCollection services
-            )
+        private static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddTransient<
-                ICategoryRepository, CategoryRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IGenreRepository, GenreRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             return services;
         }
