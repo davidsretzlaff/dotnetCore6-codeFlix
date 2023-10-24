@@ -168,5 +168,58 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Genre.UpdateGenre
             output!.Type.Should().Be("RelatedAggregate");
             output.Detail.Should().Be($"Related category id (or ids) not found: {randomGuid}");
         }
+
+        [Fact(DisplayName = nameof(PersistsRelationsWhenNotPresentInInput))]
+        [Trait("EndToEnd/Api", "Genre/UpdateGenre - Endpoints")]
+        public async Task PersistsRelationsWhenNotPresentInInput()
+        {
+            var exampleGenres = _fixture.GetExampleListGenres(10);
+            var targetGenre = exampleGenres[5];
+            var exampleCategories = _fixture.GetExampleCategoriesList(10);
+            Random random = new Random();
+            exampleGenres.ForEach(genre =>
+            {
+                int relationsCount = random.Next(2, exampleCategories.Count - 1);
+                for (int i = 0; i < relationsCount; i++)
+                {
+                    int selectedCategoryIndex = random.Next(0, exampleCategories.Count - 1);
+                    var selected = exampleCategories[selectedCategoryIndex];
+                    if (!genre.Categories.Contains(selected.Id))
+                        genre.AddCategory(selected.Id);
+                }
+            });
+            var genresCategories = new List<GenresCategories>();
+            exampleGenres.ForEach(
+                genre => genre.Categories.ToList().ForEach(
+                    categoryId => genresCategories.Add(new GenresCategories(categoryId, genre.Id))
+                )
+            );
+            await _fixture.Persistence.InsertList(exampleGenres);
+            await _fixture.CategoryPersistence.InsertList(exampleCategories);
+            await _fixture.Persistence.InsertGenresCategoriesRelationsList(genresCategories);
+            var input = new UpdateGenreApiInput(_fixture.GetValidGenreName(), _fixture.GetRandomBoolean());
+
+            var (response, output) = await _fixture.ApiClient
+                .Put<ApiResponse<GenreModelOutput>>(
+                    $"/genres/{targetGenre.Id}",
+                    input
+                );
+
+            response.Should().NotBeNull();
+            response!.StatusCode.Should().Be((HttpStatusCode)StatusCodes.Status200OK);
+            output.Should().NotBeNull();
+            output!.Data.Id.Should().Be(targetGenre.Id);
+            output.Data.Name.Should().Be(input.Name);
+            output.Data.IsActive.Should().Be((bool)input.IsActive!);
+            var relatedCategoriesIdsFromOutput = output.Data.Categories.Select(relation => relation.Id).ToList();
+            relatedCategoriesIdsFromOutput.Should().BeEquivalentTo(targetGenre.Categories);
+            var genreFromDb = await _fixture.Persistence.GetById(output.Data.Id);
+            genreFromDb.Should().NotBeNull();
+            genreFromDb!.Name.Should().Be(input.Name);
+            genreFromDb.IsActive.Should().Be((bool)input.IsActive!);
+            var genresCategoriesFromDb = await _fixture.Persistence.GetGenresCategoriesRelationsByGenreId(targetGenre.Id);
+            var relatedCategoriesIdsFromDb = genresCategoriesFromDb.Select(x => x.CategoryId).ToList();
+            relatedCategoriesIdsFromDb.Should().BeEquivalentTo(targetGenre.Categories);
+        }
     }
 }
