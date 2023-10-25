@@ -6,7 +6,7 @@ using DomainEntity = MyFlix.Catalog.Domain.Entity;
 
 namespace MyFlix.Catalog.Application.UseCases.Genre.CreateGenre
 {
-    public class CreateGenre
+    public class CreateGenre : ICreateGenre
     {
         private readonly IGenreRepository _genreRepository;
         private readonly IUnitOfWork _unitOfWork;

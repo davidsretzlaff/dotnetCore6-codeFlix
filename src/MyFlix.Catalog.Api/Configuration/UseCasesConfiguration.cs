@@ -4,6 +4,7 @@ using MyFlix.Catalog.Domain.Repository;
 using MyFlix.Catalog.Infra.Data.EF.Repositories;
 using MyFlix.Catalog.Infra.Data.EF;
 using MediatR;
+using MyFlix.Catalog.Application.UseCases.Genre.CreateGenre;
 
 namespace MyFlix.Catalog.Api.Configuration
 {
@@ -12,6 +13,7 @@ namespace MyFlix.Catalog.Api.Configuration
         public static IServiceCollection AddUseCases(this IServiceCollection services)
         {
             services.AddMediatR(typeof(CreateCategory));
+            services.AddMediatR(typeof(CreateGenre));
             services.AddRepositories();
             return services;
         }

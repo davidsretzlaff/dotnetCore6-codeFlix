@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Xunit;
 using System;
 using MyFlix.Catalog.Api.ApiModels.Response;
+using MyFlix.Catalog.Application.UseCases.Genre.Common;
 
 namespace MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
 {
@@ -26,11 +27,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
             {
                 var input = _fixture.getExampleInput();
 
-                var (response, output) = await _fixture.
-                    ApiClient.Post<ApiResponse<CategoryModelOutput>>(
-                        "/categories",
-                        input
-                    );
+                var (response, output) = await _fixture.ApiClient.Post<ApiResponse<CategoryModelOutput>>("/categories",input);
 
                 response.Should().NotBeNull();
                 response!.StatusCode.Should().Be(HttpStatusCode.Created);

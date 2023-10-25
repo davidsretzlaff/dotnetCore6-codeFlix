@@ -23,10 +23,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Genre.CreateGenre
         [Trait("EndToEnd/Api", "Genre/CreateGenre - Endpoints")]
         public async Task CreateGenre()
         {
-            var apiInput = new CreateGenreInput(
-                _fixture.GetValidCategoryName(),
-                _fixture.GetRandomBoolean()
-            );
+            var apiInput = _fixture.GetCreateGenreInput();
 
             var (response, output) = await _fixture.ApiClient.Post<ApiResponse<GenreModelOutput>>($"/genres", apiInput);
 
@@ -51,12 +48,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Genre.CreateGenre
             var exampleCategories = _fixture.GetExampleCategoriesList(10);
             await _fixture.CategoryPersistence.InsertList(exampleCategories);
             var relatedCategories = exampleCategories.Skip(3).Take(3).Select(x => x.Id).ToList();
-
-            var apiInput = new CreateGenreInput(
-                _fixture.GetValidCategoryName(),
-                _fixture.GetRandomBoolean(),
-                relatedCategories
-            );
+            var apiInput = _fixture.GetCreateGenreInput(relatedCategories);
 
             var (response, output) = await _fixture.ApiClient.Post<ApiResponse<GenreModelOutput>>($"/genres", apiInput);
 
@@ -90,11 +82,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Genre.CreateGenre
             var relatedCategories = exampleCategories.Skip(3).Take(3).Select(x => x.Id).ToList();
             var invalidCategoryId = Guid.NewGuid();
             relatedCategories.Add(invalidCategoryId);
-            var apiInput = new CreateGenreInput(
-                _fixture.GetValidCategoryName(),
-                _fixture.GetRandomBoolean(),
-                relatedCategories
-            );
+            var apiInput = _fixture.GetCreateGenreInput(relatedCategories);
 
             var (response, output) = await _fixture.ApiClient.Post<ProblemDetails>($"/genres", apiInput);
 
