@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using MyFlix.Catalog.Api.ApiModels.Response;
+using MyFlix.Catalog.Application.UseCases.Genre.Common;
 using MyFlix.Catalog.Application.UseCases.Genre.ListGenres;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,17 +29,19 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Genre.ListGenres
             input.Page = 1;
             input.PerPage = exampleGenres.Count;
 
-            var (response, output) = await _fixture.ApiClient.Get<ApiResponse<ListGenresOutput>>("/genres", input);
+            var (response, output) = await _fixture.ApiClient.Get<TestApiResponseList<GenreModelOutput>>("/genres", input);
 
-            response.Should().NotBeNull();
+			response.Should().NotBeNull();
             response!.StatusCode.Should().Be((HttpStatusCode)StatusCodes.Status200OK);
             output.Should().NotBeNull();
-            output!.Data.Total.Should().Be(exampleGenres.Count);
-            output.Data.Items.Count.Should().Be(exampleGenres.Count);
-            output.Data.Page.Should().Be(input.Page);
-            output.Data.PerPage.Should().Be(input.PerPage);
-            output.Data.Items.ToList().ForEach(outputItem =>
-            {
+			output!.Meta.Should().NotBeNull();
+			output.Data.Should().NotBeNull();
+			output.Meta!.Total.Should().Be(exampleGenres.Count);
+			output.Meta.CurrentPage.Should().Be(input.Page);
+			output.Meta.PerPage.Should().Be(input.PerPage);
+			output.Data!.Count.Should().Be(exampleGenres.Count);
+			output.Data.ToList().ForEach(outputItem =>
+			{
                 var exampleItem = exampleGenres.Find(x => x.Id == outputItem.Id);
                 exampleItem.Should().NotBeNull();
                 outputItem.Name.Should().Be(exampleItem!.Name);
