@@ -16,7 +16,7 @@ using Xunit;
 namespace MyFlix.Catalog.EndToEndTest.Api.Genre.UpdateGenre
 {
     [Collection(nameof(UpdateGenreApiTestFixture))]
-    public class UpdateGenreApiTest
+    public class UpdateGenreApiTest : IDisposable
     {
         private readonly UpdateGenreApiTestFixture _fixture;
 
@@ -221,5 +221,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Genre.UpdateGenre
             var relatedCategoriesIdsFromDb = genresCategoriesFromDb.Select(x => x.CategoryId).ToList();
             relatedCategoriesIdsFromDb.Should().BeEquivalentTo(targetGenre.Categories);
         }
-    }
+
+		public void Dispose() => _fixture.CleanPersistence();
+	}
 }

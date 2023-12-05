@@ -12,7 +12,7 @@ using Xunit;
 namespace MyFlix.Catalog.EndToEndTest.Api.Genre.DeleteGenre
 {
     [Collection(nameof(DeleteGenreTestApiFixture))]
-    public class DeleteGenreTestApi
+    public class DeleteGenreTestApi : IDisposable
     {
         private readonly DeleteGenreTestApiFixture _fixture;
 
@@ -91,5 +91,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Genre.DeleteGenre
             List<GenresCategories> relations = await _fixture.Persistence.GetGenresCategoriesRelationsByGenreId(targetGenre.Id);
             relations.Should().HaveCount(0);
         }
-    }
+
+		public void Dispose() => _fixture.CleanPersistence();
+	}
 }

@@ -13,8 +13,8 @@ using Xunit;
 namespace MyFlix.Catalog.EndToEndTest.Api.Genre.CreateGenre
 {
     [Collection(nameof(CreateGenreApiTestFixture))]
-    public class CreateGenreApiTest
-    {
+    public class CreateGenreApiTest : IDisposable
+	{
         private readonly CreateGenreApiTestFixture _fixture;
 
         public CreateGenreApiTest(CreateGenreApiTestFixture fixture) => _fixture = fixture;
@@ -92,5 +92,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Genre.CreateGenre
             output!.Type.Should().Be("RelatedAggregate");
             output.Detail.Should().Be($"Related category id (or ids) not found: {invalidCategoryId}");
         }
-    }
+
+		public void Dispose() => _fixture.CleanPersistence();
+	}
 }
