@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using MyFlix.Catalog.Api.ApiModels.Response;
 using MyFlix.Catalog.Application.UseCases.Genre.Common;
 using MyFlix.Catalog.Application.UseCases.Genre.ListGenres;
+using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using MyFlix.Catalog.EndToEndTest.Extensions.DataTime;
 using System;
 using System.Collections.Generic;
@@ -48,8 +49,8 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Genre.ListGenres
                 exampleItem.Should().NotBeNull();
                 outputItem.Name.Should().Be(exampleItem!.Name);
                 outputItem.IsActive.Should().Be(exampleItem.IsActive);
-                outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
-            });
+				outputItem.CreatedAt.TrimMillisseconds().Should().Be(exampleItem.CreatedAt.TrimMillisseconds());
+			});
         }
 
 		[Fact(DisplayName = nameof(EmptyWhenThereAreNoItems))]
@@ -125,7 +126,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Genre.ListGenres
 				"Horror - Robots",
 				"Horror - Based on Real Facts",
 				"Drama",
-				"Sci-fi IA",s
+				"Sci-fi IA",
 				"Sci-fi Space",
 				"Sci-fi Robots",
 				"Sci-fi Future"
@@ -159,6 +160,49 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Genre.ListGenres
 			});
 		}
 
+		[Theory(DisplayName = nameof(ListOrdered))]
+		[Trait("EndToEnd/Api", "Genre/ListGenres - Endpoints")]
+		[InlineData("name", "asc")]
+		[InlineData("name", "desc")]
+		[InlineData("id", "asc")]
+		[InlineData("id", "desc")]
+		[InlineData("createdAt", "asc")]
+		[InlineData("createdAt", "desc")]
+		[InlineData("", "asc")]
+		public async Task ListOrdered(string orderBy, string order)
+		{
+			var exampleGenres = _fixture.GetExampleListGenres(10);
+
+			await _fixture.Persistence.InsertList(exampleGenres);
+			var input = new ListGenresInput();
+			input.Page = 1;
+			input.PerPage = 10;
+			var orderEnum = order == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
+			input.Dir = orderEnum;
+			input.Sort = orderBy;
+
+			var (response, output) = await _fixture.ApiClient.Get<TestApiResponseList<GenreModelOutput>>("/genres", input);
+
+			response.Should().NotBeNull();
+			response!.StatusCode.Should().Be((HttpStatusCode)StatusCodes.Status200OK);
+			output.Should().NotBeNull();
+			output!.Meta.Should().NotBeNull();
+			output.Data.Should().NotBeNull();
+			output.Meta!.Total.Should().Be(10);
+			output.Meta.CurrentPage.Should().Be(input.Page);
+			output.Meta.PerPage.Should().Be(input.PerPage);
+			output.Data!.Count.Should().Be(10);
+			var expectedOrderedList = _fixture.CloneGenreListOrdered(exampleGenres, orderBy, orderEnum);
+			for (int indice = 0; indice < expectedOrderedList.Count; indice++)
+			{
+				var outputItem = output.Data[indice];
+				var exampleItem = exampleGenres.Find(x => x.Id == outputItem.Id);
+				exampleItem.Should().NotBeNull();
+				outputItem.Name.Should().Be(exampleItem!.Name);
+				outputItem.IsActive.Should().Be(exampleItem.IsActive);
+				outputItem.CreatedAt.TrimMillisseconds().Should().Be(exampleItem.CreatedAt.TrimMillisseconds());
+			}
+		}
 
 		public void Dispose() => _fixture.CleanPersistence();
 	}

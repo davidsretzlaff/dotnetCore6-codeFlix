@@ -12,8 +12,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.GetGenre
     {
         private readonly GetGenreTestFixture _fixture;
 
-        public GetGenreTest(GetGenreTestFixture fixture)
-            => _fixture = fixture;
+        public GetGenreTest(GetGenreTestFixture fixture) => _fixture = fixture;
 
         [Fact(DisplayName = nameof(GetGenre))]
         [Trait("Integration/Application", "GetGenre - Use Cases")]

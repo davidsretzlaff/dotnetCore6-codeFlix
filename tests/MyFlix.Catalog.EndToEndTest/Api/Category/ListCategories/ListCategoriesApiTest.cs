@@ -53,9 +53,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.ListCategories
                 outputItem.Name.Should().Be(exampleItem!.Name);
                 outputItem.Description.Should().Be(exampleItem.Description);
                 outputItem.IsActive.Should().Be(exampleItem.IsActive);
-                outputItem.CreatedAt.TrimMillisseconds().Should().Be(
-                    exampleItem.CreatedAt.TrimMillisseconds()
-                );
+                outputItem.CreatedAt.TrimMillisseconds().Should().Be(exampleItem.CreatedAt.TrimMillisseconds());
             }
         }
 
