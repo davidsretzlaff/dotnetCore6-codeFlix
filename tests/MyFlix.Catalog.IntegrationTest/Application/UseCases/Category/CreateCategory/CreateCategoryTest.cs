@@ -32,9 +32,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.CreateCat
             
             var output = await useCase.Handle(input, CancellationToken.None);
 
-            var dbCategory = await (_fixture.CreateDbContext(true)).
-                Categories.
-                FindAsync(output.Id);
+            var dbCategory = await (_fixture.CreateDbContext(true)).Categories.FindAsync(output.Id);
             dbCategory.Should().NotBeNull();
             dbCategory!.Name.Should().Be(output.Name);
             dbCategory.Description.Should().Be(output.Description);

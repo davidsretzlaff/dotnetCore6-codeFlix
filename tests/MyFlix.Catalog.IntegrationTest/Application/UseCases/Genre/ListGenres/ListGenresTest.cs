@@ -49,7 +49,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.ListGenres
         [Trait("Integration/Application", "ListGenres - UseCases")]
         public async Task ListGenresReturnsEmptyWhenPersistenceIsEmpty()
         {
-            var actDbContext = _fixture.CreateDbContext(true);
+            var actDbContext = _fixture.CreateDbContext();
             var useCase = new UseCase.ListGenres(
                 new GenreRepository(actDbContext),
                 new CategoryRepository(actDbContext)
