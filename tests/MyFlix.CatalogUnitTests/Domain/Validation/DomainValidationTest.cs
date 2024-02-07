@@ -6,7 +6,7 @@ using System;
 using System.ComponentModel;
 using Xunit;
 
-namespace MyFlix.Catalog.UnitTests.Domain.Entity.Validation
+namespace MyFlix.Catalog.UnitTests.Domain.Validation
 {
     public class DomainValidationTest
     {
