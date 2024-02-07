@@ -1,4 +1,5 @@
 ﻿
+using MyFlix.Catalog.Domain.Enum;
 using MyFlix.Catalog.UnitTests.Common;
 using Xunit;
 
@@ -14,6 +15,6 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.CastMember
 			=> Faker.Name.FullName();
 
 		public CastMemberType GetRandomCastMemberType()
-			=> (new Random()).Next(1, 2) as CastMemberType;
+			=> (CastMemberType)(new Random()).Next(1, 2);
 	}
 }
