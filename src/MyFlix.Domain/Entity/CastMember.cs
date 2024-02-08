@@ -25,7 +25,7 @@ namespace MyFlix.Catalog.Domain.Entity
 		{
 			Name = name;
 			Type = type;
+			Validate();
 		}
-
 	}
 }
