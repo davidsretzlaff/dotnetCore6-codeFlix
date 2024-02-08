@@ -2,7 +2,7 @@
 using MyFlix.Catalog.Domain.Enum;
 using MyFlix.Catalog.UnitTests.Common;
 using Xunit;
-using DomainEntity = MyFlix.Catalog.Domain.Entity
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
 
 namespace MyFlix.Catalog.UnitTests.Domain.Entity.CastMember
 {

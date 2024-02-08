@@ -13,13 +13,18 @@ namespace MyFlix.Catalog.Domain.Entity
 
 		private void Validate() => DomainValidation.NotNullOrEmpty(Name, nameof(Name));
 
-		public CastMember(string name, CastMemberType type)
-		: base()
+		public CastMember(string name, CastMemberType type) : base()
 		{
 			Name = name;
 			Type = type;
 			CreatedAt = DateTime.Now;
 			Validate();
+		}
+
+		public void Update(string name, CastMemberType type)
+		{
+			Name = name;
+			Type = type;
 		}
 
 	}
