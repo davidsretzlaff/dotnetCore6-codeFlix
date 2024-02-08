@@ -2,6 +2,7 @@
 using MyFlix.Catalog.Domain.Enum;
 using MyFlix.Catalog.UnitTests.Common;
 using Xunit;
+using DomainEntity = MyFlix.Catalog.Domain.Entity
 
 namespace MyFlix.Catalog.UnitTests.Domain.Entity.CastMember
 {
@@ -16,5 +17,9 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.CastMember
 
 		public CastMemberType GetRandomCastMemberType()
 			=> (CastMemberType)(new Random()).Next(1, 2);
+
+		public DomainEntity.CastMember GetExampleCastMember()
+		   => new DomainEntity.CastMember(GetValidName(), GetRandomCastMemberType());
+
 	}
 }
