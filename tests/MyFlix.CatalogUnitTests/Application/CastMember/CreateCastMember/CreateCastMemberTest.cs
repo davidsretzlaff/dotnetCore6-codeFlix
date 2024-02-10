@@ -22,7 +22,10 @@ namespace MyFlix.Catalog.UnitTests.Application.CastMember.CreateCastMember
 		[Trait("Application", "CreateCastMember - Use Cases")]
 		public async Task Create()
 		{
-			var input = new UseCase.CreateCastMemberInput("João Neves", CastMemberType.Director);
+			var input = new UseCase.CreateCastMemberInput(
+				_fixture.GetValidName(), 
+				_fixture.GetRandomCastMemberType()
+			);
 			var repositoryMock = new Mock<ICastMemberRepository>();
 			var unitOfWorkMock = new Mock<IUnitOfWork>();
 			var useCase = new UseCase.CreateCastMember(repositoryMock.Object, unitOfWorkMock.Object);

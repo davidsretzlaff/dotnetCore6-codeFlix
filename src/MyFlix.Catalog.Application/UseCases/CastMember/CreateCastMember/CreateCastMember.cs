@@ -15,11 +15,7 @@ namespace MyFlix.Catalog.Application.UseCases.CastMember.CreateCastMember
 			var castMember = new DomainEntity.CastMember(request.Name, request.Type);
 			await _repository.Insert(castMember, cancellationToken);
 			await _unitOfWork.Commit(cancellationToken);
-			return new CastMemberModelOutput(
-				castMember.Id,
-				castMember.Name,
-				castMember.Type,
-				castMember.CreatedAt);
+			return CastMemberModelOutput.FromCastMember(castMember);
 		}
 
 
