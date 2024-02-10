@@ -13,9 +13,22 @@ namespace MyFlix.Catalog.Application.UseCases.Category.UpdateCategory
             IsActive = isActive;
         }
 
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string? Description { get; set; }
-        public bool? IsActive { get; set; }
+        public Guid Id { get; private set; }
+        public string Name { get; private set; }
+        public string? Description { get; private set; }
+        public bool? IsActive { get; private set; }
+
+        public void SetId(Guid id)
+        {
+            Id = id;
+        }
+        public void SetName(string name)
+        {
+            Name = name;
+        }
+        public void SetDescription(string description)
+        {
+            Description = description;
+        }
     }
 }

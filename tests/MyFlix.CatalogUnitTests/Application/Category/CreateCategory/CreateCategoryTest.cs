@@ -152,8 +152,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Category.CreateCategory
             var invalidInputsList = new List<object[]>();
 
             var invalidInputsShortName = fixture.GetInput();
-            invalidInputsShortName.Name =
-                invalidInputsShortName.Name.Substring(0, 2);
+            invalidInputsShortName.SetName(invalidInputsShortName.Name.Substring(0, 2));
 
             invalidInputsList.Add(new object[]
             {
@@ -170,7 +169,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Category.CreateCategory
                 toolongNameForCategory = $"{toolongNameForCategory} {fixture.Faker.Commerce.ProductName()}";
             }
 
-            invalidInputsToolongName.Name = toolongNameForCategory;
+            invalidInputsToolongName.SetName(toolongNameForCategory);
 
             invalidInputsList.Add(new object[]
             {
@@ -180,7 +179,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Category.CreateCategory
 
             // description null
             var invalidInputDescriptionNull = fixture.GetInput();
-            invalidInputDescriptionNull.Description = null!;
+            invalidInputDescriptionNull.SetDescription(null!);
 
             invalidInputsList.Add(new object[]
             {
@@ -197,7 +196,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Category.CreateCategory
                 toolongDescriptionForCategory = $"{toolongDescriptionForCategory} {fixture.Faker.Commerce.ProductDescription()}";
             }
 
-            invalidInputsToolongDescription.Description = toolongDescriptionForCategory;
+            invalidInputsToolongDescription.SetDescription(toolongDescriptionForCategory);
 
             invalidInputsList.Add(new object[]
             {

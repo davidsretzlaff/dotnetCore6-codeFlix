@@ -8,6 +8,6 @@ namespace MyFlix.Catalog.Application.UseCases.Category.GetCategory
         public GetCategoryInput(Guid id)
             => Id = id;
 
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
     }
 }

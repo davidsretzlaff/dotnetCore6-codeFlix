@@ -156,7 +156,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.UpdateCat
             var repository = new CategoryRepository(dbContext);
             var unitOfWork = new UnitOfWork(dbContext);
             var useCase = new ApplicationUseCase.UpdateCategory(repository, unitOfWork);
-            input.Id = exampleCategories.First().Id;
+            input.SetId(exampleCategories.First().Id);
 
             var task = async () => await useCase.Handle(input, CancellationToken.None);
 

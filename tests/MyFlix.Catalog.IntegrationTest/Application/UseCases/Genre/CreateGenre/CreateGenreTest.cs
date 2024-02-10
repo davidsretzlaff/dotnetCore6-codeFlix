@@ -53,7 +53,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.CreateGenre
             await arrangeDbContext.Categories.AddRangeAsync(exampleCategories);
             await arrangeDbContext.SaveChangesAsync();
             CreateGenreInput input = _fixture.GetExampleInput();
-            input.CategoriesIds = exampleCategories.Select(category => category.Id).ToList();
+            input.setCategoriesIds(exampleCategories.Select(category => category.Id).ToList());
             var actDbContext = _fixture.CreateDbContext(true);
             UseCase.CreateGenre createGenre = new UseCase.CreateGenre(
                 new GenreRepository(actDbContext),
@@ -92,7 +92,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Genre.CreateGenre
             await arrangeDbContext.Categories.AddRangeAsync(exampleCategories);
             await arrangeDbContext.SaveChangesAsync();
             CreateGenreInput input = _fixture.GetExampleInput();
-            input.CategoriesIds = exampleCategories.Select(category => category.Id).ToList();
+            input.setCategoriesIds(exampleCategories.Select(category => category.Id).ToList());
             Guid randomGuid = Guid.NewGuid();
             input.CategoriesIds.Add(randomGuid);
             var actDbContext = _fixture.CreateDbContext(true);

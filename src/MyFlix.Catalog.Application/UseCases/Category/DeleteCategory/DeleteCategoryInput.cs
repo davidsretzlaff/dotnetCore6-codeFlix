@@ -6,6 +6,6 @@ namespace MyFlix.Catalog.Application.UseCases.Category.DeleteCategory
     {
         public DeleteCategoryInput(Guid id) => Id = id;
 
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
     }
 }

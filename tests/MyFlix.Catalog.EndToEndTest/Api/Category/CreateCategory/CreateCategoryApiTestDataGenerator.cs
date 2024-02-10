@@ -17,7 +17,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
                 {
                     case 0:
                         var input1 = fixture.getExampleInput();
-                        input1.Name = fixture.GetInvalidNameTooShort();
+                        input1.SetName(fixture.GetInvalidNameTooShort());
                         invalidInputsList.Add(new object[] {
                         input1,
                         "Name should be at least 3 characters long"
@@ -25,7 +25,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
                         break;
                     case 1:
                         var input2 = fixture.getExampleInput();
-                        input2.Name = fixture.GetInvalidNameTooLong();
+                        input2.SetName(fixture.GetInvalidNameTooLong());
                         invalidInputsList.Add(new object[] {
                         input2,
                         "Name should be less or equal 255 characters long"
@@ -33,7 +33,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.Category.CreateCategory
                         break;
                     case 2:
                         var input3 = fixture.getExampleInput();
-                        input3.Description = fixture.GetInvalidDescriptionTooLong();
+                        input3.SetDescription(fixture.GetInvalidDescriptionTooLong());
                         invalidInputsList.Add(new object[] {
                         input3,
                         "Description should be less or equal 10000 characters long"

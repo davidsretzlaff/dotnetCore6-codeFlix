@@ -6,6 +6,7 @@ using Xunit;
 using UseCase = MyFlix.Catalog.Application.UseCases.CastMember.CreateCastMember;
 using MyFlix.Catalog.Domain.Repository;
 using FluentAssertions;
+using MyFlix.Catalog.Domain.Exceptions;
 
 namespace MyFlix.Catalog.UnitTests.Application.CastMember.CreateCastMember
 {
@@ -49,6 +50,26 @@ namespace MyFlix.Catalog.UnitTests.Application.CastMember.CreateCastMember
 					It.IsAny<CancellationToken>()
 				), Times.Once
 			);
+		}
+
+		[Theory(DisplayName = nameof(ThrowsWhenInvalidName))]
+		[Trait("Application", "CreateCastMember - Use Cases")]
+		[InlineData("")]
+		[InlineData("   ")]
+		[InlineData(null)]
+		public async Task ThrowsWhenInvalidName(string? name)
+		{
+			var input = new UseCase.CreateCastMemberInput(
+				name,
+				_fixture.GetRandomCastMemberType()
+			);
+			var repositoryMock = new Mock<ICastMemberRepository>();
+			var unitOfWorkMock = new Mock<IUnitOfWork>();
+			var useCase = new UseCase.CreateCastMember(repositoryMock.Object, unitOfWorkMock.Object);
+
+			var action = async () => await useCase.Handle(input, CancellationToken.None);
+
+			await action.Should().ThrowAsync<EntityValidationException>().WithMessage("Name should not be empty or null");
 		}
 	}
 }

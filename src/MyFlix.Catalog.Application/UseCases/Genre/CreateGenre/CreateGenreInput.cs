@@ -12,8 +12,13 @@ namespace MyFlix.Catalog.Application.UseCases.Genre.CreateGenre
             CategoriesIds = categoriesIds;
         }
 
-        public string Name { get; set; }
-        public bool IsActive{ get; set; }
-        public List<Guid>? CategoriesIds { get; set; }
+        public string Name { get; private set; }
+        public bool IsActive{ get; private set; }
+        public List<Guid>? CategoriesIds { get; private set; }
+
+        public void setCategoriesIds(List<Guid> categoriesIds)
+        {
+            CategoriesIds = categoriesIds;
+        }
     }
 }

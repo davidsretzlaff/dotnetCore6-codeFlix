@@ -162,7 +162,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Category.UpdateCategory
         public async Task ThrowWhenCantUpdateCategory(UpdateCategoryInput input, string expectedExceptionMessage)
         {
             var exampleCategory = _fixture.GetExampleCategory();
-            input.Id = exampleCategory.Id;
+            input.SetId(exampleCategory.Id);
             var repositoryMock = _fixture.GetRepositoryMock();
             var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
             repositoryMock.Setup(x => x.Get(

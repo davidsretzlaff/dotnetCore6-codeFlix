@@ -21,7 +21,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.UpdateCat
         public UpdateCategoryInput GetInvalidInputShortName()
         {
             var input = GetValidInput();
-            input.Name = input.Name.Substring(0, 2);
+            input.SetName(input.Name.Substring(0, 2));
             return input;
         }
         public UpdateCategoryInput GetInvalidInputTooLongName()
@@ -32,7 +32,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.UpdateCat
             {
                 tooLongNameForCategory = $"{tooLongNameForCategory} {Faker.Commerce.ProductName()}";
             }
-            input.Name = tooLongNameForCategory;
+            input.SetName(tooLongNameForCategory);
             return input;
         }
 
@@ -44,7 +44,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.UpdateCat
             {
                 tooLongNameForDescription = $"{tooLongNameForDescription} {Faker.Commerce.ProductDescription()}";
             }
-            input.Description = tooLongNameForDescription;
+            input.SetDescription(tooLongNameForDescription);
             return input;
         }
     }

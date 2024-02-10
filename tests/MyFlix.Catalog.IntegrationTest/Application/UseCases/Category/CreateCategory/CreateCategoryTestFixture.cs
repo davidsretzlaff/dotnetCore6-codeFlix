@@ -29,7 +29,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.CreateCat
         public CreateCategoryInput GetInvalidInputShortName()
         {
             var input = GetValidInput();
-            input.Name = input.Name.Substring(0, 2);
+            input.SetName(input.Name.Substring(0, 2));
             return input;
         }
         public CreateCategoryInput GetInvalidInputTooLongName()
@@ -40,7 +40,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.CreateCat
             {
                 tooLongNameForCategory = $"{tooLongNameForCategory} {Faker.Commerce.ProductName()}";
             }
-            input.Name = tooLongNameForCategory;
+            input.SetName(tooLongNameForCategory);
             return input;
         }
 
@@ -52,7 +52,7 @@ namespace MyFlix.Catalog.IntegrationTest.Application.UseCases.Category.CreateCat
             {
                 tooLongNameForDescription = $"{tooLongNameForDescription} {Faker.Commerce.ProductDescription()}";
             }
-            input.Description = tooLongNameForDescription;
+            input.SetDescription(tooLongNameForDescription);
             return input;
         }
     }
