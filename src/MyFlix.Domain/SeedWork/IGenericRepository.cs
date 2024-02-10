@@ -1,6 +1,4 @@
-﻿using MyFlix.Catalog.Domain.Entity;
-
-namespace MyFlix.Catalog.Domain.SeedWork
+﻿namespace MyFlix.Catalog.Domain.SeedWork
 {
     public interface IGenericRepository<TAggregate> : IRepository
         where TAggregate : AggregateRoot
