@@ -26,7 +26,7 @@ namespace MyFlix.Catalog.UnitTests.Application.CastMember.GetCastMember
 			var input = new UserCase.GetCastMemberInput(castMemberExample.Id);
 			var useCase = new UserCase.GetCastMember(repositoryMock.Object);
 
-			CastMemberModelOutput output = await useCase.handle(input, CancellationToken.None);
+			CastMemberModelOutput output = await useCase.Handle(input, CancellationToken.None);
 			
 			output.Should().NotBeNull();
 			output.Id.Should().Be(castMemberExample.Id);
@@ -36,7 +36,6 @@ namespace MyFlix.Catalog.UnitTests.Application.CastMember.GetCastMember
 				It.Is<Guid>(x => x == input.Id),
 				It.IsAny<CancellationToken>()
 			), Times.Once());
-
 		}
 	}
 }
