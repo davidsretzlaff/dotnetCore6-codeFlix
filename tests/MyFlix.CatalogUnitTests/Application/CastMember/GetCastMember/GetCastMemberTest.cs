@@ -4,6 +4,7 @@ using UserCase = MyFlix.Catalog.Application.UseCases.CastMember.GetCastMember;
 using Xunit;
 using MyFlix.Catalog.Application.UseCases.CastMember.Common;
 using FluentAssertions;
+using MyFlix.Catalog.Application.Exceptions;
 
 namespace MyFlix.Catalog.UnitTests.Application.CastMember.GetCastMember
 {
@@ -36,6 +37,22 @@ namespace MyFlix.Catalog.UnitTests.Application.CastMember.GetCastMember
 				It.Is<Guid>(x => x == input.Id),
 				It.IsAny<CancellationToken>()
 			), Times.Once());
+		}
+
+		[Fact(DisplayName = nameof(ThrowIfNotFound))]
+		[Trait("Application", "GetCastMember - Use Cases")]
+		public async Task ThrowIfNotFound()
+		{
+			var repositoryMock = new Mock<ICastMemberRepository>();
+			repositoryMock
+				.Setup(x => x.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+				.ThrowsAsync(new NotFoundException("not found"));
+			var input = new UserCase.GetCastMemberInput(Guid.NewGuid());
+			var useCase = new UserCase.GetCastMember(repositoryMock.Object);
+
+			var action = async () => await useCase.Handle(input, CancellationToken.None);
+
+			await action.Should().ThrowAsync<NotFoundException>();
 		}
 	}
 }
