@@ -1,7 +1,7 @@
 ﻿using Moq;
 using MyFlix.Catalog.Application.Interfaces;
 using MyFlix.Catalog.Domain.Repository;
-using UseCase = MyFlix.Catalog.Application.UseCases.CastMember;
+using UseCase = MyFlix.Catalog.Application.UseCases.CastMember.DeleteCastMember;
 using Xunit;
 using FluentAssertions;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
@@ -25,7 +25,7 @@ namespace MyFlix.Catalog.UnitTests.Application.CastMember.DeleteCastMember
 				.Setup(x => x.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
 				.ReturnsAsync(castMemberExample);
 			var input = new UseCase.DeleteCastMemberInput(castMemberExample.Id);
-			var useCase = new UseCase.DleteCastMember(repositoryMock.Object, unitOfWorkMock.Object);
+			var useCase = new UseCase.DeleteCastMember(repositoryMock.Object, unitOfWorkMock.Object);
 
 			var action = async () => await useCase.Handle(input, CancellationToken.None);
 
