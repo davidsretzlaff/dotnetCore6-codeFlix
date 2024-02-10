@@ -5,6 +5,7 @@ using UseCase = MyFlix.Catalog.Application.UseCases.CastMember.DeleteCastMember;
 using Xunit;
 using FluentAssertions;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.Application.Exceptions;
 namespace MyFlix.Catalog.UnitTests.Application.CastMember.DeleteCastMember
 {
 	[Collection(nameof(DeleteCastMemberTestFixture))]
@@ -44,6 +45,22 @@ namespace MyFlix.Catalog.UnitTests.Application.CastMember.DeleteCastMember
 			unitOfWorkMock.Verify(x => x.Commit(It.IsAny<CancellationToken>()), 
 				Times.Once
 			);
+		}
+
+		[Fact(DisplayName = nameof(ThrowsWhenNotFound))]
+		[Trait("Application", "DeleteCastMember - Use Cases")]
+		public async Task ThrowsWhenNotFound()
+		{
+			var repositoryMock = new Mock<ICastMemberRepository>();
+			repositoryMock
+				.Setup(x => x.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+				.ThrowsAsync(new NotFoundException("Not found"));
+			var input = new UseCase.DeleteCastMemberInput(Guid.NewGuid());
+			var useCase = new UseCase.DeleteCastMember(repositoryMock.Object, Mock.Of<IUnitOfWork>());
+
+			var action = async () => await useCase.Handle(input, CancellationToken.None);
+
+			await action.Should().ThrowAsync<NotFoundException>();
 		}
 	}
 }
