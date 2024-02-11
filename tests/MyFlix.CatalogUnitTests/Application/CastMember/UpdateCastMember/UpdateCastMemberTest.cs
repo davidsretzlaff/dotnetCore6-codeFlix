@@ -11,6 +11,7 @@ using Xunit;
 using UseCase = MyFlix.Catalog.Application.UseCases.CastMember.UpdateCastMember;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
 using MyFlix.Catalog.Application.UseCases.CastMember.UpdateCastMember;
+using MyFlix.Catalog.Application.Exceptions;
 namespace MyFlix.Catalog.UnitTests.Application.CastMember.UpdateCastMember
 {
 	[Collection(nameof(UpdateCastMemberTestFixture))]
@@ -62,6 +63,24 @@ namespace MyFlix.Catalog.UnitTests.Application.CastMember.UpdateCastMember
 				It.IsAny<CancellationToken>())
 			, Times.Once);
 
+		}
+
+		[Fact(DisplayName = nameof(ThrowWhenNotFound))]
+		[Trait("Application", "UpdateCastMember - Use Cases")]
+		public async Task ThrowWhenNotFound()
+		{
+			var repositoryMock = new Mock<ICastMemberRepository>();
+			var unitOfWorkMock = new Mock<IUnitOfWork>();
+			var input = new UpdateCastMemberInput(Guid.NewGuid(), _fixture.GetValidName(), _fixture.GetRandomCastMemberType());
+			repositoryMock.Setup(x => x.Get(
+				It.IsAny<Guid>(),
+				It.IsAny<CancellationToken>())
+			).ThrowsAsync(new NotFoundException("error"));
+			var useCase = new UseCase.UpdateCastMember(repositoryMock.Object, unitOfWorkMock.Object);
+
+			var action = async () => await useCase.Handle(input, CancellationToken.None);
+
+			await action.Should().ThrowAsync<NotFoundException>();
 		}
 	}
 }
