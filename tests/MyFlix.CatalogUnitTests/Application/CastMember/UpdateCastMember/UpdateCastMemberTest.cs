@@ -10,6 +10,7 @@ using MyFlix.Catalog.Domain.Repository;
 using Xunit;
 using UseCase = MyFlix.Catalog.Application.UseCases.CastMember.UpdateCastMember;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.Application.UseCases.CastMember.UpdateCastMember;
 namespace MyFlix.Catalog.UnitTests.Application.CastMember.UpdateCastMember
 {
 	[Collection(nameof(UpdateCastMemberTestFixture))]
@@ -27,8 +28,8 @@ namespace MyFlix.Catalog.UnitTests.Application.CastMember.UpdateCastMember
 			var unitOfWorkMock = new Mock<IUnitOfWork>();
 			var castMemberExample = _fixture.GetExampleCastMember();
 			var newName = _fixture.GetValidName();
-			var newType = _fixture.GetType();
-			var input = new UpdatecastMemberInput(castMemberExample.Id, newName,newType);
+			var newType = _fixture.GetRandomCastMemberType();
+			var input = new UpdateCastMemberInput(castMemberExample.Id, newName, newType);
 			repositoryMock.Setup(x => x.Get(
 				castMemberExample.Id,
 				It.IsAny<CancellationToken>())
@@ -62,4 +63,5 @@ namespace MyFlix.Catalog.UnitTests.Application.CastMember.UpdateCastMember
 			, Times.Once);
 
 		}
+	}
 }
