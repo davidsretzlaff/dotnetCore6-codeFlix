@@ -12,6 +12,7 @@ using UseCase = MyFlix.Catalog.Application.UseCases.CastMember.UpdateCastMember;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
 using MyFlix.Catalog.Application.UseCases.CastMember.UpdateCastMember;
 using MyFlix.Catalog.Application.Exceptions;
+using MyFlix.Catalog.Domain.Exceptions;
 namespace MyFlix.Catalog.UnitTests.Application.CastMember.UpdateCastMember
 {
 	[Collection(nameof(UpdateCastMemberTestFixture))]
@@ -81,6 +82,25 @@ namespace MyFlix.Catalog.UnitTests.Application.CastMember.UpdateCastMember
 			var action = async () => await useCase.Handle(input, CancellationToken.None);
 
 			await action.Should().ThrowAsync<NotFoundException>();
+		}
+
+		[Fact(DisplayName = nameof(ThrowWhenNotFound))]
+		[Trait("Application", "UpdateCastMember - Use Cases")]
+		public async Task ThrowWhenInvalidName()
+		{
+			var repositoryMock = new Mock<ICastMemberRepository>();
+			var unitOfWorkMock = new Mock<IUnitOfWork>();
+			var castMemberExample = _fixture.GetExampleCastMember();
+			var input = new UpdateCastMemberInput(castMemberExample.Id, null!, _fixture.GetRandomCastMemberType());
+			repositoryMock.Setup(x => x.Get(
+				castMemberExample.Id,
+				It.IsAny<CancellationToken>())
+			).ReturnsAsync(castMemberExample);
+			var useCase = new UseCase.UpdateCastMember(repositoryMock.Object, unitOfWorkMock.Object);
+
+			var action = async () => await useCase.Handle(input, CancellationToken.None);
+
+			await action.Should().ThrowAsync<EntityValidationException>().WithMessage("Name should not be empty or null");
 		}
 	}
 }
