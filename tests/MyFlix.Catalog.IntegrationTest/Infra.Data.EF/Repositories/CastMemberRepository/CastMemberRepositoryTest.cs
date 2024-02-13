@@ -1,5 +1,7 @@
-﻿using Xunit;
-
+﻿using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using Xunit;
+using Repository = MyFlix.Catalog.Infra.Data.EF.Repositories;
 namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CastMemberRepository
 {
 	[Collection(nameof(CastMemberRepositoryTestFixture))]
@@ -15,14 +17,15 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CastMemberRe
 		{
 			var castMemberExample = _fixture.GetExampleCastMember();
 			var context = _fixture.CreateDbContext();
-			var repository = new CastMemberRepository(context);
+			var repository = new Repository.CastMemberRepository(context);
 
 			await repository.Insert(castMemberExample, CancellationToken.None);
 			context .SaveChanges();
 
 			// persist state
 			var assertionContext = _fixture.CreateDbContext(true);
-			var castMemberFromDb = assertionContext.SaveChanges().AsNoTracking().FirstOrDefaultAsync(x => x.Id == castMemberExample.Id);
+			var castMemberFromDb = await assertionContext.CastMembers.AsNoTracking().FirstOrDefaultAsync(x => x.Id == castMemberExample.Id);
+			castMemberFromDb.Should().NotBeNull();
 			castMemberFromDb.Name.Should().Be(castMemberExample.Name);
 			castMemberFromDb.Type.Should().Be(castMemberExample.Type);
 		}

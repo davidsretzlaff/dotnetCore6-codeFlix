@@ -6,7 +6,7 @@ using DomainEntity = MyFlix.Catalog.Domain.Entity;
 namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CastMemberRepository
 {
 	[CollectionDefinition(nameof(CastMemberRepositoryTestFixture))]
-	public class CastMemberRepositoryTestFixtureCollection : ICollectionFixture<CastMemberRepositoryTestFixture>
+	public class CastMemberRepositoryTestFixtureCollection : ICollectionFixture<CastMemberRepositoryTestFixture> { }
 	public class CastMemberRepositoryTestFixture : BaseFixture
 	{
 		public List<DomainEntity.CastMember> GetExampleCastMemberList(int quantity)

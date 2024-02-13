@@ -10,10 +10,10 @@ namespace MyFlix.Catalog.Infra.Data.EF
     {
         public DbSet<Category> Categories => Set<Category>();
         public DbSet<Genre> Genres => Set<Genre>();
-
         public DbSet<GenresCategories> GenresCategories => Set<GenresCategories>();
+		public DbSet<CastMember> CastMembers => Set<CastMember>();
 
-        public CatalogDbContext(DbContextOptions<CatalogDbContext> options) : base(options) {}
+		public CatalogDbContext(DbContextOptions<CatalogDbContext> options) : base(options) {}
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
