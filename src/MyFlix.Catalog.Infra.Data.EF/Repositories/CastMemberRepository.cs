@@ -12,16 +12,13 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
 
 		public async Task Insert(CastMember aggregate, CancellationToken cancelationToken)
 			=> await _castMembers.AddAsync(aggregate, cancelationToken);
-		
+
+		public async Task<CastMember> Get(Guid id, CancellationToken cancelationToken) 
+			=> await _castMembers.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancelationToken);
 
 		public CastMemberRepository(CatalogDbContext context) => _context = context;
 
 		public Task Delete(CastMember aggregate, CancellationToken cancelationToken)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task<CastMember> Get(Guid id, CancellationToken cancelationToken)
 		{
 			throw new NotImplementedException();
 		}
