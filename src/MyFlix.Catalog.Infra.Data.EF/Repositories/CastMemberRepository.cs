@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyFlix.Catalog.Application.Exceptions;
 using MyFlix.Catalog.Domain.Entity;
 using MyFlix.Catalog.Domain.Repository;
 using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
@@ -13,8 +14,13 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
 		public async Task Insert(CastMember aggregate, CancellationToken cancelationToken)
 			=> await _castMembers.AddAsync(aggregate, cancelationToken);
 
-		public async Task<CastMember> Get(Guid id, CancellationToken cancelationToken) 
-			=> await _castMembers.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancelationToken);
+		public async Task<CastMember> Get(Guid id, CancellationToken cancelationToken)
+		{
+			var castMember =  await _castMembers.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancelationToken);
+			NotFoundException.ThrowIfNull(castMember, $"CastMember '{id}' not found");
+			return castMember!;
+		}
+			
 
 		public CastMemberRepository(CatalogDbContext context) => _context = context;
 
