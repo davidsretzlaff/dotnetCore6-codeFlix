@@ -14,16 +14,8 @@ namespace MyFlix.Catalog.Application.UseCases.CastMember.ListCastMember
 
 		public async Task<ListCastMembersOutput> Handle(ListCastMembersInput request, CancellationToken cancellationToken)
 		{
-			var searchOutput = await _repository.Search(
-				new SearchInput(request.Page,request.PerPage,request.Search,request.Sort,request.Dir),
-				cancellationToken);
-			return new ListCastMembersOutput(
-				searchOutput.CurrentPage,
-				searchOutput.PerPage,
-				searchOutput.Total,
-				searchOutput.Items.Select(
-						castMember => CastMemberModelOutput.FromCastMember(castMember)).ToList()
-					);
+			var searchOutput = await _repository.Search(request.ToSearchInput(), cancellationToken);
+			return ListCastMembersOutput.FromSearchOutput(searchOutput);
 		}
 	}
 }
