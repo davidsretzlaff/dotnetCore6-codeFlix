@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using MyFlix.Catalog.Application.Exceptions;
 using Xunit;
 using Repository = MyFlix.Catalog.Infra.Data.EF.Repositories;
 namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CastMemberRepository
@@ -46,6 +47,18 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CastMemberRe
 			itemFromRepository.Should().NotBeNull();
 			itemFromRepository!.Name.Should().Be(castMemberExample.Name);
 			itemFromRepository.Type.Should().Be(castMemberExample.Type);
+		}
+
+		[Fact(DisplayName = nameof(GetThrowsWhenNotFound))]
+		[Trait("Integration/Infra.Data", "CastMemberRepository - Repositories")]
+		public async Task GetThrowsWhenNotFound()
+		{
+			var ramdomGuid = Guid.NewGuid();
+			var repository = new Repository.CastMemberRepository(_fixture.CreateDbContext());
+
+			var action = async () => await repository.Get(ramdomGuid, CancellationToken.None);
+
+			action.Should().ThrowAsync<NotFoundException>().WithMessage($"CastMember '{ramdomGuid}' not found");
 		}
 	}
 }
