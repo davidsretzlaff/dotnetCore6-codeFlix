@@ -4,6 +4,7 @@ using MyFlix.Catalog.Domain.Repository;
 using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using Xunit;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
+using UseCase = MyFlix.Catalog.Application.UseCases.CastMember.ListCastMember;
 namespace MyFlix.Catalog.UnitTests.Application.CastMember.ListCastMember
 {
 	[Collection(nameof(ListCastMemberTestFixture))]
@@ -23,12 +24,12 @@ namespace MyFlix.Catalog.UnitTests.Application.CastMember.ListCastMember
 			repositoryMock.Setup(x => x.Search(
 				It.IsAny<SearchInput>(), It.IsAny<CancellationToken>()
 			)).ReturnsAsync(repositorySearchOutput);
-			var input = new ListCastMemberInput(1, 10,"","",SearchOrder.Asc);
-			var useCase = new ListCastMembers(repositoryMock.Object);
+			var input = new UseCase.ListCastMembersInput(1, 10,"","",SearchOrder.Asc);
+			var useCase = new UseCase.ListCastMembers(repositoryMock.Object);
 
 			var output = await useCase.Handle(input, CancellationToken.None);
 
-			output.Should().NotNull();
+			output.Should().NotBeNull();
 			output.Page.Should().Be(repositorySearchOutput.CurrentPage);
 			output.PerPage.Should().Be(repositorySearchOutput.PerPage);
 			output.Total.Should().Be(repositorySearchOutput.Total);
@@ -37,7 +38,6 @@ namespace MyFlix.Catalog.UnitTests.Application.CastMember.ListCastMember
 				var example = castMemberListExample.Find(x => x.Id == outputItem.Id);
 				example.Should().NotBeNull();
 				outputItem.Name.Should().Be(example.Name);
-				outputItem.Description.Should().Be(example.Description);
 				outputItem.Type.Should().Be(example.Type);
 			});
 			repositoryMock.Verify(x => x.Search(
@@ -46,7 +46,7 @@ namespace MyFlix.Catalog.UnitTests.Application.CastMember.ListCastMember
 					x.PerPage == input.PerPage &&
 					x.Search == input.Search &&
 					x.Order == input.Dir &&
-					x.OrderBy ==input.Order
+					x.OrderBy ==input.Sort
 				)), It.IsAny<CancellationToken>()
 			));
 		}
