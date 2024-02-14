@@ -60,5 +60,24 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CastMemberRe
 
 			action.Should().ThrowAsync<NotFoundException>().WithMessage($"CastMember '{ramdomGuid}' not found");
 		}
+
+		[Fact(DisplayName = nameof(Delete))]
+		[Trait("Integration/Infra.Data", "CastMemberRepository - Repositories")]
+		public async Task Delete()
+		{
+			var castMemberExampleList = _fixture.GetExampleCastMemberList(5);
+			var castMemberExample = castMemberExampleList[3];
+			var arrangeContext = _fixture.CreateDbContext();
+			await arrangeContext.AddRangeAsync(castMemberExampleList);
+			await arrangeContext.SaveChangesAsync();
+			var repository = new Repository.CastMemberRepository(_fixture.CreateDbContext(true));
+
+			await repository.Delete(castMemberExample, CancellationToken.None);
+
+			var assertionContext = _fixture.CreateDbContext(true);
+			var itemsInDatabase = assertionContext.CastMembers.AsNoTracking().ToList();
+			itemsInDatabase.Should().HaveCount(4);
+			itemsInDatabase.Should().NotContain(castMemberExample);
+		}
 	}
 }
