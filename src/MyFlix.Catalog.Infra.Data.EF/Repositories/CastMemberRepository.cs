@@ -10,6 +10,7 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
 	{
 		private readonly CatalogDbContext _context;
 		private DbSet<CastMember> _castMembers => _context.Set<CastMember>();
+		public CastMemberRepository(CatalogDbContext context) => _context = context;
 
 		public async Task Insert(CastMember aggregate, CancellationToken cancelationToken)
 			=> await _castMembers.AddAsync(aggregate, cancelationToken);
@@ -21,13 +22,9 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
 			return castMember!;
 		}
 			
-
-		public CastMemberRepository(CatalogDbContext context) => _context = context;
-
-		public Task Delete(CastMember aggregate, CancellationToken cancelationToken)
-		{
-			throw new NotImplementedException();
-		}
+		public async Task Delete(CastMember aggregate, CancellationToken cancelationToken)
+			=> await Task.FromResult(_castMembers.Remove(aggregate));
+		
 
 		public Task<SearchOutput<CastMember>> Search(SearchInput input, CancellationToken cancellationToken)
 		{

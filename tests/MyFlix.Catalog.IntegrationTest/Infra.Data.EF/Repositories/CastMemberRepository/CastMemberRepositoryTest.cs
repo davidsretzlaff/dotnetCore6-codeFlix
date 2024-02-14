@@ -70,9 +70,11 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CastMemberRe
 			var arrangeContext = _fixture.CreateDbContext();
 			await arrangeContext.AddRangeAsync(castMemberExampleList);
 			await arrangeContext.SaveChangesAsync();
-			var repository = new Repository.CastMemberRepository(_fixture.CreateDbContext(true));
+			var actDbContext = _fixture.CreateDbContext(true);
+			var repository = new Repository.CastMemberRepository(actDbContext);
 
 			await repository.Delete(castMemberExample, CancellationToken.None);
+			await actDbContext.SaveChangesAsync();
 
 			var assertionContext = _fixture.CreateDbContext(true);
 			var itemsInDatabase = assertionContext.CastMembers.AsNoTracking().ToList();
