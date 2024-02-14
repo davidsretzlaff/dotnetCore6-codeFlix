@@ -24,10 +24,16 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
 			
 		public async Task Delete(CastMember aggregate, CancellationToken cancelationToken)
 			=> await Task.FromResult(_castMembers.Remove(aggregate));
-		
-		public Task<SearchOutput<CastMember>> Search(SearchInput input, CancellationToken cancellationToken)
+
+		public async Task<SearchOutput<CastMember>> Search(SearchInput input, CancellationToken cancellationToken)
 		{
-			throw new NotImplementedException();
+			var items = await _castMembers.AsNoTracking().ToListAsync();
+			return new SearchOutput<CastMember>(
+				input.Page,
+				input.PerPage,
+				items.Count,
+				items.AsReadOnly()
+			);
 		}
 
 		public async Task Update(CastMember aggregate, CancellationToken cancelationToken)
