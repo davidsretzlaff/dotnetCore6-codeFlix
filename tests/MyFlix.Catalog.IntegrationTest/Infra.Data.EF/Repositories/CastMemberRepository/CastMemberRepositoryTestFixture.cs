@@ -21,5 +21,15 @@ namespace MyFlix.Catalog.IntegrationTest.Infra.Data.EF.Repositories.CastMemberRe
 
 		public CastMemberType GetRandomCastMemberType()
 			=> (CastMemberType)(new Random()).Next(1, 2);
+
+		public List<DomainEntity.CastMember> GetExampleCastMembersListByNames(List<string> names)
+		{ 
+			return  names.Select(name =>
+				{
+					var example = GetExampleCastMember();
+					example.Update(name, example.Type);
+					return example;
+				}).ToList();
+		}
 	}
 }
