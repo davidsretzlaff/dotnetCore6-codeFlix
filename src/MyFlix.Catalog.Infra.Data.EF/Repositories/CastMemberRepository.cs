@@ -28,18 +28,12 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
 		public async Task<SearchOutput<CastMember>> Search(SearchInput input, CancellationToken cancellationToken)
 		{
 			var toSkip = (input.Page - 1) * input.PerPage;
-			var count = _castMembers.AsNoTracking().Count();
-			var items = await _castMembers.AsNoTracking()
-				.Skip(toSkip)
-				.Take(input.PerPage)
-				.ToListAsync();
-
-			return new SearchOutput<CastMember>(
-				input.Page,
-				input.PerPage,
-				  count,
-				items.AsReadOnly()
-			);
+			var query = _castMembers.AsNoTracking();
+			if (!String.IsNullOrWhiteSpace(input.Search))
+				query = query.Where(x => x.Name.Contains(input.Search));
+			var items = await query.Skip(toSkip).Take(input.PerPage).ToListAsync();
+			var count = await query.CountAsync();
+			return new SearchOutput<CastMember>(input.Page, input.PerPage, count, items.AsReadOnly());
 		}
 
 		public async Task Update(CastMember aggregate, CancellationToken cancelationToken)
