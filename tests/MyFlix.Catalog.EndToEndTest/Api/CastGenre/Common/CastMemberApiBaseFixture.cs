@@ -5,11 +5,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
+using Xunit;
 
 namespace MyFlix.Catalog.EndToEndTest.Api.CastGenre.Common
 {
-	public class CastMemberBaseFixture : BaseFixture
+	[CollectionDefinition(nameof(CastMemberApiBaseFixture))]
+	public class CastMemberApiBaseFixtureCollection : ICollectionFixture<CastMemberApiBaseFixture>
 	{
+	}
+
+	public class CastMemberApiBaseFixture : BaseFixture
+	{
+		public CastMemberPersistence Persistence;
+
+		public CastMemberApiBaseFixture()
+		{
+			Persistence = new CastMemberPersistence(CreateDbContext());
+		}
 
 		public DomainEntity.CastMember GetExampleCastMember()
 			=> new(GetValidName(), GetRandomCastMemberType());
