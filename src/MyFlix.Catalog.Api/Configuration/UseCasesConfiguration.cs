@@ -23,7 +23,8 @@ namespace MyFlix.Catalog.Api.Configuration
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IGenreRepository, GenreRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            return services;
+			services.AddTransient<ICastMemberRepository, CastMemberRepository>();
+			return services;
         }
     }
 }
