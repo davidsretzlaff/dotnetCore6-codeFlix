@@ -1,8 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MyFlix.Catalog.Api.ApiModels.Response;
 using MyFlix.Catalog.Application.UseCases.CastMember.Common;
 using MyFlix.Catalog.EndToEndTest.Api.CastGenre.Common;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
@@ -38,6 +40,25 @@ namespace MyFlix.Catalog.EndToEndTest.Api.CastGenre.GetCastMember
 			output.Data.Id.Should().Be(example.Id);
 			output.Data.Name.Should().Be(example.Name);
 			output.Data.Type.Should().Be(example.Type);
+		}
+
+		[Fact(DisplayName = nameof(NotFound))]
+		[Trait("EndToEnd/API", "CatMembers/Get - EndPoints")]
+		public async Task NotFound()
+		{
+			await _fixture.Persistence.InsertList(_fixture.GetExampleCastMembersList(5));
+			var randomGuid = Guid.NewGuid();
+
+			var (response, output) =
+				await _fixture.ApiClient.Get<ProblemDetails>(
+					$"castmembers/{randomGuid.ToString()}"
+				);
+
+			response.Should().NotBeNull();
+			response!.StatusCode.Should().Be((HttpStatusCode)StatusCodes.Status404NotFound);
+			output.Should().NotBeNull();
+			output!.Title.Should().Be("Not Found");
+			output!.Detail.Should().Be($"CastMember '{randomGuid}' not found.");
 		}
 	}
 }
