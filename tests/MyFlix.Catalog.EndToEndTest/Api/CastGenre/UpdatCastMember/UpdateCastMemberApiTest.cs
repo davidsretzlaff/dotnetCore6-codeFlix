@@ -1,11 +1,12 @@
 ﻿
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MyFlix.Catalog.Api.ApiModels.CastMember;
 using MyFlix.Catalog.Api.ApiModels.Response;
 using MyFlix.Catalog.Application.UseCases.CastMember.Common;
-using MyFlix.Catalog.Application.UseCases.CastMember.UpdateCastMember;
 using MyFlix.Catalog.EndToEndTest.Api.CastGenre.Common;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
@@ -14,11 +15,11 @@ namespace MyFlix.Catalog.EndToEndTest.Api.CastGenre.UpdatCastMember
 {
 
 	[Collection(nameof(CastMemberApiBaseFixture))]
-	public class UpdatCastMemberApiTest
+	public class UpdateCastMemberApiTest
 	{
 		private readonly CastMemberApiBaseFixture _fixture;
 
-		public UpdatCastMemberApiTest(CastMemberApiBaseFixture fixture)
+		public UpdateCastMemberApiTest(CastMemberApiBaseFixture fixture)
 			=> _fixture = fixture;
 
 		[Fact(DisplayName = nameof(Update))]
@@ -49,6 +50,29 @@ namespace MyFlix.Catalog.EndToEndTest.Api.CastGenre.UpdatCastMember
 			castMemberFromDb!.Id.Should().Be(example.Id);
 			castMemberFromDb.Name.Should().Be(newName);
 			castMemberFromDb.Type.Should().Be(newType);
+		}
+
+		[Fact(DisplayName = nameof(Retuns404IfNotFound))]
+		[Trait("EndToEnd/API", "CastMembers/Update")]
+		public async Task Retuns404IfNotFound()
+		{
+			var examples = _fixture.GetExampleCastMembersList(5);
+			var randomGuid = Guid.NewGuid();
+			var newName = _fixture.GetValidName();
+			var newType = _fixture.GetRandomCastMemberType();
+			await _fixture.Persistence.InsertList(examples);
+
+			var (response, output) =
+				await _fixture.ApiClient.Put<ProblemDetails>(
+					$"castmembers/{randomGuid}",
+					new UpdateCastMemberApiInput(newName, newType)
+				);
+
+			response.Should().NotBeNull();
+			response!.StatusCode.Should().Be((HttpStatusCode)StatusCodes.Status404NotFound);
+			output.Should().NotBeNull();
+			output!.Title.Should().Be("Not Found");
+			output.Detail.Should().Be($"CastMember '{randomGuid}' not found.");
 		}
 	}
 }
