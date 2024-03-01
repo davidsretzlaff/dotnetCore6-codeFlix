@@ -1,6 +1,7 @@
 ﻿
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using MyFlix.Catalog.Api.ApiModels.CastMember;
 using MyFlix.Catalog.Api.ApiModels.Response;
 using MyFlix.Catalog.Application.UseCases.CastMember.Common;
 using MyFlix.Catalog.Application.UseCases.CastMember.UpdateCastMember;
@@ -33,7 +34,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.CastGenre.UpdatCastMember
 			var (response, output) =
 				await _fixture.ApiClient.Put<ApiResponse<CastMemberModelOutput>>(
 					$"castmembers/{example.Id.ToString()}",
-					new UpdateCastMemberInput(example.Id, newName, newType)
+					 new UpdateCastMemberApiInput(newName, newType)
 				);
 
 			response.Should().NotBeNull();

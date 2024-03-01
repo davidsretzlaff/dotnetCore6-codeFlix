@@ -5,6 +5,7 @@ using MyFlix.Catalog.Application.UseCases.CastMember.Common;
 using MyFlix.Catalog.Application.UseCases.CastMember.CreateCastMember;
 using MyFlix.Catalog.Application.UseCases.CastMember.DeleteCastMember;
 using MyFlix.Catalog.Application.UseCases.CastMember.GetCastMember;
+using MyFlix.Catalog.Application.UseCases.CastMember.UpdateCastMember;
 
 namespace MyFlix.Catalog.Api.Controllers
 {
@@ -46,6 +47,17 @@ namespace MyFlix.Catalog.Api.Controllers
 				new { Id = output.Id },
 				new ApiResponse<CastMemberModelOutput>(output)
 			);
+		}
+
+		[HttpPut("{id:guid}")]
+		[ProducesResponseType(typeof(ApiResponse<CastMemberModelOutput>), StatusCodes.Status200OK)]
+		public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCastMemberApiInput apiInput, CancellationToken cancellationToken)
+		{
+			var output = await _mediator.Send(
+				new UpdateCastMemberInput(id, apiInput.Name, apiInput.Type),
+				cancellationToken
+			);
+			return Ok(new ApiResponse<CastMemberModelOutput>(output));
 		}
 	}
 }
