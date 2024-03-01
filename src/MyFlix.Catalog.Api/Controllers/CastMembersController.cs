@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MyFlix.Catalog.Api.ApiModels.CastMember;
 using MyFlix.Catalog.Api.ApiModels.Response;
 using MyFlix.Catalog.Application.UseCases.CastMember.Common;
 using MyFlix.Catalog.Application.UseCases.CastMember.CreateCastMember;
@@ -51,6 +52,8 @@ namespace MyFlix.Catalog.Api.Controllers
 
 		[HttpPut("{id:guid}")]
 		[ProducesResponseType(typeof(ApiResponse<CastMemberModelOutput>), StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+		[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
 		public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCastMemberApiInput apiInput, CancellationToken cancellationToken)
 		{
 			var output = await _mediator.Send(
