@@ -45,5 +45,26 @@ namespace MyFlix.Catalog.EndToEndTest.Api.CastGenre.ListCastMember
 				outputItem.Type.Should().Be(exampleItem.Type);
 			});
 		}
+
+		[Fact(DisplayName = nameof(ReturnsEmptyWhenEmpty))]
+		[Trait("EndToEnd/API", "CastMembers/List")]
+		public async Task ReturnsEmptyWhenEmpty()
+		{
+			var (response, output) =
+				await _fixture.ApiClient.Get<TestApiResponseList<CastMemberModelOutput>>(
+					"castmembers"
+				);
+
+			response.Should().NotBeNull();
+			response!.StatusCode.Should().Be((HttpStatusCode)StatusCodes.Status200OK);
+			output.Should().NotBeNull();
+			output!.Meta.Should().NotBeNull();
+			output.Data.Should().NotBeNull();
+			output.Meta!.CurrentPage.Should().Be(1);
+			output.Meta.Total.Should().Be(0);
+			output.Data!.Should().HaveCount(0);
+		}
+
+		public void Dispose() => _fixture.CleanPersistence();
 	}
 }
