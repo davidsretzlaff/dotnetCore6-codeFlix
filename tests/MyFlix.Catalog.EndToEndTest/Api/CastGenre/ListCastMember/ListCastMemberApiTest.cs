@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using MyFlix.Catalog.Application.UseCases.CastMember.Common;
 using MyFlix.Catalog.Application.UseCases.CastMember.ListCastMember;
+using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using MyFlix.Catalog.EndToEndTest.Api.CastGenre.Common;
 using System.Collections.Generic;
 using System.Net;
@@ -152,6 +153,50 @@ namespace MyFlix.Catalog.EndToEndTest.Api.CastGenre.ListCastMember
 				outputItem.Type.Should().Be(exampleItem.Type);
 			});
 		}
+
+
+		[Theory(DisplayName = nameof(Ordering))]
+		[Trait("EndToEnd/API", "CastMembers/List")]
+		[InlineData("name", "asc")]
+		[InlineData("name", "desc")]
+		[InlineData("id", "asc")]
+		[InlineData("id", "desc")]
+		[InlineData("createdAt", "asc")]
+		[InlineData("createdAt", "desc")]
+		[InlineData("", "asc")]
+		public async Task Ordering(string orderBy, string order)
+		{
+			var examples = _fixture.GetExampleCastMembersList(10);
+			await _fixture.Persistence.InsertList(examples);
+			var searchOrder = order.ToLower() == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
+
+			var (response, output) =
+				await _fixture.ApiClient.Get<TestApiResponseList<CastMemberModelOutput>>(
+					"castmembers",
+					new ListCastMembersInput()
+					{
+						Sort = orderBy,
+						Dir = searchOrder
+					}
+				);
+
+			response.Should().NotBeNull();
+			response!.StatusCode.Should().Be((HttpStatusCode)StatusCodes.Status200OK);
+			output.Should().NotBeNull();
+			output!.Meta.Should().NotBeNull();
+			output.Data.Should().NotBeNull();
+			output.Meta!.CurrentPage.Should().Be(1);
+			output.Meta.Total.Should().Be(examples.Count);
+			output.Data!.Should().HaveCount(examples.Count);
+			var orderedList = _fixture.CloneListOrdered(examples, orderBy, searchOrder);
+			for (var i = 0; i < orderedList.Count; i++)
+			{
+				output!.Data[i].Id.Should().Be(orderedList[i].Id);
+				output.Data[i].Name.Should().Be(orderedList[i].Name);
+				output.Data[i].Type.Should().Be(orderedList[i].Type);
+			}
+		}
+
 
 		public void Dispose() => _fixture.CleanPersistence();
 	}
