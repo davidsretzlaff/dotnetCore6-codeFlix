@@ -6,6 +6,7 @@ using MyFlix.Catalog.Application.UseCases.CastMember.Common;
 using MyFlix.Catalog.Application.UseCases.CastMember.CreateCastMember;
 using MyFlix.Catalog.Application.UseCases.CastMember.DeleteCastMember;
 using MyFlix.Catalog.Application.UseCases.CastMember.GetCastMember;
+using MyFlix.Catalog.Application.UseCases.CastMember.ListCastMember;
 using MyFlix.Catalog.Application.UseCases.CastMember.UpdateCastMember;
 
 namespace MyFlix.Catalog.Api.Controllers
@@ -61,6 +62,15 @@ namespace MyFlix.Catalog.Api.Controllers
 				cancellationToken
 			);
 			return Ok(new ApiResponse<CastMemberModelOutput>(output));
+		}
+
+		[HttpGet]
+		[ProducesResponseType(typeof(ApiResponseList<CastMemberModelOutput>), StatusCodes.Status200OK)]
+		public async Task<IActionResult> List(CancellationToken cancellationToken)
+		{
+			var input = new ListCastMembersInput();
+			var output = await _mediator.Send(input, cancellationToken);
+			return Ok(new ApiResponseList<CastMemberModelOutput>(output));
 		}
 	}
 }
