@@ -72,7 +72,7 @@ namespace MyFlix.Catalog.EndToEndTest.Api.CastGenre.UpdatCastMember
 			response!.StatusCode.Should().Be((HttpStatusCode)StatusCodes.Status404NotFound);
 			output.Should().NotBeNull();
 			output!.Title.Should().Be("Not Found");
-			output.Detail.Should().Be($"CastMember '{randomGuid}' not found.");
+			output.Detail.Should().Be($"CastMember '{randomGuid}' not found");
 		}
 
 		[Fact(DisplayName = nameof(Retuns422IfThereAreValidationErrors))]
