@@ -8,6 +8,7 @@ using MyFlix.Catalog.Application.UseCases.CastMember.DeleteCastMember;
 using MyFlix.Catalog.Application.UseCases.CastMember.GetCastMember;
 using MyFlix.Catalog.Application.UseCases.CastMember.ListCastMember;
 using MyFlix.Catalog.Application.UseCases.CastMember.UpdateCastMember;
+using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 
 namespace MyFlix.Catalog.Api.Controllers
 {
@@ -66,12 +67,20 @@ namespace MyFlix.Catalog.Api.Controllers
 
 		[HttpGet]
 		[ProducesResponseType(typeof(ApiResponseList<CastMemberModelOutput>), StatusCodes.Status200OK)]
-		public async Task<IActionResult> List([FromQuery] int? page, [FromQuery(Name = "per_page")] int? perPage, [FromQuery] string? search, CancellationToken cancellationToken)
-		{ 
+		public async Task<IActionResult> List(
+			[FromQuery] int? page,
+			[FromQuery(Name = "per_page")] int? perPage,
+			[FromQuery] string? search,
+			[FromQuery] string? dir,
+			[FromQuery] string? sort,
+			CancellationToken cancellationToken)
+			{ 
 			var input = new ListCastMembersInput();
 			if (page is not null) input.Page = page.Value;
 			if (perPage is not null) input.PerPage = perPage.Value;
 			if (search is not null) input.Search = search;
+			if (dir is not null) input.Dir = dir.ToLower() == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
+			if (sort is not null) input.Sort = sort;
 			var output = await _mediator.Send(input, cancellationToken);
 			return Ok(new ApiResponseList<CastMemberModelOutput>(output));
 		}
