@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
 using Xunit;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MyFlix.Catalog.EndToEndTest.Api.CastGenre.Common
 {

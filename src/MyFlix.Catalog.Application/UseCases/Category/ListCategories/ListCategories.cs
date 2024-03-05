@@ -32,8 +32,7 @@ namespace MyFlix.Catalog.Application.UseCases.Category.ListCategories
                 .ToList()
             );
             return output;
-            // line 31 is eq 
-            //.Select(x => CategoryModelOutput.FromCategory(x))
+            
         }
     }
 }

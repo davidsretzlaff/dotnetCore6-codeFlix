@@ -56,9 +56,7 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
         {
             var toSkip = (input.Page - 1) * input.PerPage;
             var query = _genres.AsNoTracking();
-            
             query = AddOrderToQuery(query, input.OrderBy, input.Order);
-
             if (!String.IsNullOrWhiteSpace(input.Search))
                 query = query.Where(genre => genre.Name.Contains(input.Search));
 

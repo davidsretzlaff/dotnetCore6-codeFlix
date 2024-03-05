@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using MyFlix.Catalog.Application.UseCases.CastMember.Common;
 using MyFlix.Catalog.Application.UseCases.CastMember.ListCastMember;
+using MyFlix.Catalog.Application.UseCases.Category.ListCategories;
 using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using MyFlix.Catalog.EndToEndTest.Api.CastGenre.Common;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -12,7 +14,7 @@ using Xunit;
 namespace MyFlix.Catalog.EndToEndTest.Api.CastGenre.ListCastMember
 {
 	[Collection(nameof(CastMemberApiBaseFixture))]
-	public class ListCastMembersApiTest
+	public class ListCastMembersApiTest : IDisposable
 	{
 		private readonly CastMemberApiBaseFixture _fixture;
 
@@ -170,14 +172,18 @@ namespace MyFlix.Catalog.EndToEndTest.Api.CastGenre.ListCastMember
 			await _fixture.Persistence.InsertList(examples);
 			var searchOrder = order.ToLower() == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
 
+			var input = new ListCastMembersInput(
+			   page: 1,
+			   perPage: 15,
+			   search: "",
+			   sort: orderBy,
+			   dir: searchOrder
+		   );
+
 			var (response, output) =
 				await _fixture.ApiClient.Get<TestApiResponseList<CastMemberModelOutput>>(
 					"castmembers",
-					new ListCastMembersInput()
-					{
-						Sort = orderBy,
-						Dir = searchOrder
-					}
+					input
 				);
 
 			response.Should().NotBeNull();
@@ -196,7 +202,6 @@ namespace MyFlix.Catalog.EndToEndTest.Api.CastGenre.ListCastMember
 				output.Data[i].Type.Should().Be(orderedList[i].Type);
 			}
 		}
-
 
 		public void Dispose() => _fixture.CleanPersistence();
 	}

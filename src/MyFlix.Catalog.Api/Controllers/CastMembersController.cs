@@ -71,7 +71,7 @@ namespace MyFlix.Catalog.Api.Controllers
 			[FromQuery] int? page,
 			[FromQuery(Name = "per_page")] int? perPage,
 			[FromQuery] string? search,
-			[FromQuery] string? dir,
+			[FromQuery] SearchOrder? dir,
 			[FromQuery] string? sort,
 			CancellationToken cancellationToken)
 			{ 
@@ -79,7 +79,7 @@ namespace MyFlix.Catalog.Api.Controllers
 			if (page is not null) input.Page = page.Value;
 			if (perPage is not null) input.PerPage = perPage.Value;
 			if (search is not null) input.Search = search;
-			if (dir is not null) input.Dir = dir.ToLower() == "asc" ? SearchOrder.Asc : SearchOrder.Desc;
+			if (dir is not null) input.Dir = dir.Value;
 			if (sort is not null) input.Sort = sort;
 			var output = await _mediator.Send(input, cancellationToken);
 			return Ok(new ApiResponseList<CastMemberModelOutput>(output));
