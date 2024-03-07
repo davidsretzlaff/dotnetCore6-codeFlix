@@ -1,6 +1,7 @@
 ﻿
 using MyFlix.Catalog.UnitTests.Common;
 using Xunit;
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
 
 namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 {
@@ -9,5 +10,7 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 	{ }
 
 	public class VideoTestFixture : BaseFixture
-	{ }
+	{
+		public object GetValidVideo() => new DomainEntity.Video("Title","Description",2001,true,true,180);
+	}
 }
