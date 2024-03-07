@@ -7,6 +7,7 @@ namespace MyFlix.Catalog.Domain.Validator
     {
         private readonly Video _video;
 		private const int TitleMaxLength = 255;
+		private const int DescriptionMaxLength = 4_000;
 
 		public VideoValidator(Video video, ValidationHandler handler) : base(handler)
                 => _video = video;

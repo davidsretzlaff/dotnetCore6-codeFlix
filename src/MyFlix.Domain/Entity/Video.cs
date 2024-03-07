@@ -1,4 +1,6 @@
-﻿using MyFlix.Catalog.Domain.SeedWork;
+﻿using MyFlix.Catalog.Domain.Exceptions;
+using MyFlix.Catalog.Domain.SeedWork;
+using MyFlix.Catalog.Domain.Validator;
 
 namespace MyFlix.Catalog.Domain.Entity
 {
@@ -21,6 +23,16 @@ namespace MyFlix.Catalog.Domain.Entity
 			Published = published;
 			Duration = duration;
 			CreatedAt = DateTime.Now;
+			Validate();
+		}
+
+		private void Validate()
+		{
+			var notificationHandler = new NotificationValidationHandler();
+			var validator = new VideoValidator(this, notificationHandler);
+			validator.Validate();
+			if (notificationHandler.HasErrors())
+				throw new EntityValidationException("Validation errors");
 		}
 	}
 }

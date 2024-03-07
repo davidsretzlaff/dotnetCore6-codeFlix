@@ -72,5 +72,51 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 			notificationValidationHandler.Errors.Should().HaveCount(1);
 			notificationValidationHandler.Errors.ToList().First().Message.Should().Be("'Title' is required");
 		}
+
+		[Fact(DisplayName = nameof(ReturnsErrorWhenDescriptionIsEmpty))]
+		[Trait("Domain", "Video Validator - Validators")]
+		public void ReturnsErrorWhenDescriptionIsEmpty()
+		{
+			var invalidVideo = new DomainEntity.Video(
+				_fixture.GetValidTitle(),
+				"",
+				_fixture.GetValidYearLaunched(),
+				_fixture.GetRandomBoolean(),
+				_fixture.GetRandomBoolean(),
+				_fixture.GetValidDuration()
+			);
+			var notificationValidationHandler = new NotificationValidationHandler();
+			var videoValidator = new VideoValidator(invalidVideo, notificationValidationHandler);
+
+			videoValidator.Validate();
+
+			notificationValidationHandler.HasErrors().Should().BeTrue();
+			notificationValidationHandler.Errors.Should().HaveCount(1);
+			notificationValidationHandler.Errors.ToList().First()
+				.Message.Should().Be("'Description' is required");
+		}
+
+		[Fact(DisplayName = nameof(ReturnsErrorWhenDescriptionIsTooLong))]
+		[Trait("Domain", "Video Validator - Validators")]
+		public void ReturnsErrorWhenDescriptionIsTooLong()
+		{
+			var invalidVideo = new DomainEntity.Video(
+				_fixture.GetValidTitle(),
+				_fixture.GetTooLongDescription(),
+				_fixture.GetValidYearLaunched(),
+				_fixture.GetRandomBoolean(),
+				_fixture.GetRandomBoolean(),
+				_fixture.GetValidDuration()
+			);
+			var notificationValidationHandler = new NotificationValidationHandler();
+			var videoValidator = new VideoValidator(invalidVideo, notificationValidationHandler);
+
+			videoValidator.Validate();
+
+			notificationValidationHandler.HasErrors().Should().BeTrue();
+			notificationValidationHandler.Errors.Should().HaveCount(1);
+			notificationValidationHandler.Errors.ToList().First()
+				.Message.Should().Be("'Description' should be less or equal 4000 characters long");
+		}
 	}
 }

@@ -34,5 +34,7 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 		public int GetValidDuration() => (new Random()).Next(100, 300);
 
 		public string GetTooLongTitle() => Faker.Lorem.Letter(400);
+
+		public string GetTooLongDescription() => Faker.Lorem.Letter(4001);
 	}
 }

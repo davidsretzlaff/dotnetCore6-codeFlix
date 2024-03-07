@@ -2,6 +2,7 @@
 using Xunit;
 using FluentAssertions;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.Domain.Exceptions;
 
 namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 {
@@ -41,6 +42,30 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 			video.YearLaunched.Should().Be(2001);
 			video.Duration.Should().Be(180);
 			video.CreatedAt.Should().BeCloseTo(expectedCreatedDate, TimeSpan.FromSeconds(10));
+		}
+
+		[Fact(DisplayName = nameof(InstantiateThrowsExceptionWhrnNotValid))]
+		[Trait("Domain", "Video - Aggregate")]
+		public void InstantiateThrowsExceptionWhrnNotValid()
+		{
+			var expectedTitle = "";
+			var expectedDescription = _fixture.GetTooLongDescription();
+			var expectedYearLaunched = _fixture.GetValidYearLaunched();
+			var expectedOpened = _fixture.GetRandomBoolean();
+			var expectedPublished = _fixture.GetRandomBoolean();
+			var expectedDuration = _fixture.GetValidDuration();
+
+			var expectedCreatedDate = DateTime.Now;
+			var action = () => new DomainEntity.Video(
+				expectedTitle,
+				expectedDescription,
+				expectedYearLaunched,
+				expectedOpened,
+				expectedPublished,
+				expectedDuration
+			);
+
+			action.Should().Throw<EntityValidationException>().WithMessage("Validation errors");
 		}
 	}
 }
