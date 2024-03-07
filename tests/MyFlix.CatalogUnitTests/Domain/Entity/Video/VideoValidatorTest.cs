@@ -1,5 +1,5 @@
-﻿
-using System.Xml.Linq;
+﻿using FluentAssertions;
+using MyFlix.Catalog.Domain.Validation;
 using Xunit;
 
 namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
@@ -23,7 +23,7 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 			videoValidator.Validate();
 
 			notificationValidationHandler.HasErrors().Should().BeFalse();
-			notificationValidationHandler.GetErrors().Should().HaveLength(0);
+			notificationValidationHandler.Errors.Should().HaveCount(0);
 		}
 	}
 }

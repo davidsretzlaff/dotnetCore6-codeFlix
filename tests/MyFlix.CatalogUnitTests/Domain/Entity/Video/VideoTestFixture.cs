@@ -11,6 +11,6 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 
 	public class VideoTestFixture : BaseFixture
 	{
-		public object GetValidVideo() => new DomainEntity.Video("Title","Description",2001,true,true,180);
+		public DomainEntity.Video GetValidVideo() => new DomainEntity.Video("Title","Description",2001,true,true,180);
 	}
 }
