@@ -17,8 +17,22 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 		[Trait("Domain", "Video - Aggregate")]
 		public void Instantiate()
 		{
+			var expectedTitle = _fixture.GetValidTitle();
+			var expectedDescription = _fixture.GetValidDescription();
+			var expectedYearLaunched = _fixture.GetValidYearLaunched();
+			var expectedOpened = _fixture.GetRandomBoolean();
+			var expectedPublished = _fixture.GetRandomBoolean();
+			var expectedDuration = _fixture.GetValidDuration();
+
 			var expectedCreatedDate = DateTime.Now;
-			var video = new DomainEntity.Video("Title","Description",2001,true,true,180);
+			var video = new DomainEntity.Video(
+				expectedTitle,
+				expectedDescription,
+				expectedYearLaunched,
+				expectedOpened,
+				expectedPublished,
+				expectedDuration
+			);
 
 			video.Title.Should().Be("Title");
 			video.Description.Should().Be("Description");

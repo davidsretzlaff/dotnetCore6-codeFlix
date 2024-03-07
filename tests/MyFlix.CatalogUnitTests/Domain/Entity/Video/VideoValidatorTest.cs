@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
-using MyFlix.Catalog.Domain.Validation;
+using MyFlix.Catalog.Domain.Validator;
 using Xunit;
+using DomainEntity = MyFlix.Catalog.Domain.Entity;
 
 namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 {
@@ -24,6 +25,30 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 
 			notificationValidationHandler.HasErrors().Should().BeFalse();
 			notificationValidationHandler.Errors.Should().HaveCount(0);
+		}
+
+
+		[Fact(DisplayName = nameof(ReturnsErrorWhenTitleIsTooLong))]
+		[Trait("Domain", "Video Validator - Validators")]
+		public void ReturnsErrorWhenTitleIsTooLong()
+		{
+			var invalidVideo = new DomainEntity.Video(
+				_fixture.GetTooLongTitle(),
+				_fixture.GetValidDescription(),
+				_fixture.GetValidYearLaunched(),
+				_fixture.GetRandomBoolean(),
+				_fixture.GetRandomBoolean(),
+				_fixture.GetValidDuration()
+			);
+			var notificationValidationHandler = new NotificationValidationHandler();
+			var videoValidator = new VideoValidator(invalidVideo, notificationValidationHandler);
+
+			videoValidator.Validate();
+
+			notificationValidationHandler.HasErrors().Should().BeTrue();
+			notificationValidationHandler.Errors.Should().HaveCount(1);
+			notificationValidationHandler.Errors.ToList().First()
+				.Message.Should().Be("'Title' should be less or equal 255 characters long");
 		}
 	}
 }

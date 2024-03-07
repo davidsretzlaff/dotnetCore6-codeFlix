@@ -11,6 +11,28 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 
 	public class VideoTestFixture : BaseFixture
 	{
-		public DomainEntity.Video GetValidVideo() => new DomainEntity.Video("Title","Description",2001,true,true,180);
+		public DomainEntity.Video GetValidVideo() 
+			=> new DomainEntity.Video(
+				GetValidTitle(),
+				GetValidDescription(),
+				GetValidYearLaunched(),
+				GetRandomBoolean(),
+				GetRandomBoolean(),
+				GetValidDuration()
+			);
+
+		public string GetValidTitle() => Faker.Lorem.Letter(100);
+
+		public string GetValidDescription() => Faker.Commerce.ProductDescription();
+
+		public int GetValidYearLaunched()
+			=> Faker.Date.BetweenDateOnly(
+				new DateOnly(1960, 1, 1),
+				new DateOnly(2022, 1, 1)
+			).Year;
+
+		public int GetValidDuration() => (new Random()).Next(100, 300);
+
+		public string GetTooLongTitle() => Faker.Lorem.Letter(400);
 	}
 }
