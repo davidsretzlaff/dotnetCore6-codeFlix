@@ -17,7 +17,8 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 		[Trait("Domain", "Video - Aggregate")]
 		public void Instantiate()
 		{
-			var video = new DomainEntity.Video("Title","Description",true,true,2001,180);
+			var expectedCreatedDate = DateTime.Now;
+			var video = new DomainEntity.Video("Title","Description",2001,true,true,180);
 
 			video.Title.Should().Be("Title");
 			video.Description.Should().Be("Description");
@@ -25,6 +26,7 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 			video.Published.Should().Be(true);
 			video.YearLaunched.Should().Be(2001);
 			video.Duration.Should().Be(180);
+			video.CreatedAt.Should().BeCloseTo(expectedCreatedDate, TimeSpan.FromSeconds(10));
 		}
 	}
 }
