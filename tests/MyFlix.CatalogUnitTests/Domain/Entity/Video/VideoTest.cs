@@ -217,5 +217,31 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 			validVideo.Banner.Should().NotBeNull();
 			validVideo.Banner!.Path.Should().Be(validImagePath);
 		}
+
+		[Fact(DisplayName = nameof(UpdateMedia))]
+		[Trait("Domain", "Video - Aggregate")]
+		public void UpdateMedia()
+		{
+			var validVideo = _fixture.GetValidVideo();
+			var validPath = _fixture.GetValidMediaPath();
+
+			validVideo.UpdateMedia(validPath);
+
+			validVideo.Media.Should().NotBeNull();
+			validVideo.Media!.FilePath.Should().Be(validPath);
+		}
+
+		[Fact(DisplayName = nameof(UpdateTrailer))]
+		[Trait("Domain", "Video - Aggregate")]
+		public void UpdateTrailer()
+		{
+			var validVideo = _fixture.GetValidVideo();
+			var validPath = _fixture.GetValidMediaPath();
+
+			validVideo.UpdateTrailer(validPath);
+
+			validVideo.Trailer.Should().NotBeNull();
+			validVideo.Trailer!.FilePath.Should().Be(validPath);
+		}
 	}
 }

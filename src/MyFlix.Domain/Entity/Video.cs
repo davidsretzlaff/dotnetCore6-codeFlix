@@ -20,6 +20,8 @@ namespace MyFlix.Catalog.Domain.Entity
 		public Image? Thumb { get; private set; }
 		public Image? ThumbHalf { get; private set; }
 		public Image? Banner { get; private set; }
+		public Media? Media { get; private set; }
+		public Media? Trailer { get; private set; }
 
 		public Video(string title, string description, int yearLaunched, bool opened, bool published, int duration, Rating rating)
 		{
@@ -40,6 +42,12 @@ namespace MyFlix.Catalog.Domain.Entity
 
 		public void UpdateBanner(string path)
 			=> Banner = new Image(path);
+
+		public void UpdateMedia(string path)
+			=> Media = new Media(path);
+
+		public void UpdateTrailer(string path)
+			=> Trailer = new Media(path);
 
 		public void Update(string title, string description, int yearLaunched, bool opened, bool published, int duration)
 		{
