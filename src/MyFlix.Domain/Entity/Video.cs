@@ -23,6 +23,9 @@ namespace MyFlix.Catalog.Domain.Entity
 		public Media? Media { get; private set; }
 		public Media? Trailer { get; private set; }
 
+		private List<Guid> _categories;
+		public IReadOnlyList<Guid> Categories => _categories.AsReadOnly();
+
 		public Video(string title, string description, int yearLaunched, bool opened, bool published, int duration, Rating rating)
 		{
 			Title = title;
@@ -31,9 +34,16 @@ namespace MyFlix.Catalog.Domain.Entity
 			Opened = opened;
 			Published = published;
 			Duration = duration;
+			_categories = new();
 			CreatedAt = DateTime.Now;
 			Rating = rating;
 		}
+		public void AddCategory(Guid categoryId)
+			=> _categories.Add(categoryId);
+
+		public void Removecategory(Guid categoryId)
+			=> _categories.Remove(categoryId);
+
 		public void UpdateThumb(string path)
 			=> Thumb = new Image(path);
 
