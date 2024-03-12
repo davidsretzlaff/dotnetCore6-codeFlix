@@ -1,4 +1,6 @@
 ﻿
+using FluentAssertions;
+using MyFlix.Catalog.Domain.ValueObject;
 using MyFlix.Catalog.UnitTests.Common;
 using Xunit;
 
