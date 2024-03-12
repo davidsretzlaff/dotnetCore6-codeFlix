@@ -5,6 +5,7 @@ using DomainEntity = MyFlix.Catalog.Domain.Entity;
 using MyFlix.Catalog.Domain.Exceptions;
 using MyFlix.Catalog.Domain.Validation;
 using MediatR;
+using MyFlix.Catalog.Domain.Enum;
 
 namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 {
@@ -242,6 +243,31 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 
 			validVideo.Trailer.Should().NotBeNull();
 			validVideo.Trailer!.FilePath.Should().Be(validPath);
+		}
+
+		[Fact(DisplayName = nameof(UpdateAsSentToEncode))]
+		[Trait("Domain", "Video - Aggregate")]
+		public void UpdateAsSentToEncode()
+		{
+			var validVideo = _fixture.GetValidVideo();
+			var validPath = _fixture.GetValidMediaPath();
+			validVideo.UpdateMedia(validPath);
+
+			validVideo.UpdateAsSentToEncode();
+
+			validVideo.Media!.Status.Should().Be(MediaStatus.Processing);
+		}
+
+		[Fact(DisplayName = nameof(UpdateAsSentToEncodeThrowsWhenThereIsNoMedia))]
+		[Trait("Domain", "Video - Aggregate")]
+		public void UpdateAsSentToEncodeThrowsWhenThereIsNoMedia()
+		{
+			var validVideo = _fixture.GetValidVideo();
+
+			var action = () => validVideo.UpdateAsSentToEncode();
+
+			action.Should().Throw<EntityValidationException>()
+				.WithMessage("There is no Media");
 		}
 	}
 }

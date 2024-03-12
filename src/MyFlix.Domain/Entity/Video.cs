@@ -49,6 +49,13 @@ namespace MyFlix.Catalog.Domain.Entity
 		public void UpdateTrailer(string path)
 			=> Trailer = new Media(path);
 
+		public void UpdateAsSentToEncode()
+		{
+			if (Media is null)
+				throw new EntityValidationException("There is no Media");
+			Media.UpdateAsSentToEncode();
+		}
+
 		public void Update(string title, string description, int yearLaunched, bool opened, bool published, int duration)
 		{
 			Title = title;
@@ -61,5 +68,6 @@ namespace MyFlix.Catalog.Domain.Entity
 
 		public void Validate(ValidationHandler handler)
 			   => (new VideoValidator(this, handler)).Validate();
+
 	}
 }
