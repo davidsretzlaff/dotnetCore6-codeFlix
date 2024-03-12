@@ -37,5 +37,19 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 
 			media.Status.Should().Be(MediaStatus.Processing);
 		}
+
+		[Fact(DisplayName = nameof(UpdateAsEncoded))]
+		[Trait("Domain", "Media - Entities")]
+		public void UpdateAsEncoded()
+		{
+			var media = _fixture.GetValidMedia();
+			var encodedExamplePath = _fixture.GetValidMediaPath();
+			media.UpdateAsSentToEncode();
+
+			media.UpdateAsEncoded(encodedExamplePath);
+
+			media.Status.Should().Be(MediaStatus.Completed);
+			media.EncodedPath.Should().Be(encodedExamplePath);
+		}
 	}
 }
