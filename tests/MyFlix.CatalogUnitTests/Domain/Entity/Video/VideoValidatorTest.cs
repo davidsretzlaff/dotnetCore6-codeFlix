@@ -38,7 +38,8 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 				_fixture.GetValidYearLaunched(),
 				_fixture.GetRandomBoolean(),
 				_fixture.GetRandomBoolean(),
-				_fixture.GetValidDuration()
+				_fixture.GetValidDuration(),
+				_fixture.GetRandomRating()
 			);
 			var notificationValidationHandler = new NotificationValidationHandler();
 			var videoValidator = new VideoValidator(invalidVideo, notificationValidationHandler);
@@ -61,7 +62,8 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 				_fixture.GetValidYearLaunched(),
 				_fixture.GetRandomBoolean(),
 				_fixture.GetRandomBoolean(),
-				_fixture.GetValidDuration()
+				_fixture.GetValidDuration(),
+				_fixture.GetRandomRating()
 			);
 			var notificationValidationHandler = new NotificationValidationHandler();
 			var videoValidator = new VideoValidator(invalidVideo, notificationValidationHandler);
@@ -83,7 +85,8 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 				_fixture.GetValidYearLaunched(),
 				_fixture.GetRandomBoolean(),
 				_fixture.GetRandomBoolean(),
-				_fixture.GetValidDuration()
+				_fixture.GetValidDuration(),
+				_fixture.GetRandomRating()
 			);
 			var notificationValidationHandler = new NotificationValidationHandler();
 			var videoValidator = new VideoValidator(invalidVideo, notificationValidationHandler);
@@ -106,7 +109,8 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 				_fixture.GetValidYearLaunched(),
 				_fixture.GetRandomBoolean(),
 				_fixture.GetRandomBoolean(),
-				_fixture.GetValidDuration()
+				_fixture.GetValidDuration(),
+				_fixture.GetRandomRating()
 			);
 			var notificationValidationHandler = new NotificationValidationHandler();
 			var videoValidator = new VideoValidator(invalidVideo, notificationValidationHandler);

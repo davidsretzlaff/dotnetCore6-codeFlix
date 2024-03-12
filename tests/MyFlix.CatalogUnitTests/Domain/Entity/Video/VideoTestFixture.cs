@@ -1,4 +1,5 @@
 ﻿
+using MyFlix.Catalog.Domain.Enum;
 using MyFlix.Catalog.UnitTests.Common;
 using Xunit;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
@@ -18,7 +19,8 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 				GetValidYearLaunched(),
 				GetRandomBoolean(),
 				GetRandomBoolean(),
-				GetValidDuration()
+				GetValidDuration(),
+				GetRandomRating()
 			);
 
 		public string GetValidTitle() => Faker.Lorem.Letter(100);
@@ -36,5 +38,12 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 		public string GetTooLongTitle() => Faker.Lorem.Letter(400);
 
 		public string GetTooLongDescription() => Faker.Lorem.Letter(4001);
+
+		public Rating GetRandomRating()
+		{
+			var enumValue = Enum.GetValues<Rating>();
+			var random = new Random();
+			return enumValue[random.Next(enumValue.Length)];
+		}
 	}
 }

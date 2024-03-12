@@ -26,6 +26,7 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 			var expectedOpened = _fixture.GetRandomBoolean();
 			var expectedPublished = _fixture.GetRandomBoolean();
 			var expectedDuration = _fixture.GetValidDuration();
+			var expectedRating = _fixture.GetRandomRating();
 
 			var expectedCreatedDate = DateTime.Now;
 			var video = new DomainEntity.Video(
@@ -34,16 +35,17 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 				expectedYearLaunched,
 				expectedOpened,
 				expectedPublished,
-				expectedDuration
+				expectedDuration,
+				expectedRating
 			);
 
-			video.Title.Should().Be("Title");
-			video.Description.Should().Be("Description");
-			video.Opened.Should().Be(true);
-			video.Published.Should().Be(true);
-			video.YearLaunched.Should().Be(2001);
-			video.Duration.Should().Be(180);
-			video.CreatedAt.Should().BeCloseTo(expectedCreatedDate, TimeSpan.FromSeconds(10));
+			video.Title.Should().Be(expectedTitle);
+			video.Description.Should().Be(expectedDescription);
+			video.YearLaunched.Should().Be(expectedYearLaunched);
+			video.Opened.Should().Be(expectedOpened);
+			video.Published.Should().Be(expectedPublished);
+			video.Duration.Should().Be(expectedDuration);
+			video.CreatedAt.Should().BeCloseTo(expectedCreatedDate, TimeSpan.FromSeconds(10)); 
 		}
 
 		[Fact(DisplayName = nameof(ValidateWhenValidState))]
@@ -68,7 +70,8 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 				_fixture.GetValidYearLaunched(),
 				_fixture.GetRandomBoolean(),
 				_fixture.GetRandomBoolean(),
-				_fixture.GetValidDuration()
+				_fixture.GetValidDuration(),
+				_fixture.GetRandomRating()
 			);
 
 			var notificationHandler = new NotificationValidationHandler();

@@ -1,4 +1,5 @@
-﻿using MyFlix.Catalog.Domain.Exceptions;
+﻿using MyFlix.Catalog.Domain.Enum;
+using MyFlix.Catalog.Domain.Exceptions;
 using MyFlix.Catalog.Domain.SeedWork;
 using MyFlix.Catalog.Domain.Validation;
 using MyFlix.Catalog.Domain.Validator;
@@ -14,8 +15,9 @@ namespace MyFlix.Catalog.Domain.Entity
 		public bool Published { get; private set; }
 		public int Duration { get; private set; }
 		public DateTime CreatedAt { get; private set; }
+		public Rating Rating { get; private set; }
 
-		public Video(string title, string description, int yearLaunched, bool opened, bool published, int duration)
+		public Video(string title, string description, int yearLaunched, bool opened, bool published, int duration, Rating rating)
 		{
 			Title = title;
 			Description = description;
@@ -24,6 +26,7 @@ namespace MyFlix.Catalog.Domain.Entity
 			Published = published;
 			Duration = duration;
 			CreatedAt = DateTime.Now;
+			Rating = rating;
 		}
 
 		public void Update(string title, string description, int yearLaunched, bool opened, bool published, int duration)
