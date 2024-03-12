@@ -35,6 +35,12 @@ namespace MyFlix.Catalog.Domain.Entity
 		public void UpdateThumb(string path)
 			=> Thumb = new Image(path);
 
+		public void UpdateThumbHalf(string path)
+			=> ThumbHalf = new Image(path);
+
+		public void UpdateBanner(string path)
+			=> Banner = new Image(path);
+
 		public void Update(string title, string description, int yearLaunched, bool opened, bool published, int duration)
 		{
 			Title = title;
