@@ -26,6 +26,16 @@ namespace MyFlix.Catalog.Domain.Entity
 			CreatedAt = DateTime.Now;
 		}
 
+		public void Update(string title, string description, int yearLaunched, bool opened, bool published, int duration)
+		{
+			Title = title;
+			Description = description;
+			YearLaunched = yearLaunched;
+			Opened = opened;
+			Published = published;
+			Duration = duration;
+		}
+
 		public void Validate(ValidationHandler handler)
 			   => (new VideoValidator(this, handler)).Validate();
 	}
