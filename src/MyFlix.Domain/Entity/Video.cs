@@ -56,6 +56,13 @@ namespace MyFlix.Catalog.Domain.Entity
 			Media.UpdateAsSentToEncode();
 		}
 
+		public void UpdateAsEncoded(string validEncodedPath)
+		{
+			if (Media is null)
+				throw new EntityValidationException("There is no Media");
+			Media.UpdateAsEncoded(validEncodedPath);
+		}
+
 		public void Update(string title, string description, int yearLaunched, bool opened, bool published, int duration)
 		{
 			Title = title;
