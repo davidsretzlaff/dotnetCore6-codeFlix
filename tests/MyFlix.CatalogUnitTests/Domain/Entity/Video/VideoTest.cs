@@ -3,6 +3,8 @@ using Xunit;
 using FluentAssertions;
 using DomainEntity = MyFlix.Catalog.Domain.Entity;
 using MyFlix.Catalog.Domain.Exceptions;
+using MyFlix.Catalog.Domain.Validation;
+using MediatR;
 
 namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 {
@@ -44,28 +46,42 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 			video.CreatedAt.Should().BeCloseTo(expectedCreatedDate, TimeSpan.FromSeconds(10));
 		}
 
-		[Fact(DisplayName = nameof(InstantiateThrowsExceptionWhrnNotValid))]
+		[Fact(DisplayName = nameof(ValidateWhenValidState))]
 		[Trait("Domain", "Video - Aggregate")]
-		public void InstantiateThrowsExceptionWhrnNotValid()
+		public void ValidateWhenValidState()
 		{
-			var expectedTitle = "";
-			var expectedDescription = _fixture.GetTooLongDescription();
-			var expectedYearLaunched = _fixture.GetValidYearLaunched();
-			var expectedOpened = _fixture.GetRandomBoolean();
-			var expectedPublished = _fixture.GetRandomBoolean();
-			var expectedDuration = _fixture.GetValidDuration();
+			var validVideo = _fixture.GetValidVideo();
+			var notificationHandler = new NotificationValidationHandler();
 
-			var expectedCreatedDate = DateTime.Now;
-			var action = () => new DomainEntity.Video(
-				expectedTitle,
-				expectedDescription,
-				expectedYearLaunched,
-				expectedOpened,
-				expectedPublished,
-				expectedDuration
+			validVideo.Validate(notificationHandler);
+
+			notificationHandler.HasErrors().Should().BeFalse();
+		}
+
+		[Fact(DisplayName = nameof(ValidateWithErrorWhenInvalidState))]
+		[Trait("Domain", "Video - Aggregate")]
+		public void ValidateWithErrorWhenInvalidState()
+		{
+			var invalidVideo = new DomainEntity.Video(
+				_fixture.GetTooLongTitle(),
+				_fixture.GetTooLongDescription(),
+				_fixture.GetValidYearLaunched(),
+				_fixture.GetRandomBoolean(),
+				_fixture.GetRandomBoolean(),
+				_fixture.GetValidDuration()
 			);
 
-			action.Should().Throw<EntityValidationException>().WithMessage("Validation errors");
+			var notificationHandler = new NotificationValidationHandler();
+
+			invalidVideo.Validate(notificationHandler);
+
+			notificationHandler.HasErrors().Should().BeTrue();
+			notificationHandler.Errors.Should()
+				.BeEquivalentTo(new List<ValidationError>()
+				{
+				new ValidationError("'Title' should be less or equal 255 characters long"),
+				new ValidationError("'Description' should be less or equal 4000 characters long")
+				});
 		}
 	}
 }

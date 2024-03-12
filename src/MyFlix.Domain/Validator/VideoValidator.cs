@@ -14,7 +14,13 @@ namespace MyFlix.Catalog.Domain.Validator
 
         public override void Validate()
         {
-			ValidateTitle();
+			ValidateTitle(); 
+			
+			if (string.IsNullOrWhiteSpace(_video.Description))
+				_handler.HandleError($"'{nameof(_video.Description)}' is required");
+
+			if (_video.Description.Length > DescriptionMaxLength)
+				_handler.HandleError($"'{nameof(_video.Description)}' should be less or equal {DescriptionMaxLength} characters long");
 		}
 
 		private void ValidateTitle()
