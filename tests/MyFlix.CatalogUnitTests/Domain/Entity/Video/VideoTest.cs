@@ -79,8 +79,8 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 			notificationHandler.Errors.Should()
 				.BeEquivalentTo(new List<ValidationError>()
 				{
-				new ValidationError("'Title' should be less or equal 255 characters long"),
-				new ValidationError("'Description' should be less or equal 4000 characters long")
+					new ValidationError("'Title' should be less or equal 255 characters long"),
+					new ValidationError("'Description' should be less or equal 4000 characters long")
 				});
 		}
 
@@ -111,6 +111,66 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 			video.Opened.Should().Be(expectedOpened);
 			video.Published.Should().Be(expectedPublished);
 			video.Duration.Should().Be(expectedDuration);
+		}
+
+		[Fact(DisplayName = nameof(ValidateStillValidatingAfterUpdateToValidState))]
+		[Trait("Domain", "Video - Aggregate")]
+		public void ValidateStillValidatingAfterUpdateToValidState()
+		{
+			var expectedTitle = _fixture.GetValidTitle();
+			var expectedDescription = _fixture.GetValidDescription();
+			var expectedYearLaunched = _fixture.GetValidYearLaunched();
+			var expectedOpened = _fixture.GetRandomBoolean();
+			var expectedPublished = _fixture.GetRandomBoolean();
+			var expectedDuration = _fixture.GetValidDuration();
+			var video = _fixture.GetValidVideo();
+			video.Update(
+				expectedTitle,
+				expectedDescription,
+				expectedYearLaunched,
+				expectedOpened,
+				expectedPublished,
+				expectedDuration
+			);
+			var notificationHandler = new NotificationValidationHandler();
+
+			video.Validate(notificationHandler);
+
+			notificationHandler.HasErrors().Should().BeFalse();
+		}
+
+		[Fact(DisplayName = nameof(ValidateGenerateErrorsAfterUpdateToInvalidState))]
+		[Trait("Domain", "Video - Aggregate")]
+		public void ValidateGenerateErrorsAfterUpdateToInvalidState()
+		{
+			var expectedTitle = _fixture.GetTooLongTitle();
+			var expectedDescription = _fixture.GetTooLongDescription();
+			var expectedYearLaunched = _fixture.GetValidYearLaunched();
+			var expectedOpened = _fixture.GetRandomBoolean();
+			var expectedPublished = _fixture.GetRandomBoolean();
+			var expectedDuration = _fixture.GetValidDuration();
+			var video = _fixture.GetValidVideo();
+			video.Update(
+				expectedTitle,
+				expectedDescription,
+				expectedYearLaunched,
+				expectedOpened,
+				expectedPublished,
+				expectedDuration
+			);
+			var notificationHandler = new NotificationValidationHandler();
+
+			video.Validate(notificationHandler);
+
+			notificationHandler.HasErrors().Should().BeTrue();
+			notificationHandler.Errors.Should().HaveCount(2);
+			notificationHandler.Errors.Should().BeEquivalentTo(
+				new List<ValidationError>()
+				{
+					new ValidationError("'Title' should be less or equal 255 characters long"),
+					new ValidationError("'Description' should be less or equal 4000 characters long")
+				}
+			);
 		}
 	}
 }
