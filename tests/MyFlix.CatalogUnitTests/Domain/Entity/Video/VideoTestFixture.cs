@@ -45,5 +45,8 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 			var random = new Random();
 			return enumValue[random.Next(enumValue.Length)];
 		}
+
+		public string GetValidImagePath()
+			=> Faker.Image.PlaceImgUrl();
 	}
 }
