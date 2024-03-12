@@ -1,4 +1,7 @@
 ﻿
+using FluentAssertions;
+using MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.Domain.Enum;
 using Xunit;
 
 namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
@@ -22,6 +25,17 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 
 			media.FilePath.Should().Be(expectedFilePath);
 			media.Status.Should().Be(MediaStatus.Pending);
+		}
+
+		[Fact(DisplayName = nameof(UpdateAsSentToEncode))]
+		[Trait("Domain", "Media - Entities")]
+		public void UpdateAsSentToEncode()
+		{
+			var media = _fixture.GetValidMedia();
+
+			media.UpdateAsSentToEncode();
+
+			media.Status.Should().Be(MediaStatus.Processing);
 		}
 	}
 }

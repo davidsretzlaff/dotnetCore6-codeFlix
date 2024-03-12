@@ -61,5 +61,8 @@ namespace MyFlix.Catalog.UnitTests.Domain.Entity.Video
 			var random = new Random();
 			return exampleMedias[random.Next(exampleMedias.Length)];
 		}
+
+		public DomainEntity.Media GetValidMedia()
+			=> new(GetValidMediaPath());
 	}
 }
