@@ -59,11 +59,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 
 		[Theory(DisplayName = nameof(CreateVideoThrowsWithInvalidInput))]
 		[Trait("Application", "CreateVideo - Use Cases")]
-		[MemberData(
-			nameof(CreateVideoTestDataGenerator.GetInvalidInputs),
-			parameters: 2,
-			MemberType = typeof(CreateVideoTestDataGenerator)
-		)]
+		[ClassData(typeof(CreateVideoTestDataGenerator))]
 		public async Task CreateVideoThrowsWithInvalidInput(CreateVideoInput input, string expectedValidationError)
 		{
 			var repositoryMock = new Mock<IVideoRepository>();
