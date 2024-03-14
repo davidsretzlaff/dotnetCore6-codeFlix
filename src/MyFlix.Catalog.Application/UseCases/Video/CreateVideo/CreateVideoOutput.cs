@@ -13,7 +13,8 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 		int YearLaunched,
 		bool Opened,
 		int Duration,
-		IReadOnlyCollection<Guid> CategoriesIds
+		IReadOnlyCollection<Guid> CategoriesIds,
+		IReadOnlyCollection<Guid> GenresIds
 	)
 	{
 		public static CreateVideoOutput FromVideo(DomainEntities.Video video) => new(
@@ -26,7 +27,8 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 			video.YearLaunched,
 			video.Opened,
 			video.Duration,
-			video.Categories
+			video.Categories,
+			video.Genres
 		);
 	}
 }
