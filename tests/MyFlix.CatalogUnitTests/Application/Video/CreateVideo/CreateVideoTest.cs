@@ -6,6 +6,7 @@ using DomainEntities = MyFlix.Catalog.Domain.Entity;
 using FluentAssertions;
 using MyFlix.Catalog.Domain.Repository;
 using MyFlix.Catalog.Domain.Exceptions;
+using MyFlix.Catalog.Application.UseCases.Video.CreateVideo;
 
 namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 {
@@ -26,15 +27,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				repositoryMock.Object,
 				unitOfWorkMock.Object
 			);
-			var input = new UseCase.CreateVideoInput(
-				_fixture.GetValidTitle(),
-				_fixture.GetValidDescription(),
-				_fixture.GetValidYearLaunched(),
-				_fixture.GetRandomBoolean(),
-				_fixture.GetRandomBoolean(),
-				_fixture.GetValidDuration(),
-				_fixture.GetRandomRating()
-			);
+			var input = _fixture.CreateValidCreateVideoInput();
 
 			var output = await useCase.Handle(input, CancellationToken.None);
 
@@ -64,29 +57,25 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			output.Opened.Should().Be(input.Opened);
 		}
 
-		[Fact(DisplayName = nameof(CreateVideoThrowsWithInvalidInput))]
+		[Theory(DisplayName = nameof(CreateVideoThrowsWithInvalidInput))]
 		[Trait("Application", "CreateVideo - Use Cases")]
-		public async Task CreateVideoThrowsWithInvalidInput()
+		[MemberData(
+			nameof(CreateVideoTestDataGenerator.GetInvalidInputs),
+			parameters: 2,
+			MemberType = typeof(CreateVideoTestDataGenerator)
+		)]
+		public async Task CreateVideoThrowsWithInvalidInput(CreateVideoInput input, string expectedValidationError)
 		{
 			var repositoryMock = new Mock<IVideoRepository>();
 			var unitOfWorkMock = new Mock<IUnitOfWork>();
 			var useCase = new UseCase.CreateVideo(repositoryMock.Object, unitOfWorkMock.Object);
-			var input = new UseCase.CreateVideoInput(
-				"",
-				_fixture.GetValidDescription(),
-				_fixture.GetValidYearLaunched(),
-				_fixture.GetRandomBoolean(),
-				_fixture.GetRandomBoolean(),
-				_fixture.GetValidDuration(),
-				_fixture.GetRandomRating()
-			);
 
 			var action = async () => await useCase.Handle(input, CancellationToken.None);
 
 			var exceptionAssertion = await action.Should()
 				.ThrowAsync<EntityValidationException>()
 				.WithMessage($"There are validation errors");
-			exceptionAssertion.Which.Errors!.ToList()[0].Message.Should().Be("'Title' is required");
+			exceptionAssertion.Which.Errors!.ToList()[0].Message.Should().Be(expectedValidationError);
 			repositoryMock.Verify(
 				x => x.Insert(It.IsAny<DomainEntities.Video>(), It.IsAny<CancellationToken>()),
 				Times.Never
