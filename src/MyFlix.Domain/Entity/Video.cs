@@ -44,6 +44,9 @@ namespace MyFlix.Catalog.Domain.Entity
 		public void Removecategory(Guid categoryId)
 			=> _categories.Remove(categoryId);
 
+		public void RemoveAllCategory()
+			=> _categories = new();
+
 		public void UpdateThumb(string path)
 			=> Thumb = new Image(path);
 
