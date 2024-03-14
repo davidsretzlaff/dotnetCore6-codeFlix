@@ -10,6 +10,7 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 		string Description,
 		Rating Rating,
 		int YearLaunched,
-		bool Opened
+		bool Opened, 
+		int Duration
 	);
 }

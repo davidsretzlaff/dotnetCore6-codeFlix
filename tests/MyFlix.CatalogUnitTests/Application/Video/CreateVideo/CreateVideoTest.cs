@@ -4,6 +4,7 @@ using Xunit;
 using UseCase = MyFlix.Catalog.Application.UseCases.Video.CreateVideo;
 using DomainEntities = MyFlix.Catalog.Domain.Entity;
 using FluentAssertions;
+using MyFlix.Catalog.Domain.Repository;
 
 namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 {
@@ -51,7 +52,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			);
 			unitOfWorkMock.Verify(x => x.Commit(It.IsAny<CancellationToken>()));
 			output.Id.Should().NotBeEmpty();
-			output.CreatedAt.Should().NotBeEmpty();
+			output.CreatedAt.Should().NotBe(default(DateTime));
 			output.Title.Should().Be(input.Title);
 			output.Published.Should().Be(input.Published);
 			output.Description.Should().Be(input.Description);

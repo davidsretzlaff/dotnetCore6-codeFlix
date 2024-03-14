@@ -1,5 +1,6 @@
 ﻿using MyFlix.Catalog.Application.Interfaces;
 using MyFlix.Catalog.Domain.Repository;
+using DomainEntities = MyFlix.Catalog.Domain.Entity;
 
 namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 {
