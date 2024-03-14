@@ -1,4 +1,5 @@
 ﻿using MyFlix.Catalog.Application.Interfaces;
+using MyFlix.Catalog.Domain.Exceptions;
 using MyFlix.Catalog.Domain.Repository;
 using DomainEntities = MyFlix.Catalog.Domain.Entity;
 
@@ -27,6 +28,15 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 				input.Published,
 				input.Duration,
 				input.Rating);
+
+			var validationHandler = new NotificationValidationHandler();
+			video.Validate(validationHandler);
+			if (validationHandler.HasErrors())
+			{
+				throw new EntityValidationException(
+					"There are validation errors",
+					validationHandler.Errors);
+			}
 
 			await _videoRepository.Insert(video, cancellationToken);
 			await _unitOfWork.Commit(cancellationToken);
