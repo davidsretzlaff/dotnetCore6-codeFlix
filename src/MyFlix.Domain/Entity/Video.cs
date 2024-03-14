@@ -29,6 +29,9 @@ namespace MyFlix.Catalog.Domain.Entity
 		private List<Guid> _genres;
 		public IReadOnlyList<Guid> Genres => _genres.AsReadOnly();
 
+		private List<Guid> _castMembers;
+		public IReadOnlyList<Guid> CastMembers => _castMembers.AsReadOnly();
+
 		public Video(string title, string description, int yearLaunched, bool opened, bool published, int duration, Rating rating)
 		{
 			Title = title;
@@ -41,6 +44,7 @@ namespace MyFlix.Catalog.Domain.Entity
 			CreatedAt = DateTime.Now;
 			Rating = rating;
 			_genres = new();
+			_castMembers = new();
 		}
 
 		public void AddCategory(Guid categoryId)
@@ -60,6 +64,15 @@ namespace MyFlix.Catalog.Domain.Entity
 
 		public void RemoveAllGenres()
 			=> _genres = new();
+
+		public void AddCastMember(Guid castMemberId)
+			=> _castMembers.Add(castMemberId);
+
+		public void RemoveCastMember(Guid castMemberid)
+			=> _castMembers.Remove(castMemberid);
+
+		public void RemoveAllCastMembers()
+			=> _castMembers = new();
 
 		public void UpdateThumb(string path)
 			=> Thumb = new Image(path);
