@@ -19,7 +19,8 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				GetRandomBoolean(),
 				GetRandomBoolean(),
 				GetValidDuration(),
-				GetRandomRating()
+				GetRandomRating(),
+				categoriesIds
 			);
 	}
 }
