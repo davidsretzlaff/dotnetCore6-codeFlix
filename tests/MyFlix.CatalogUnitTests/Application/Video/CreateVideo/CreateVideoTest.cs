@@ -156,8 +156,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 		[Trait("Application", "CreateVideo - Use Cases")]
 		public async Task CreateVideoWithGenresIds()
 		{
-			var exampleIds = Enumerable.Range(1, 5)
-				.Select(_ => Guid.NewGuid()).ToList();
+			var exampleIds = Enumerable.Range(1, 5).Select(_ => Guid.NewGuid()).ToList();
 			var videoRepositoryMock = new Mock<IVideoRepository>();
 			var categoryRepositoryMock = new Mock<ICategoryRepository>();
 			var genreRepositoryMock = new Mock<IGenreRepository>();
@@ -185,7 +184,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			output.Rating.Should().Be(input.Rating);
 			output.YearLaunched.Should().Be(input.YearLaunched);
 			output.Opened.Should().Be(input.Opened);
-			output.CategoriesIds.Should().BeNull();
+			output.CategoriesIds.Should().BeEmpty();
 			output.GenresIds.Should().BeEquivalentTo(exampleIds);
 			videoRepositoryMock.Verify(x => x.Insert(
 			It.Is<DomainEntities.Video>(
