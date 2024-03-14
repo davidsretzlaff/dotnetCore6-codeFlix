@@ -33,24 +33,13 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 			video.Validate(validationHandler);
 			if (validationHandler.HasErrors())
 			{
-				throw new EntityValidationException(
-					"There are validation errors",
-					validationHandler.Errors);
+				throw new EntityValidationException("There are validation errors", validationHandler.Errors);
 			}
 
 			await _videoRepository.Insert(video, cancellationToken);
 			await _unitOfWork.Commit(cancellationToken);
 
-			return new CreateVideoOutput(
-				video.Id,
-				video.CreatedAt,
-				video.Title,
-				video.Published,
-				video.Description,
-				video.Rating,
-				video.YearLaunched,
-				video.Opened,
-				video.Duration);
+			return CreateVideoOutput.FromVideo(video);
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using MyFlix.Catalog.Domain.Enum;
+using DomainEntities = MyFlix.Catalog.Domain.Entity;
 
 namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 {
@@ -10,7 +11,18 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 		string Description,
 		Rating Rating,
 		int YearLaunched,
-		bool Opened, 
-		int Duration
-	);
+		bool Opened,
+		int Duration)
+	{
+		public static CreateVideoOutput FromVideo(DomainEntities.Video video) => new(
+			video.Id,
+			video.CreatedAt,
+			video.Title,
+			video.Published,
+			video.Description,
+			video.Rating,
+			video.YearLaunched,
+			video.Opened,
+			video.Duration);
+	}
 }
