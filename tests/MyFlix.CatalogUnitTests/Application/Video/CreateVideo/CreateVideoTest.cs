@@ -7,6 +7,7 @@ using FluentAssertions;
 using MyFlix.Catalog.Domain.Repository;
 using MyFlix.Catalog.Domain.Exceptions;
 using MyFlix.Catalog.Application.UseCases.Video.CreateVideo;
+using MyFlix.Catalog.Application.Exceptions;
 
 namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 {
@@ -92,6 +93,26 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				),
 				It.IsAny<CancellationToken>())
 			);
+		}
+
+		[Fact(DisplayName = nameof(ThrowsWhenCategoryIdInvalid))]
+		[Trait("Application", "CreateVideo - Use Cases")]
+		public async Task ThrowsWhenCategoryIdInvalid()
+		{
+			var videoRepositoryMock = new Mock<IVideoRepository>();
+			var categoryRepositoryMock = new Mock<ICategoryRepository>();
+			var examplecategoriesIds = Enumerable.Range(1, 5).Select(_ => Guid.NewGuid()).ToList();
+			var removedcategoryId = examplecategoriesIds[2];
+			var unitOfWorkMock = new Mock<IUnitOfWork>();
+			categoryRepositoryMock.Setup(x => x.GetIdsListByIds(
+				It.IsAny<List<Guid>>(),
+				It.IsAny<CancellationToken>())
+			).ReturnsAsync(examplecategoriesIds.FindAll(x => x != removedcategoryId).AsReadOnly());
+			var useCase = new UseCase.CreateVideo(videoRepositoryMock.Object, categoryRepositoryMock.Object,unitOfWorkMock.Object);
+			var input = _fixture.CreateValidCreateVideoInput(examplecategoriesIds);
+
+			var action = () => useCase.Handle(input, CancellationToken.None);
+			await action.Should().ThrowAsync<RelatedAggregateException>().WithMessage($"Related category id (or ids) not found: {removedcategoryId}.");
 		}
 
 		[Theory(DisplayName = nameof(CreateVideoThrowsWithInvalidInput))]
