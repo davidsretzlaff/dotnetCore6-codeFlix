@@ -11,13 +11,15 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 
 	public class CreateVideoTestFixture : VideoTestFixtureBase
 	{
-		internal CreateVideoInput CreateValidCreateVideoInput() => new(
-			GetValidTitle(),
-			GetValidDescription(),
-			GetValidYearLaunched(),
-			GetRandomBoolean(),
-			GetRandomBoolean(),
-			GetValidDuration(),
-			GetRandomRating());
+		internal CreateVideoInput CreateValidCreateVideoInput( List<Guid>? categoriesIds = null) 
+			=> new (
+				GetValidTitle(),
+				GetValidDescription(),
+				GetValidYearLaunched(),
+				GetRandomBoolean(),
+				GetRandomBoolean(),
+				GetValidDuration(),
+				GetRandomRating()
+			);
 	}
 }
