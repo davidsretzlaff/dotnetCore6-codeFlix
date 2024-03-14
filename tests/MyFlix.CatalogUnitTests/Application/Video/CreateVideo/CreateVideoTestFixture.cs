@@ -11,7 +11,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 
 	public class CreateVideoTestFixture : VideoTestFixtureBase
 	{
-		internal CreateVideoInput CreateValidCreateVideoInput( List<Guid>? categoriesIds = null, List<Guid>? genresIds = null) 
+		internal CreateVideoInput CreateValidCreateVideoInput( List<Guid>? categoriesIds = null, List<Guid>? genresIds = null, List<Guid>? castMembersIds = null) 
 			=> new (
 				GetValidTitle(),
 				GetValidDescription(),
@@ -21,7 +21,8 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				GetValidDuration(),
 				GetRandomRating(),
 				categoriesIds,
-				genresIds
+				genresIds,
+				castMembersIds
 			);
 	}
 }
