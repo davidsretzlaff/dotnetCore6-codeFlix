@@ -1,4 +1,5 @@
-﻿using MyFlix.Catalog.Application.Interfaces;
+﻿using MyFlix.Catalog.Application.Exceptions;
+using MyFlix.Catalog.Application.Interfaces;
 using MyFlix.Catalog.Domain.Exceptions;
 using MyFlix.Catalog.Domain.Repository;
 using DomainEntities = MyFlix.Catalog.Domain.Entity;
@@ -9,10 +10,12 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 	{
 		private readonly IVideoRepository _videoRepository;
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly ICategoryRepository _categoryRepository;
 
-		public CreateVideo(IVideoRepository videoRepository, IUnitOfWork unitOfWork)
+		public CreateVideo(IVideoRepository videoRepository, ICategoryRepository categoryRepository, IUnitOfWork unitOfWork)
 		{
 			_videoRepository = videoRepository;
+			_categoryRepository = categoryRepository;
 			_unitOfWork = unitOfWork;
 		}
 
@@ -37,8 +40,21 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 			}
 
 			if ((input.CategoriesIds?.Count ?? 0) > 0)
+			{
+				var persistenceIds = await _categoryRepository.GetIdsListByIds(
+					input.CategoriesIds!.ToList(), cancellationToken);
+				
+				if (persistenceIds.Count < input.CategoriesIds!.Count)
+				{
+					var notFoundIds = input.CategoriesIds!.ToList()
+						.FindAll(categoryId => !persistenceIds.Contains(categoryId));
+					
+					throw new RelatedAggregateException(
+						$"Related category id (or ids) not found: {string.Join(',', notFoundIds)}.");
+				}
+				
 				input.CategoriesIds!.ToList().ForEach(video.AddCategory);
-
+			}
 			await _videoRepository.Insert(video, cancellationToken);
 			await _unitOfWork.Commit(cancellationToken);
 
