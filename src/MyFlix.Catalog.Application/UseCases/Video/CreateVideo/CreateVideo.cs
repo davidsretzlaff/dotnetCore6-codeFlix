@@ -11,13 +11,15 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 		private readonly IVideoRepository _videoRepository;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly ICategoryRepository _categoryRepository;
+		private readonly ICastMemberRepository _castMemberRepository;
 		private readonly IGenreRepository _genreRepository;
 
-		public CreateVideo(IVideoRepository videoRepository, ICategoryRepository categoryRepository, IGenreRepository genreRepository, IUnitOfWork unitOfWork)
+		public CreateVideo(IVideoRepository videoRepository, ICategoryRepository categoryRepository, IGenreRepository genreRepository, ICastMemberRepository castMemberRepository, IUnitOfWork unitOfWork)
 		{
 			_videoRepository = videoRepository;
 			_categoryRepository = categoryRepository;
 			_genreRepository = genreRepository;
+			_castMemberRepository = castMemberRepository;
 			_unitOfWork = unitOfWork;
 		}
 
@@ -68,6 +70,11 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 						$"Related genre id (or ids) not found: {string.Join(',', notFoundIds)}.");
 				}
 				input.GenresIds!.ToList().ForEach(video.AddGenre);
+			}
+
+			if ((input.CastMembersIds?.Count ?? 0) > 0)
+			{
+				input.CastMembersIds!.ToList().ForEach(video.AddCastMember);
 			}
 
 			await _videoRepository.Insert(video, cancellationToken);

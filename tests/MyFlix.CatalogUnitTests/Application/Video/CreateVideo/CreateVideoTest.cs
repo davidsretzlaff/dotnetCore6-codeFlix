@@ -24,7 +24,12 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 		{
 			var repositoryMock = new Mock<IVideoRepository>();
 			var unitOfWorkMock = new Mock<IUnitOfWork>();
-			var useCase = new UseCase.CreateVideo(repositoryMock.Object, Mock.Of<ICategoryRepository>(), Mock.Of<IGenreRepository>(), unitOfWorkMock.Object);
+			var useCase = new UseCase.CreateVideo(
+				repositoryMock.Object, 
+				Mock.Of<ICategoryRepository>(), 
+				Mock.Of<IGenreRepository>(), 
+				Mock.Of<ICastMemberRepository>(), 
+				unitOfWorkMock.Object);
 			var input = _fixture.CreateValidCreateVideoInput();
 
 			var output = await useCase.Handle(input, CancellationToken.None);
@@ -67,7 +72,12 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			categoryRepositoryMock.Setup(x => x.GetIdsListByIds(
 				 It.IsAny<List<Guid>>(), It.IsAny<CancellationToken>())
 			 ).ReturnsAsync(examplecategoriesIds);
-			var useCase = new UseCase.CreateVideo(videoRepositoryMock.Object,categoryRepositoryMock.Object, Mock.Of<IGenreRepository>(), unitOfWorkMock.Object);
+			var useCase = new UseCase.CreateVideo(
+				repositoryMock.Object,
+				Mock.Of<ICategoryRepository>(),
+				Mock.Of<IGenreRepository>(),
+				Mock.Of<ICastMemberRepository>(),
+				unitOfWorkMock.Object);
 			var input = _fixture.CreateValidCreateVideoInput(examplecategoriesIds);
 
 			var output = await useCase.Handle(input, CancellationToken.None);
@@ -119,6 +129,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				videoRepositoryMock.Object,
 				categoryRepositoryMock.Object,
 				Mock.Of<IGenreRepository>(),
+				Mock.Of<ICastMemberRepository>(),
 				unitOfWorkMock.Object
 			);
 			var input = _fixture.CreateValidCreateVideoInput(examplecategoriesIds);
@@ -138,7 +149,12 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 		{
 			var repositoryMock = new Mock<IVideoRepository>();
 			var unitOfWorkMock = new Mock<IUnitOfWork>();
-			var useCase = new UseCase.CreateVideo(repositoryMock.Object, Mock.Of<ICategoryRepository>(), Mock.Of<IGenreRepository>(), unitOfWorkMock.Object);
+			var useCase = new UseCase.CreateVideo(
+				repositoryMock.Object, 
+				Mock.Of<ICategoryRepository>(), 
+				Mock.Of<IGenreRepository>(),
+				Mock.Of<ICastMemberRepository>(),
+				unitOfWorkMock.Object);
 
 			var action = async () => await useCase.Handle(input, CancellationToken.None);
 
@@ -168,6 +184,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				videoRepositoryMock.Object,
 				categoryRepositoryMock.Object,
 				genreRepositoryMock.Object,
+				Mock.Of<ICastMemberRepository>(),
 				unitOfWorkMock.Object
 			);
 			var input = _fixture.CreateValidCreateVideoInput(genresIds: exampleIds);
@@ -221,6 +238,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				videoRepositoryMock.Object,
 				categoryRepositoryMock.Object,
 				genreRepositoryMock.Object,
+				Mock.Of<ICastMemberRepository>(),
 				unitOfWorkMock.Object
 			);
 			var input = _fixture.CreateValidCreateVideoInput(genresIds: exampleIds);

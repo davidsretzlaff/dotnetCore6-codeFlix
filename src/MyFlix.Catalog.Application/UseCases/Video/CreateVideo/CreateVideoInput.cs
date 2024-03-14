@@ -12,6 +12,7 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 		int Duration,
 		Rating Rating,
 		IReadOnlyCollection<Guid>? CategoriesIds = null,
-		IReadOnlyCollection<Guid>? GenresIds = null
+		IReadOnlyCollection<Guid>? GenresIds = null,
+		IReadOnlyCollection<Guid>? CastMembersIds = null
 	) : IRequest<CreateVideoOutput>;
 }
