@@ -1,4 +1,5 @@
-﻿using MyFlix.Catalog.Application.UseCases.Video.CreateVideo;
+﻿using MyFlix.Catalog.Application.UseCases.Video.Common;
+using MyFlix.Catalog.Application.UseCases.Video.CreateVideo;
 using MyFlix.Catalog.UnitTests.Application.Video.Common.Fixtures;
 using Xunit;
 
@@ -11,7 +12,12 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 
 	public class CreateVideoTestFixture : VideoTestFixtureBase
 	{
-		internal CreateVideoInput CreateValidCreateVideoInput( List<Guid>? categoriesIds = null, List<Guid>? genresIds = null, List<Guid>? castMembersIds = null) 
+		internal CreateVideoInput CreateValidCreateVideoInput(
+			List<Guid>? categoriesIds = null, 
+			List<Guid>? genresIds = null, 
+			List<Guid>? castMembersIds = null, 
+			FileInput? thumb = null
+		) 
 			=> new (
 				GetValidTitle(),
 				GetValidDescription(),
@@ -22,7 +28,8 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				GetRandomRating(),
 				categoriesIds,
 				genresIds,
-				castMembersIds
+				castMembersIds,
+				thumb
 			);
 	}
 }

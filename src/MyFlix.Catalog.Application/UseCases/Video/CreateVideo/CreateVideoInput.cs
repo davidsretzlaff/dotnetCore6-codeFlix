@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using MyFlix.Catalog.Application.UseCases.Video.Common;
 using MyFlix.Catalog.Domain.Enum;
 
 namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
@@ -13,6 +14,7 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 		Rating Rating,
 		IReadOnlyCollection<Guid>? CategoriesIds = null,
 		IReadOnlyCollection<Guid>? GenresIds = null,
-		IReadOnlyCollection<Guid>? CastMembersIds = null
+		IReadOnlyCollection<Guid>? CastMembersIds = null,
+		FileInput? Thumb = null
 	) : IRequest<CreateVideoOutput>;
 }

@@ -13,19 +13,26 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 		private readonly ICategoryRepository _categoryRepository;
 		private readonly ICastMemberRepository _castMemberRepository;
 		private readonly IGenreRepository _genreRepository;
+		private readonly IStorageService _storageService;
 
-		public CreateVideo(IVideoRepository videoRepository, ICategoryRepository categoryRepository, IGenreRepository genreRepository, ICastMemberRepository castMemberRepository, IUnitOfWork unitOfWork)
+		public CreateVideo(
+			IVideoRepository videoRepository, 
+			ICategoryRepository categoryRepository, 
+			IGenreRepository genreRepository, 
+			ICastMemberRepository castMemberRepository, 
+			IUnitOfWork unitOfWork,
+			IStorageService storageService
+			)
 		{
 			_videoRepository = videoRepository;
 			_categoryRepository = categoryRepository;
 			_genreRepository = genreRepository;
 			_castMemberRepository = castMemberRepository;
 			_unitOfWork = unitOfWork;
+			_storageService = storageService;
 		}
 
-		public async Task<CreateVideoOutput> Handle(
-			CreateVideoInput input,
-			CancellationToken cancellationToken)
+		public async Task<CreateVideoOutput> Handle(CreateVideoInput input, CancellationToken cancellationToken)
 		{
 			var video = new DomainEntities.Video(
 				input.Title,
@@ -59,6 +66,15 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 			{
 				await ValidateCastMembersIds(input, cancellationToken);
 				input.CastMembersIds!.ToList().ForEach(video.AddCastMember);
+			}
+
+			if (input.Thumb is not null)
+			{
+				var thumbUrl = await _storageService.Upload(
+					$"{video.Id}-thumb.{input.Thumb.Extension}",
+					input.Thumb.FileStream,
+					cancellationToken);
+				video.UpdateThumb(thumbUrl);
 			}
 
 			await _videoRepository.Insert(video, cancellationToken);

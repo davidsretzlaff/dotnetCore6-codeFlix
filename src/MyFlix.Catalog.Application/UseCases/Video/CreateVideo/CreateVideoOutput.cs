@@ -15,7 +15,8 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 		int Duration,
 		IReadOnlyCollection<Guid> CategoriesIds,
 		IReadOnlyCollection<Guid> GenresIds,
-		IReadOnlyCollection<Guid> CastMembersIds
+		IReadOnlyCollection<Guid> CastMembersIds,
+		string? Thumb
 	)
 	{
 		public static CreateVideoOutput FromVideo(DomainEntities.Video video) => new(
@@ -30,7 +31,8 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 			video.Duration,
 			video.Categories,
 			video.Genres,
-			video.CastMembers
+			video.CastMembers,
+			video.Thumb?.Path
 		);
 	}
 }
