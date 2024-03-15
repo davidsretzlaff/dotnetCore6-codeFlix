@@ -314,7 +314,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			var unitOfWorkMock = new Mock<IUnitOfWork>();
 			castMemberRepositoryMock.Setup(x => x.GetIdsListByIds(
 				It.IsAny<List<Guid>>(), It.IsAny<CancellationToken>())
-			).ReturnsAsync(exampleIds.FindAll(x => x != ThrowsWhenInvalidCastMemberId));
+			).ReturnsAsync(exampleIds.FindAll(x => x != removedId));
 			var useCase = new UseCase.CreateVideo(
 				videoRepositoryMock.Object,
 				Mock.Of<ICategoryRepository>(),
