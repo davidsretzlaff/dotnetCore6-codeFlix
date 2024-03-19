@@ -113,7 +113,7 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 		{
 			var persistenceIds = await _categoryRepository.GetIdsListByIds(
 				input.CategoriesIds!.ToList(), cancellationToken);
-			if (persistenceIds.Count < input.CategoriesIds!.Count)
+			if (persistenceIds?.Count < input.CategoriesIds!.Count)
 			{
 				var notFoundIds = input.CategoriesIds!.ToList()
 					.FindAll(categoryId => !persistenceIds.Contains(categoryId));

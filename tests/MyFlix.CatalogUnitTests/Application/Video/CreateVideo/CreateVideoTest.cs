@@ -68,7 +68,6 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 		[Trait("Application", "CreateVideo - Use Cases")]
 		public async Task CreateVideoWithCategoriesIds()
 		{
-			var repositoryMock = new Mock<IVideoRepository>();
 			var examplecategoriesIds = Enumerable.Range(1, 5).Select(_ => Guid.NewGuid()).ToList();
 			var videoRepositoryMock = new Mock<IVideoRepository>();
 			var categoryRepositoryMock = new Mock<ICategoryRepository>();
@@ -77,8 +76,8 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				 It.IsAny<List<Guid>>(), It.IsAny<CancellationToken>())
 			 ).ReturnsAsync(examplecategoriesIds);
 			var useCase = new UseCase.CreateVideo(
-				repositoryMock.Object,
-				Mock.Of<ICategoryRepository>(),
+				videoRepositoryMock.Object,
+				categoryRepositoryMock.Object,
 				Mock.Of<IGenreRepository>(),
 				Mock.Of<ICastMemberRepository>(),
 				unitOfWorkMock.Object,
