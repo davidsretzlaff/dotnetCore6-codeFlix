@@ -1,6 +1,8 @@
 ﻿using DomainEntity = MyFlix.Catalog.Domain.Entity;
 using MyFlix.Catalog.UnitTests.Common;
 using MyFlix.Catalog.Domain.Enum;
+using MyFlix.Catalog.Application.UseCases.Video.Common;
+using System.Text;
 
 namespace MyFlix.Catalog.UnitTests.Application.Video.Common.Fixtures
 {
@@ -47,6 +49,13 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.Common.Fixtures
 
 		public string GetValidImagePath()
 			=> Faker.Image.PlaceImgUrl();
+
+		public FileInput GetValidImageFileInput()
+		{
+			var exampleStream = new MemoryStream(Encoding.ASCII.GetBytes("test"));
+			var fileInput = new FileInput("jpg", exampleStream);
+			return fileInput;
+		}
 
 		public string GetValidMediaPath()
 		{

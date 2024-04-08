@@ -19,7 +19,8 @@ namespace MyFlix.Catalog.EndToEndTest.Base
         )
         {
             builder.UseEnvironment("EndToEndTest");
-            builder.ConfigureServices(services => {               
+            builder.ConfigureServices(services =>
+            {
                 var serviceProvider = services.BuildServiceProvider();
                 using var scope = serviceProvider.CreateScope();
                 var context = scope.ServiceProvider

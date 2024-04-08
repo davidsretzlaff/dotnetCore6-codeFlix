@@ -45,6 +45,7 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 
 			var validationHandler = new NotificationValidationHandler();
 			video.Validate(validationHandler);
+
 			if (validationHandler.HasErrors())
 			{
 				throw new EntityValidationException("There are validation errors", validationHandler.Errors);

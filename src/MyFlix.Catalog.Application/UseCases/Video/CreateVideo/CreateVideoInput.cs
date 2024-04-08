@@ -15,6 +15,7 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 		IReadOnlyCollection<Guid>? CategoriesIds = null,
 		IReadOnlyCollection<Guid>? GenresIds = null,
 		IReadOnlyCollection<Guid>? CastMembersIds = null,
-		FileInput? Thumb = null
+		FileInput? Thumb = null,
+		FileInput? Banner = null
 	) : IRequest<CreateVideoOutput>;
 }

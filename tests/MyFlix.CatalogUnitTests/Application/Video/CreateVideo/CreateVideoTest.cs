@@ -350,9 +350,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			var repositoryMock = new Mock<IVideoRepository>();
 			var unitOfWorkMock = new Mock<IUnitOfWork>();
 			var storageServiceMock = new Mock<IStorageService>();
-			var exampleStream = new MemoryStream(Encoding.ASCII.GetBytes("test"));
-			var thumbFileInput = new FileInput("jpg", exampleStream);
-			var expectedThumbName = $"thumb.{thumbFileInput.Extension}";
+			var expectedThumbName = "thumb.jpg";
 			storageServiceMock.Setup(x => x.Upload(
 				It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<CancellationToken>())
 			).ReturnsAsync(expectedThumbName);
@@ -364,7 +362,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				unitOfWorkMock.Object,
 				storageServiceMock.Object
 			);
-			var input = _fixture.CreateValidCreateVideoInput(thumb: thumbFileInput);
+			var input = _fixture.CreateValidCreateVideoInput(thumb: _fixture.GetValidImageFileInput());
 
 			var output = await useCase.Handle(input, CancellationToken.None);
 
