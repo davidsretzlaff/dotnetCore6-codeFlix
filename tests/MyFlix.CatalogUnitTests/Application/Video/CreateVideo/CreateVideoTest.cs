@@ -34,7 +34,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				unitOfWorkMock.Object,
 				Mock.Of<IStorageService>()
 				);
-			var input = _fixture.CreateValidCreateVideoInput();
+			var input = _fixture.CreateValidInput();
 
 			var output = await useCase.Handle(input, CancellationToken.None);
 
@@ -83,7 +83,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				unitOfWorkMock.Object,
 				Mock.Of<IStorageService>()
 				);
-			var input = _fixture.CreateValidCreateVideoInput(examplecategoriesIds);
+			var input = _fixture.CreateValidInput(examplecategoriesIds);
 
 			var output = await useCase.Handle(input, CancellationToken.None);
 
@@ -138,7 +138,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				unitOfWorkMock.Object,
 				Mock.Of<IStorageService>()
 			);
-			var input = _fixture.CreateValidCreateVideoInput(examplecategoriesIds);
+			var input = _fixture.CreateValidInput(examplecategoriesIds);
 
 			var action = () => useCase.Handle(input, CancellationToken.None);
 
@@ -196,7 +196,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				unitOfWorkMock.Object,
 				Mock.Of<IStorageService>()
 			);
-			var input = _fixture.CreateValidCreateVideoInput(genresIds: exampleIds);
+			var input = _fixture.CreateValidInput(genresIds: exampleIds);
 
 			var output = await useCase.Handle(input, CancellationToken.None);
 
@@ -251,7 +251,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				unitOfWorkMock.Object,
 				Mock.Of<IStorageService>()
 			);
-			var input = _fixture.CreateValidCreateVideoInput(genresIds: exampleIds);
+			var input = _fixture.CreateValidInput(genresIds: exampleIds);
 
 			var action = () => useCase.Handle(input, CancellationToken.None);
 
@@ -279,7 +279,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				unitOfWorkMock.Object,
 				Mock.Of<IStorageService>()
 			);
-			var input = _fixture.CreateValidCreateVideoInput(castMembersIds: exampleIds);
+			var input = _fixture.CreateValidInput(castMembersIds: exampleIds);
 
 			var output = await useCase.Handle(input, CancellationToken.None);
 
@@ -334,7 +334,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				unitOfWorkMock.Object,
 				Mock.Of<IStorageService>()
 			);
-			var input = _fixture.CreateValidCreateVideoInput(castMembersIds: exampleIds);
+			var input = _fixture.CreateValidInput(castMembersIds: exampleIds);
 
 			var action = () => useCase.Handle(input, CancellationToken.None);
 
@@ -362,7 +362,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				unitOfWorkMock.Object,
 				storageServiceMock.Object
 			);
-			var input = _fixture.CreateValidCreateVideoInput(thumbHalf: _fixture.GetValidImageFileInput());
+			var input = _fixture.CreateValidInput(thumbHalf: _fixture.GetValidImageFileInput());
 
 			var output = await useCase.Handle(input, CancellationToken.None);
 
@@ -400,10 +400,10 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			var repositoryMock = new Mock<IVideoRepository>();
 			var unitOfWorkMock = new Mock<IUnitOfWork>();
 			var storageServiceMock = new Mock<IStorageService>();
-			var expectedThumbHalfName = "banner.jpg";
+			var expectedBannerName = "banner.jpg";
 			storageServiceMock.Setup(x => x.Upload(
 				It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<CancellationToken>())
-			).ReturnsAsync(expectedThumbHalfName);
+			).ReturnsAsync(expectedBannerName);
 			var useCase = new UseCase.CreateVideo(
 				repositoryMock.Object,
 				Mock.Of<ICategoryRepository>(),
@@ -412,7 +412,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				unitOfWorkMock.Object,
 				storageServiceMock.Object
 			);
-			var input = _fixture.CreateValidCreateVideoInput(
+			var input = _fixture.CreateValidInput(
 				banner: _fixture.GetValidImageFileInput());
 
 			var output = await useCase.Handle(input, CancellationToken.None);
@@ -432,6 +432,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				It.IsAny<CancellationToken>())
 			);
 			unitOfWorkMock.Verify(x => x.Commit(It.IsAny<CancellationToken>()));
+			storageServiceMock.VerifyAll();
 			output.Id.Should().NotBeEmpty();
 			output.CreatedAt.Should().NotBe(default(DateTime));
 			output.Title.Should().Be(input.Title);
@@ -441,8 +442,68 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			output.Rating.Should().Be(input.Rating);
 			output.YearLaunched.Should().Be(input.YearLaunched);
 			output.Opened.Should().Be(input.Opened);
-			output.Banner.Should().Be(expectedThumbHalfName);
+			output.Banner.Should().Be(expectedBannerName);
 		}
 
+		[Fact(DisplayName = nameof(CreateVideoWithAllImages))]
+		[Trait("Application", "CreateVideo - Use Cases")]
+		public async Task CreateVideoWithAllImages()
+		{
+			var repositoryMock = new Mock<IVideoRepository>();
+			var unitOfWorkMock = new Mock<IUnitOfWork>();
+			var storageServiceMock = new Mock<IStorageService>();
+			var expectedThumbHalfName = "thumbhalf.jpg";
+			var expectedThumbName = "thumb.jpg";
+			var expectedBannerName = "banner.jpg";
+			storageServiceMock.Setup(x => x.Upload(
+				It.Is<string>(x => x.EndsWith("-banner.jpg")), It.IsAny<Stream>(), It.IsAny<CancellationToken>())
+			).ReturnsAsync(expectedBannerName);
+			storageServiceMock.Setup(x => x.Upload(
+				It.Is<string>(x => x.EndsWith("-thumbhalf.jpg")), It.IsAny<Stream>(), It.IsAny<CancellationToken>())
+			).ReturnsAsync(expectedThumbHalfName);
+			storageServiceMock.Setup(x => x.Upload(
+				It.Is<string>(x => x.EndsWith("-thumb.jpg")), It.IsAny<Stream>(), It.IsAny<CancellationToken>())
+			).ReturnsAsync(expectedThumbName);
+			var useCase = new UseCase.CreateVideo(
+				repositoryMock.Object,
+				Mock.Of<ICategoryRepository>(),
+				Mock.Of<IGenreRepository>(),
+				Mock.Of<ICastMemberRepository>(),
+				unitOfWorkMock.Object,
+				storageServiceMock.Object
+			);
+			var input = _fixture.CreateValidInputWithAllImages();
+
+			var output = await useCase.Handle(input, CancellationToken.None);
+
+			repositoryMock.Verify(x => x.Insert(
+				It.Is<DomainEntities.Video>(
+					video =>
+						video.Title == input.Title &&
+						video.Published == input.Published &&
+						video.Description == input.Description &&
+						video.Duration == input.Duration &&
+						video.Rating == input.Rating &&
+						video.Id != Guid.Empty &&
+						video.YearLaunched == input.YearLaunched &&
+						video.Opened == input.Opened
+				),
+				It.IsAny<CancellationToken>())
+			);
+			unitOfWorkMock.Verify(x => x.Commit(It.IsAny<CancellationToken>()));
+			storageServiceMock.VerifyAll();
+			output.Id.Should().NotBeEmpty();
+			output.CreatedAt.Should().NotBe(default(DateTime));
+			output.Title.Should().Be(input.Title);
+			output.Published.Should().Be(input.Published);
+			output.Description.Should().Be(input.Description);
+			output.Duration.Should().Be(input.Duration);
+			output.Rating.Should().Be(input.Rating);
+			output.YearLaunched.Should().Be(input.YearLaunched);
+			output.Opened.Should().Be(input.Opened);
+			output.ThumbHalf.Should().Be(expectedThumbHalfName);
+			output.Thumb.Should().Be(expectedThumbName);
+			output.Banner.Should().Be(expectedBannerName);
+		}
 	}
 }
