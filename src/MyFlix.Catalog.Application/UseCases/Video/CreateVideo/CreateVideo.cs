@@ -51,24 +51,15 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 				throw new EntityValidationException("There are validation errors", validationHandler.Errors);
 			}
 
-			if ((input.CategoriesIds?.Count ?? 0) > 0)
-			{
-				await ValidateCategoriesIds(input, cancellationToken);
-				input.CategoriesIds!.ToList().ForEach(video.AddCategory);
-			}
+			await ValidateAndAddRelations(input, video, cancellationToken);
+			await UploadImagesMedia(input, video, cancellationToken);
+			await _videoRepository.Insert(video, cancellationToken);
+			await _unitOfWork.Commit(cancellationToken);
+			return CreateVideoOutput.FromVideo(video);
+		}
 
-			if ((input.GenresIds?.Count ?? 0) > 0)
-			{
-				await ValidateGenresIds(input, cancellationToken);
-				input.GenresIds!.ToList().ForEach(video.AddGenre);
-			}
-
-			if ((input.CastMembersIds?.Count ?? 0) > 0)
-			{
-				await ValidateCastMembersIds(input, cancellationToken);
-				input.CastMembersIds!.ToList().ForEach(video.AddCastMember);
-			}
-
+		private async Task UploadImagesMedia(CreateVideoInput input, DomainEntities.Video video, CancellationToken cancellationToken)
+		{
 			if (input.Thumb is not null)
 			{
 				var thumbUrl = await _storageService.Upload(
@@ -95,12 +86,28 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 					cancellationToken);
 				video.UpdateThumbHalf(thumbHalfUrl);
 			}
-
-			await _videoRepository.Insert(video, cancellationToken);
-			await _unitOfWork.Commit(cancellationToken);
-			return CreateVideoOutput.FromVideo(video);
 		}
 
+		private async Task ValidateAndAddRelations(CreateVideoInput input, DomainEntities.Video video, CancellationToken cancellationToken)
+		{
+			if ((input.CategoriesIds?.Count ?? 0) > 0)
+			{
+				await ValidateCategoriesIds(input, cancellationToken);
+				input.CategoriesIds!.ToList().ForEach(video.AddCategory);
+			}
+
+			if ((input.GenresIds?.Count ?? 0) > 0)
+			{
+				await ValidateGenresIds(input, cancellationToken);
+				input.GenresIds!.ToList().ForEach(video.AddGenre);
+			}
+
+			if ((input.CastMembersIds?.Count ?? 0) > 0)
+			{
+				await ValidateCastMembersIds(input, cancellationToken);
+				input.CastMembersIds!.ToList().ForEach(video.AddCastMember);
+			}
+		}
 
 		private async Task ValidateCastMembersIds(CreateVideoInput input, CancellationToken cancellationToken)
 		{
