@@ -17,7 +17,8 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			List<Guid>? genresIds = null, 
 			List<Guid>? castMembersIds = null, 
 			FileInput? thumb = null,
-			FileInput? banner = null
+			FileInput? banner = null,
+			FileInput? thumbHalf = null
 		) 
 			=> new (
 				GetValidTitle(),
@@ -31,7 +32,8 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				genresIds,
 				castMembersIds,
 				thumb,
-				banner
+				banner,
+				thumbHalf
 		);
 	}
 }

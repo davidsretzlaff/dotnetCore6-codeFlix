@@ -1,4 +1,5 @@
-﻿using MyFlix.Catalog.Domain.Enum;
+﻿using MyFlix.Catalog.Application.UseCases.Video.Common;
+using MyFlix.Catalog.Domain.Enum;
 using DomainEntities = MyFlix.Catalog.Domain.Entity;
 
 namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
@@ -16,7 +17,9 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 		IReadOnlyCollection<Guid> CategoriesIds,
 		IReadOnlyCollection<Guid> GenresIds,
 		IReadOnlyCollection<Guid> CastMembersIds,
-		string? Thumb
+		string? Thumb,
+		string? Banner,
+		string ThumbHalf
 	)
 	{
 		public static CreateVideoOutput FromVideo(DomainEntities.Video video) => new(
@@ -32,7 +35,9 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 			video.Categories,
 			video.Genres,
 			video.CastMembers,
-			video.Thumb?.Path
+			video.Thumb?.Path,
+			video.Banner?.Path,
+			video.ThumbHalf?.Path
 		);
 	}
 }
