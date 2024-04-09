@@ -9,13 +9,13 @@ namespace MyFlix.Catalog.Application.UseCases.Video.DeleteVideo
 	{
 		private readonly IVideoRepository _repository;
 		private readonly IUnitOfWork _unitOfWork;
-
 		private readonly IStorageService _storageService;
 
 		public DeleteVideo(IVideoRepository repository, IUnitOfWork unitOfWork, IStorageService storageService)
 		{
 			_repository = repository;
 			_unitOfWork = unitOfWork;
+			_storageService = storageService;
 		}
 
 		public async Task<Unit> Handle(
