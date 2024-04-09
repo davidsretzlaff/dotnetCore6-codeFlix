@@ -1,5 +1,7 @@
-﻿using Moq;
+﻿using FluentAssertions;
+using Moq;
 using MyFlix.Catalog.Application.Common;
+using MyFlix.Catalog.Application.Exceptions;
 using MyFlix.Catalog.Application.Interfaces;
 using MyFlix.Catalog.Domain.Repository;
 using Xunit;
@@ -62,5 +64,21 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.UploadMedias
             );
             _unitOfWorkMock.Verify(x => x.Commit(It.IsAny<CancellationToken>()));
         }
-    }
+
+		[Fact(DisplayName = nameof(ThrowsWhenVideoNotFound))]
+		[Trait("Application", "UploadMedias - Use Cases")]
+		public async Task ThrowsWhenVideoNotFound()
+		{
+			var video = _fixture.GetValidVideo();
+			var validInput = _fixture.GetValidInput(videoId: video.Id);
+			_repositoryMock.Setup(x => x.Get(
+				It.Is<Guid>(x => x == video.Id),
+				It.IsAny<CancellationToken>())
+			).ThrowsAsync(new NotFoundException("Video not found"));
+
+			var action = () => _useCase.Handle(validInput, CancellationToken.None);
+
+			await action.Should().ThrowAsync<NotFoundException>().WithMessage("Video not found");
+		}
+	}
 }
