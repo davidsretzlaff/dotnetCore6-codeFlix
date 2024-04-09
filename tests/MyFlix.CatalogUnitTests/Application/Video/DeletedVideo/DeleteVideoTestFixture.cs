@@ -10,5 +10,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.DeletedVideo
 
 	public class DeleteVideoTestFixture : VideoTestFixtureBase
 	{
+		internal DeleteVideoInput GetValidInput(Guid? id = null)
+		=> new(id ?? Guid.NewGuid());
 	}
 }
