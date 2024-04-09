@@ -2,7 +2,9 @@
 using MediatR;
 using MyFlix.Catalog.Application.Common;
 using MyFlix.Catalog.Application.Interfaces;
+using MyFlix.Catalog.Domain.Entity;
 using MyFlix.Catalog.Domain.Repository;
+using System.Threading;
 
 namespace MyFlix.Catalog.Application.UseCases.Video.UploadMedias
 {
@@ -27,12 +29,28 @@ namespace MyFlix.Catalog.Application.UseCases.Video.UploadMedias
 		{
 			var video = await _videoRepository.Get(input.VideoId, cancellationToken);
 
-			await UploadVideo(input, video, cancellationToken);
-			await UploadTrailer(input, video, cancellationToken);
+			try
+			{
+				await UploadVideo(input, video, cancellationToken);
+				await UploadTrailer(input, video, cancellationToken);
 
-			await _videoRepository.Update(video, cancellationToken);
-			await _unitOfWork.Commit(cancellationToken);
-			return Unit.Value;
+				await _videoRepository.Update(video, cancellationToken);
+				await _unitOfWork.Commit(cancellationToken);
+				return Unit.Value;
+			}
+			 
+			catch (Exception)
+			{
+				await ClearStorage(input, video, cancellationToken);
+				throw;
+			}
+		}
+		private async Task ClearStorage(UploadMediasInput input, Domain.Entity.Video video, CancellationToken cancellationToken)
+		{
+			if (input.VideoFile is not null && video.Media is not null)
+				await _storageService.Delete(video.Media.FilePath, cancellationToken);
+			if (input.TrailerFile is not null && video.Trailer is not null)
+				await _storageService.Delete(video.Trailer.FilePath, cancellationToken);
 		}
 
 		private async Task UploadTrailer(UploadMediasInput input, Domain.Entity.Video video, CancellationToken cancellationToken)
