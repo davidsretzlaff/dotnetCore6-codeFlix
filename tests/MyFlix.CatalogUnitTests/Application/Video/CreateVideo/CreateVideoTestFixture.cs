@@ -19,7 +19,8 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			FileInput? thumb = null,
 			FileInput? banner = null,
 			FileInput? thumbHalf = null,
-			FileInput? media = null
+			FileInput? media = null,
+			FileInput? trailer = null
 		) 
 			=> new (
 				GetValidTitle(),
@@ -35,7 +36,8 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				thumb,
 				banner,
 				thumbHalf,
-				media
+				media,
+				trailer
 		);
 
 		internal CreateVideoInput CreateValidInputWithAllImages() => new(
