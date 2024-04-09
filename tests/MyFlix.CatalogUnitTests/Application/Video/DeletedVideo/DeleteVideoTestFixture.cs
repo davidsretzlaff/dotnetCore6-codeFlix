@@ -1,4 +1,5 @@
-﻿using MyFlix.Catalog.UnitTests.Application.Video.Common.Fixtures;
+﻿using MyFlix.Catalog.Application.UseCases.Video.DeleteVideo;
+using MyFlix.Catalog.UnitTests.Application.Video.Common.Fixtures;
 using Xunit;
 
 namespace MyFlix.Catalog.UnitTests.Application.Video.DeletedVideo
