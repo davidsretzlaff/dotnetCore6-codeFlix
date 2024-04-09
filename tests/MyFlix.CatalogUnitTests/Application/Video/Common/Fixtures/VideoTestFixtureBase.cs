@@ -70,6 +70,13 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.Common.Fixtures
 			return exampleMedias[random.Next(exampleMedias.Length)];
 		}
 
+		public FileInput GetValidMediaFileInput()
+		{
+			var exampleStream = new MemoryStream(Encoding.ASCII.GetBytes("test"));
+			var fileInput = new FileInput("mp4", exampleStream);
+			return fileInput;
+		}
+
 		public DomainEntity.Media GetValidMedia()
 			=> new(GetValidMediaPath());
 	}

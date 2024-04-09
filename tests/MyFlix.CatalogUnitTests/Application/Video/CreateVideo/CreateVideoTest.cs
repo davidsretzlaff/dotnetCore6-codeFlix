@@ -564,7 +564,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 				x => x.Delete(
 					It.Is<string>(x => (x == "123-banner.jpg") || (x == "123-thumb.jpg")),
 					It.IsAny<CancellationToken>()
-				), 2);
+				), Times.Exactly(2));
 		}
 	}
 }
