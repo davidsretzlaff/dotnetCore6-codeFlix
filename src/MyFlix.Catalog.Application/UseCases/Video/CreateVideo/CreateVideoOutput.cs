@@ -19,7 +19,8 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 		IReadOnlyCollection<Guid> CastMembersIds,
 		string? Thumb,
 		string? Banner,
-		string ThumbHalf
+		string ThumbHalf,
+		string? Media
 	)
 	{
 		public static CreateVideoOutput FromVideo(DomainEntities.Video video) => new(
@@ -37,7 +38,8 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 			video.CastMembers,
 			video.Thumb?.Path,
 			video.Banner?.Path,
-			video.ThumbHalf?.Path
+			video.ThumbHalf?.Path,
+			video.Media?.FilePath
 		);
 	}
 }

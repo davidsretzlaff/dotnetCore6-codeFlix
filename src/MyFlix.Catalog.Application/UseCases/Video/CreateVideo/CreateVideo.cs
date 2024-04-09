@@ -1,4 +1,5 @@
-﻿using MyFlix.Catalog.Application.Exceptions;
+﻿using MyFlix.Catalog.Application.Common;
+using MyFlix.Catalog.Application.Exceptions;
 using MyFlix.Catalog.Application.Interfaces;
 using MyFlix.Catalog.Domain.Exceptions;
 using MyFlix.Catalog.Domain.Repository;
@@ -55,7 +56,7 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 			try
 			{
 				await UploadImagesMedia(input, video, cancellationToken);
-
+				await UploadVideosMedia(input, video, cancellationToken);
 				await _videoRepository.Insert(video, cancellationToken);
 				await _unitOfWork.Commit(cancellationToken);
 
@@ -65,6 +66,19 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 			{
 				await ClearStorage(video, cancellationToken);
 				throw;
+			}
+		}
+
+		private async Task UploadVideosMedia(CreateVideoInput input, DomainEntities.Video video, CancellationToken cancellationToken)
+		{
+			if (input.Media is not null)
+			{
+				var fileName = StorageFileName.Create(video.Id, nameof(video.Media), input.Media.Extension);
+				var mediaUrl = await _storageService.Upload(
+					fileName,
+					input.Media.FileStream,
+					cancellationToken);
+				video.UpdateMedia(mediaUrl);
 			}
 		}
 
