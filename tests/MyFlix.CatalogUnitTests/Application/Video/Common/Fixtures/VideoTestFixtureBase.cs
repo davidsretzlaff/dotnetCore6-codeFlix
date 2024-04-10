@@ -3,6 +3,7 @@ using MyFlix.Catalog.UnitTests.Common;
 using MyFlix.Catalog.Domain.Enum;
 using MyFlix.Catalog.Application.UseCases.Video.Common;
 using System.Text;
+using MyFlix.Catalog.Application.UseCases.Video.CreateVideo;
 
 namespace MyFlix.Catalog.UnitTests.Application.Video.Common.Fixtures
 {
@@ -79,5 +80,23 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.Common.Fixtures
 
 		public DomainEntity.Media GetValidMedia()
 			=> new(GetValidMediaPath());
+
+		internal CreateVideoInput CreateValidInputWithAllMedias() => new(
+			 GetValidTitle(),
+			 GetValidDescription(),
+			 GetValidYearLaunched(),
+			 GetRandomBoolean(),
+			 GetRandomBoolean(),
+			 GetValidDuration(),
+			 GetRandomRating(),
+			 null,
+			 null,
+			 null,
+			 null,
+			 null,
+			 null,
+			 GetValidMediaFileInput(),
+			 GetValidMediaFileInput()
+		 );
 	}
 }
