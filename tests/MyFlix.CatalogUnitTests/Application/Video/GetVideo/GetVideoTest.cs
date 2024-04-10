@@ -1,7 +1,8 @@
 ﻿using Moq;
 using MyFlix.Catalog.Domain.Repository;
-using MyFlix.Catalog.UnitTests.Application.Video.CreateVideo;
+using UseCase = MyFlix.Catalog.Application.UseCases.Video.GetVideo;
 using Xunit;
+using FluentAssertions;
 
 namespace MyFlix.Catalog.UnitTests.Application.Video.GetVideo
 {
@@ -41,5 +42,4 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.GetVideo
 			repositoryMock.VerifyAll();
 		}
 	}
- 12 changes: 12 additions & 0 deletions12
 }
