@@ -4,6 +4,7 @@ using DomainEntities = MyFlix.Catalog.Domain.Entity;
 
 namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 {
+
 	[CollectionDefinition(nameof(ListVideosTestFixture))]
 	public class ListVideosTestFixtureCollection
 		: ICollectionFixture<ListVideosTestFixture>

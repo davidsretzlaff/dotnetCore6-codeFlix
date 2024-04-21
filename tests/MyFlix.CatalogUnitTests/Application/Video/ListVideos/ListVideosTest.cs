@@ -5,10 +5,13 @@ using MyFlix.Catalog.Application.UseCases.Video.Common;
 using MyFlix.Catalog.Domain.Repository;
 using MyFlix.Catalog.Domain.SeedWork.SearchableRepository;
 using Xunit;
-using UseCase = MyFlix.Catalog.Application.UseCases.ListVideos;
+using UseCase = MyFlix.Catalog.Application.UseCases.Video.ListVideo;
+
+using DomainEntities = MyFlix.Catalog.Domain.Entity;
 
 namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 {
+	[Collection(nameof(ListVideosTestFixture))]
 	public class ListVideosTest
 	{
 		private readonly ListVideosTestFixture _fixture;
@@ -27,7 +30,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 		public async Task ListVideos()
 		{
 			var exampleVideosList = _fixture.CreateExampleVideosList();
-			var input = new ListVideosInput(1, 10, "", "", SearchOrder.Asc);
+			var input = new UseCase.ListVideosInput(1, 10, "", "", SearchOrder.Asc);
 			_videoRepositoryMock.Setup(x =>
 				x.Search(
 					It.Is<SearchInput>(x =>
@@ -37,8 +40,13 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 						x.OrderBy == input.Sort &&
 						x.Order == input.Dir),
 					It.IsAny<CancellationToken>()
-				).ReturnsAsync(exampleVideosList)
-			);
+				)
+			).ReturnsAsync(
+				new SearchOutput<DomainEntities.Video>(
+					input.Page,
+					input.PerPage,
+					exampleVideosList.Count,
+					exampleVideosList));
 
 			PaginatedListOutput<VideoModelOutput> output = await _useCase.Handle(input, CancellationToken.None);
 
