@@ -59,7 +59,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			output.Published.Should().Be(input.Published);
 			output.Description.Should().Be(input.Description);
 			output.Duration.Should().Be(input.Duration);
-			output.Rating.Should().Be(input.Rating);
+			output.Rating.Should().Be(input.Rating.ToStringSignal());
 			output.YearLaunched.Should().Be(input.YearLaunched);
 			output.Opened.Should().Be(input.Opened);
 		}
@@ -109,10 +109,10 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			output.Published.Should().Be(input.Published);
 			output.Description.Should().Be(input.Description);
 			output.Duration.Should().Be(input.Duration);
-			output.Rating.Should().Be(input.Rating);
+			output.Rating.Should().Be(input.Rating.ToStringSignal());
 			output.YearLaunched.Should().Be(input.YearLaunched);
 			output.Opened.Should().Be(input.Opened);
-			output.Media.Should().Be(expectedMediaName);
+			output.VideoFileUrl.Should().Be(expectedMediaName);
 		}
 
 		[Fact(DisplayName = nameof(CreateVideoWithTrailer))]
@@ -161,10 +161,10 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			output.Published.Should().Be(input.Published);
 			output.Description.Should().Be(input.Description);
 			output.Duration.Should().Be(input.Duration);
-			output.Rating.Should().Be(input.Rating);
+			output.Rating.Should().Be(input.Rating.ToStringSignal());
 			output.YearLaunched.Should().Be(input.YearLaunched);
 			output.Opened.Should().Be(input.Opened);
-			output.Trailer.Should().Be(expectedTrailerName);
+			output.TrailerFileUrl.Should().Be(expectedTrailerName);
 		}
 
 		[Fact(DisplayName = nameof(CreateVideoWithCategoriesIds))]
@@ -197,7 +197,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			output.Published.Should().Be(input.Published);
 			output.Description.Should().Be(input.Description);
 			output.Duration.Should().Be(input.Duration);
-			output.Rating.Should().Be(input.Rating);
+			output.Rating.Should().Be(input.Rating.ToStringSignal());
 			output.YearLaunched.Should().Be(input.YearLaunched);
 			output.Opened.Should().Be(input.Opened);
 			output.CategoriesIds.Should().BeEquivalentTo(examplecategoriesIds);
@@ -310,7 +310,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			output.Published.Should().Be(input.Published);
 			output.Description.Should().Be(input.Description);
 			output.Duration.Should().Be(input.Duration);
-			output.Rating.Should().Be(input.Rating);
+			output.Rating.Should().Be(input.Rating.ToStringSignal());
 			output.YearLaunched.Should().Be(input.YearLaunched);
 			output.Opened.Should().Be(input.Opened);
 			output.CategoriesIds.Should().BeEmpty();
@@ -393,7 +393,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			output.Published.Should().Be(input.Published);
 			output.Description.Should().Be(input.Description);
 			output.Duration.Should().Be(input.Duration);
-			output.Rating.Should().Be(input.Rating);
+			output.Rating.Should().Be(input.Rating.ToStringSignal());
 			output.YearLaunched.Should().Be(input.YearLaunched);
 			output.Opened.Should().Be(input.Opened);
 			output.CategoriesIds.Should().BeEmpty();
@@ -490,10 +490,10 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			output.Published.Should().Be(input.Published);
 			output.Description.Should().Be(input.Description);
 			output.Duration.Should().Be(input.Duration);
-			output.Rating.Should().Be(input.Rating);
+			output.Rating.Should().Be(input.Rating.ToStringSignal()	);
 			output.YearLaunched.Should().Be(input.YearLaunched);
 			output.Opened.Should().Be(input.Opened);
-			output.ThumbHalf.Should().Be(expectedBannerName);
+			output.ThumbHalfFileUrl.Should().Be(expectedBannerName);
 		}
 
 		[Fact(DisplayName = nameof(CreateVideoWithThumbHalf))]
@@ -542,10 +542,10 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			output.Published.Should().Be(input.Published);
 			output.Description.Should().Be(input.Description);
 			output.Duration.Should().Be(input.Duration);
-			output.Rating.Should().Be(input.Rating);
+			output.Rating.Should().Be(input.Rating.ToStringSignal());
 			output.YearLaunched.Should().Be(input.YearLaunched);
 			output.Opened.Should().Be(input.Opened);
-			output.Banner.Should().Be(expectedBannerName);
+			output.BannerFileUrl.Should().Be(expectedBannerName);
 		}
 
 		[Fact(DisplayName = nameof(CreateVideoWithAllImages))]
@@ -601,12 +601,12 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.CreateVideo
 			output.Published.Should().Be(input.Published);
 			output.Description.Should().Be(input.Description);
 			output.Duration.Should().Be(input.Duration);
-			output.Rating.Should().Be(input.Rating);
+			output.Rating.Should().Be(input.Rating.ToStringSignal());
 			output.YearLaunched.Should().Be(input.YearLaunched);
 			output.Opened.Should().Be(input.Opened);
-			output.ThumbHalf.Should().Be(expectedThumbHalfName);
-			output.Thumb.Should().Be(expectedThumbName);
-			output.Banner.Should().Be(expectedBannerName);
+			output.ThumbHalfFileUrl.Should().Be(expectedThumbHalfName);
+			output.ThumbFileUrl.Should().Be(expectedThumbName);
+			output.BannerFileUrl.Should().Be(expectedBannerName);
 		}
 
 		[Fact(DisplayName = nameof(ThrowsExceptionInUploadErrorCases))]

@@ -8,6 +8,7 @@ using Xunit;
 using UseCase = MyFlix.Catalog.Application.UseCases.Video.ListVideo;
 
 using DomainEntities = MyFlix.Catalog.Domain.Entity;
+using MyFlix.Catalog.Domain.Exceptions;
 
 namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 {
@@ -64,14 +65,14 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 				outputItem.Published.Should().Be(exampleVideo.Published);
 				outputItem.Description.Should().Be(exampleVideo.Description);
 				outputItem.Duration.Should().Be(exampleVideo.Duration);
-				outputItem.Rating.Should().Be(exampleVideo.Rating);
+				outputItem.Rating.Should().Be(exampleVideo.Rating.ToStringSignal());
 				outputItem.YearLaunched.Should().Be(exampleVideo.YearLaunched);
 				outputItem.Opened.Should().Be(exampleVideo.Opened);
-				outputItem.Thumb.Should().Be(exampleVideo.Thumb!.Path);
-				outputItem.ThumbHalf.Should().Be(exampleVideo.ThumbHalf!.Path);
-				outputItem.Banner.Should().Be(exampleVideo.Banner!.Path);
-				outputItem.Media.Should().Be(exampleVideo.Media!.FilePath);
-				outputItem.Trailer.Should().Be(exampleVideo.Trailer!.FilePath);
+				outputItem.ThumbFileUrl.Should().Be(exampleVideo.Thumb!.Path);
+				outputItem.ThumbHalfFileUrl.Should().Be(exampleVideo.ThumbHalf!.Path);
+				outputItem.BannerFileUrl.Should().Be(exampleVideo.Banner!.Path);
+				outputItem.VideoFileUrl.Should().Be(exampleVideo.Media!.FilePath);
+				outputItem.TrailerFileUrl.Should().Be(exampleVideo.Trailer!.FilePath);
 				outputItem.CategoriesIds.Should().BeEquivalentTo(exampleVideo.Categories);
 				outputItem.CastMembersIds.Should().BeEquivalentTo(exampleVideo.CastMembers);
 				outputItem.GenresIds.Should().BeEquivalentTo(exampleVideo.Genres);

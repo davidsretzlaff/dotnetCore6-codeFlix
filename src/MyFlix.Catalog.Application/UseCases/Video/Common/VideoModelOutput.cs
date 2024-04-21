@@ -1,4 +1,5 @@
 ﻿using MyFlix.Catalog.Domain.Enum;
+using MyFlix.Catalog.Domain.Exceptions;
 using DomainEntities = MyFlix.Catalog.Domain.Entity;
 
 namespace MyFlix.Catalog.Application.UseCases.Video.Common
@@ -10,18 +11,18 @@ namespace MyFlix.Catalog.Application.UseCases.Video.Common
 		string Title,
 		bool Published,
 		string Description,
-		Rating Rating,
+		string Rating,
 		int YearLaunched,
 		bool Opened,
 		int Duration,
 		IReadOnlyCollection<Guid> CategoriesIds,
 		IReadOnlyCollection<Guid> GenresIds,
 		IReadOnlyCollection<Guid> CastMembersIds,
-		string? Thumb,
-		string? Banner,
-		string? ThumbHalf,
-		string? Media,
-		string? Trailer)
+		string? ThumbFileUrl,
+		string? BannerFileUrl,
+		string? ThumbHalfFileUrl,
+		string? VideoFileUrl,
+		string? TrailerFileUrl)
 	{
 		public static VideoModelOutput FromVideo(DomainEntities.Video video) => new(
 			video.Id,
@@ -29,7 +30,7 @@ namespace MyFlix.Catalog.Application.UseCases.Video.Common
 			video.Title,
 			video.Published,
 			video.Description,
-			video.Rating,
+			video.Rating.ToStringSignal(),
 			video.YearLaunched,
 			video.Opened,
 			video.Duration,
