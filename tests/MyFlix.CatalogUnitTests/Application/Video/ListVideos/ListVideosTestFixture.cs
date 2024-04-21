@@ -1,6 +1,6 @@
-﻿
-using MyFlix.Catalog.UnitTests.Application.Video.Common.Fixtures;
+﻿using MyFlix.Catalog.UnitTests.Application.Video.Common.Fixtures;
 using Xunit;
+using DomainEntities = MyFlix.Catalog.Domain.Entity;
 
 namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 {
@@ -11,5 +11,9 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 
 	public class ListVideosTestFixture : VideoTestFixtureBase
 	{
+		public List<DomainEntities.Video> CreateExampleVideosList()
+			=> Enumerable.Range(1, Random.Shared.Next(2, 10))
+				.Select(_ => GetValidVideoWithAllProperties())
+				.ToList();
 	}
 }
