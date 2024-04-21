@@ -5,24 +5,24 @@ using DomainEntities = MyFlix.Catalog.Domain.Entity;
 namespace MyFlix.Catalog.Application.UseCases.Video.Common
 {
 	public record VideoModelOutput(
-		Guid Id,
-		DateTime CreatedAt,
-		string Title,
-		bool Published,
-		string Description,
-		string Rating,
-		int YearLaunched,
-		bool Opened,
-		int Duration,
-		IReadOnlyCollection<VideoModelOutputRelatedAggregate> Categories,
-		IReadOnlyCollection<VideoModelOutputRelatedAggregate> Genres,
-		IReadOnlyCollection<VideoModelOutputRelatedAggregate> CastMembers,
+	Guid Id,
+	DateTime CreatedAt,
+	string Title,
+	bool Published,
+	string Description,
+	string Rating,
+	int YearLaunched,
+	bool Opened,
+	int Duration,
+	IReadOnlyCollection<VideoModelOutputRelatedAggregate> Categories,
+	IReadOnlyCollection<VideoModelOutputRelatedAggregate> Genres,
+	IReadOnlyCollection<VideoModelOutputRelatedAggregate> CastMembers,
 
-		string? ThumbFileUrl,
-		string? BannerFileUrl,
-		string? ThumbHalfFileUrl,
-		string? VideoFileUrl,
-		string? TrailerFileUrl)
+	string? ThumbFileUrl,
+	string? BannerFileUrl,
+	string? ThumbHalfFileUrl,
+	string? VideoFileUrl,
+	string? TrailerFileUrl)
 	{
 		public static VideoModelOutput FromVideo(DomainEntities.Video video) => new(
 			video.Id,
@@ -45,7 +45,8 @@ namespace MyFlix.Catalog.Application.UseCases.Video.Common
 
 		public static VideoModelOutput FromVideo(
 			DomainEntities.Video video,
-			IReadOnlyList<DomainEntities.Category>? categories = null
+			IReadOnlyList<DomainEntities.Category>? categories = null,
+			IReadOnlyCollection<DomainEntities.Genre>? genres = null
 		) => new(
 			video.Id,
 			video.CreatedAt,
@@ -61,7 +62,11 @@ namespace MyFlix.Catalog.Application.UseCases.Video.Common
 					id,
 					categories?.FirstOrDefault(category => category.Id == id)?.Name
 				)).ToList(),
-			video.Genres.Select(id => new VideoModelOutputRelatedAggregate(id)).ToList(),
+			video.Genres.Select(id =>
+				new VideoModelOutputRelatedAggregate(
+					id,
+					genres?.FirstOrDefault(genre => genre.Id == id)?.Name
+				)).ToList(),
 			video.CastMembers.Select(id => new VideoModelOutputRelatedAggregate(id)).ToList(),
 			video.Thumb?.Path,
 			video.Banner?.Path,

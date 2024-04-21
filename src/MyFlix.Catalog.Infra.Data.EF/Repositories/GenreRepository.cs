@@ -114,8 +114,9 @@ namespace MyFlix.Catalog.Infra.Data.EF.Repositories
         }
 
 		public Task<IReadOnlyList<Guid>> GetIdsListByIds(List<Guid> ids, CancellationToken cancellationToken)
-		{
-			throw new NotImplementedException();
-		}
+	        => throw new NotImplementedException();
+
+		public Task<IReadOnlyList<Genre>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken)
+			=> throw new NotImplementedException();
 	}
 }

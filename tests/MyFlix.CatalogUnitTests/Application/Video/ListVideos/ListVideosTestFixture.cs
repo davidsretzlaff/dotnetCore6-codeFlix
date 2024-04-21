@@ -17,35 +17,15 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 				.Select(_ => GetValidVideoWithAllProperties())
 				.ToList();
 
-		public string GetValidCategoryName()
-		{
-			var categoryName = "";
-			while (categoryName.Length < 3)
-				categoryName = Faker.Commerce.Categories(1)[0];
-			if (categoryName.Length > 255)
-				categoryName = categoryName[..255];
-			return categoryName;
-		}
-
-		public string GetValidCategoryDescription()
-		{
-			var categoryDescription =Faker.Commerce.ProductDescription();
-			if (categoryDescription.Length > 10_000)
-				categoryDescription = categoryDescription[..10_000];
-			return categoryDescription;
-		}
-
-		public DomainEntities.Category GetExampleCategory()
-			=> new(
-				GetValidCategoryName(),
-				GetValidCategoryDescription(),
-				GetRandomBoolean()
-			);
-
-		public (List<DomainEntities.Video> Videos,List<DomainEntities.Category> Categories) CreateExampleVideosListWithRelations()
+		public (
+			List<DomainEntities.Video> Videos,
+			List<DomainEntities.Category> Categories,
+			List<DomainEntities.Genre> Genres
+		) CreateExampleVideosListWithRelations()
 		{
 			var itemsQuantityToBeCreated = Random.Shared.Next(2, 10);
 			List<DomainEntities.Category> categories = new();
+			List<DomainEntities.Genre> genres = new();
 			var videos = Enumerable.Range(1, itemsQuantityToBeCreated)
 				.Select(_ => GetValidVideoWithAllProperties())
 				.ToList();
@@ -60,9 +40,53 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 					categories.Add(category);
 					video.AddCategory(category.Id);
 				}
+
+				video.RemoveAllGenres();
+				var qtdGenres = Random.Shared.Next(2, 5);
+				for (var i = 0; i < qtdGenres; i++)
+				{
+					var genre = GetExampleGenre();
+					genres.Add(genre);
+					video.AddGenre(genre.Id);
+				}
 			});
 
-			return (videos, categories);
+			return (videos, categories, genres);
 		}
+
+
+		string GetValidCategoryName()
+		{
+			var categoryName = "";
+			while (categoryName.Length < 3)
+				categoryName = Faker.Commerce.Categories(1)[0];
+			if (categoryName.Length > 255)
+				categoryName = categoryName[..255];
+			return categoryName;
+		}
+
+		string GetValidCategoryDescription()
+		{
+			var categoryDescription =
+				Faker.Commerce.ProductDescription();
+			if (categoryDescription.Length > 10_000)
+				categoryDescription = categoryDescription[..10_000];
+			return categoryDescription;
+		}
+
+		DomainEntities.Category GetExampleCategory()
+			=> new(
+				GetValidCategoryName(),
+				GetValidCategoryDescription(),
+				GetRandomBoolean()
+			);
+
+		string GetValidGenreName()
+			=> Faker.Commerce.Categories(1)[0];
+
+		DomainEntities.Genre GetExampleGenre() => new(
+				GetValidGenreName(),
+				GetRandomBoolean()
+			);
 	}
 }
