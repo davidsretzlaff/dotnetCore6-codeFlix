@@ -12,6 +12,11 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 
 	public class ListVideosTestFixture : VideoTestFixtureBase
 	{
+		public List<DomainEntities.Video> CreateExampleVideosListWithoutRelations()
+			 => Enumerable.Range(1, Random.Shared.Next(2, 10))
+				 .Select(_ => GetValidVideo())
+				 .ToList();
+
 		public List<DomainEntities.Video> CreateExampleVideosList()
 			=> Enumerable.Range(1, Random.Shared.Next(2, 10))
 				.Select(_ => GetValidVideoWithAllProperties())
