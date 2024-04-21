@@ -15,9 +15,9 @@ namespace MyFlix.Catalog.Application.UseCases.Video.Common
 		int YearLaunched,
 		bool Opened,
 		int Duration,
-		IReadOnlyCollection<Guid> CategoriesIds,
-		IReadOnlyCollection<Guid> GenresIds,
-		IReadOnlyCollection<Guid> CastMembersIds,
+		IReadOnlyCollection<VideoModelOutputRelatedAggregate> Categories,
+		IReadOnlyCollection<VideoModelOutputRelatedAggregate> Genres,
+		IReadOnlyCollection<VideoModelOutputRelatedAggregate> CastMembers,
 		string? ThumbFileUrl,
 		string? BannerFileUrl,
 		string? ThumbHalfFileUrl,
@@ -34,13 +34,14 @@ namespace MyFlix.Catalog.Application.UseCases.Video.Common
 			video.YearLaunched,
 			video.Opened,
 			video.Duration,
-			video.Categories,
-			video.Genres,
-			video.CastMembers,
+			video.Categories.Select(id => new VideoModelOutputRelatedAggregate(id)).ToList(),
+			video.Genres.Select(id => new VideoModelOutputRelatedAggregate(id)).ToList(),
+			video.CastMembers.Select(id => new VideoModelOutputRelatedAggregate(id)).ToList(),
 			video.Thumb?.Path,
 			video.Banner?.Path,
 			video.ThumbHalf?.Path,
 			video.Media?.FilePath,
 			video.Trailer?.FilePath);
 	}
+	public record VideoModelOutputRelatedAggregate(Guid Id, string? Name = null);
 }
