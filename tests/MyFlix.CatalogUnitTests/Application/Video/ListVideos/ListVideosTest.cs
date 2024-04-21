@@ -78,5 +78,36 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 			});
 			_videoRepositoryMock.VerifyAll();
 		}
+
+		[Fact(DisplayName = nameof(ListReturnsEmptyWhenThereIsNoVideo))]
+		[Trait("Application", "ListVideos - Use Cases")]
+		public async Task ListReturnsEmptyWhenThereIsNoVideo()
+		{
+			var input = new UseCase.ListVideosInput(1, 10, "", "", SearchOrder.Asc);
+			_videoRepositoryMock.Setup(x =>
+				x.Search(
+					It.Is<SearchInput>(x =>
+						x.Page == input.Page &&
+						x.PerPage == input.PerPage &&
+						x.Search == input.Search &&
+						x.OrderBy == input.Sort &&
+						x.Order == input.Dir),
+					It.IsAny<CancellationToken>()
+				)
+			).ReturnsAsync(
+				new SearchOutput<DomainEntities.Video>(
+					input.Page,
+					input.PerPage,
+					0,
+					new List<DomainEntities.Video>()));
+
+			PaginatedListOutput<VideoModelOutput> output = await _useCase.Handle(input, CancellationToken.None);
+
+			output.Page.Should().Be(input.Page);
+			output.PerPage.Should().Be(input.PerPage);
+			output.Total.Should().Be(0);
+			output.Items.Should().HaveCount(0);
+			_videoRepositoryMock.VerifyAll();
+		}
 	}
 }
