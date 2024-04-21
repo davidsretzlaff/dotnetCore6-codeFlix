@@ -3,6 +3,7 @@ using MyFlix.Catalog.Domain.Repository;
 using UseCase = MyFlix.Catalog.Application.UseCases.Video.GetVideo;
 using Xunit;
 using FluentAssertions;
+using MyFlix.Catalog.Application.Exceptions;
 
 namespace MyFlix.Catalog.UnitTests.Application.Video.GetVideo
 {
@@ -39,6 +40,24 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.GetVideo
 			output.Rating.Should().Be(exampleVideo.Rating);
 			output.YearLaunched.Should().Be(exampleVideo.YearLaunched);
 			output.Opened.Should().Be(exampleVideo.Opened);
+			repositoryMock.VerifyAll();
+		}
+
+		[Fact(DisplayName = nameof(ThrowsExceptionWhenNotFound))]
+		[Trait("Application", "GetVideo - Use Cases")]
+		public async Task ThrowsExceptionWhenNotFound()
+		{
+			var repositoryMock = new Mock<IVideoRepository>();
+			repositoryMock.Setup(x => x.Get(
+				It.IsAny<Guid>(),
+				It.IsAny<CancellationToken>())
+			).ThrowsAsync(new NotFoundException("Video not found"));
+			var useCase = new UseCase.GetVideo(repositoryMock.Object);
+			var input = new UseCase.GetVideoInput(Guid.NewGuid());
+
+			var action = () => useCase.Handle(input, CancellationToken.None);
+
+			await action.Should().ThrowAsync<NotFoundException>().WithMessage("Video not found");
 			repositoryMock.VerifyAll();
 		}
 	}
