@@ -17,13 +17,15 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 	{
 		private readonly ListVideosTestFixture _fixture;
 		private readonly Mock<IVideoRepository> _videoRepositoryMock;
+		private readonly Mock<ICategoryRepository> _categoryRepository;
 		private readonly UseCase.ListVideos _useCase;
 
 		public ListVideosTest(ListVideosTestFixture fixture)
 		{
 			_fixture = fixture;
 			_videoRepositoryMock = new Mock<IVideoRepository>();
-			_useCase = new UseCase.ListVideos(_videoRepositoryMock.Object);
+			_categoryRepository = new Mock<ICategoryRepository>();
+			_useCase = new UseCase.ListVideos(_videoRepositoryMock.Object, _categoryRepository.Object);
 		}
 
 		[Fact(DisplayName = nameof(ListVideos))]
@@ -119,7 +121,14 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 		public async Task ListVideosWithRelations()
 		{
 			var (exampleVideosList, examplesCategories) = _fixture.CreateExampleVideosListWithRelations();
+			var examplesCategoriesIds = examplesCategories.Select(category => category.Id).ToList();
 			var input = new UseCase.ListVideosInput(1, 10, "", "", SearchOrder.Asc);
+			_categoryRepository.Setup(x => x.GetListByIds(
+				It.Is<List<Guid>>(list =>
+					list.All(examplesCategoriesIds.Contains) &&
+					list.Count == examplesCategoriesIds.Count),
+				It.IsAny<CancellationToken>()
+			)).ReturnsAsync(examplesCategories);
 			_videoRepositoryMock.Setup(x =>
 				x.Search(
 					It.Is<SearchInput>(x =>
@@ -173,6 +182,7 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.ListVideos
 				outputItemCastMembersIds.Should().BeEquivalentTo(exampleVideo.CastMembers);
 			});
 			_videoRepositoryMock.VerifyAll();
+			_categoryRepository.VerifyAll();
 		}
 	}
 }
