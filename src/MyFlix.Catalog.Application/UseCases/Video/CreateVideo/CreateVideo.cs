@@ -1,6 +1,7 @@
 ﻿using MyFlix.Catalog.Application.Common;
 using MyFlix.Catalog.Application.Exceptions;
 using MyFlix.Catalog.Application.Interfaces;
+using MyFlix.Catalog.Application.UseCases.Video.Common;
 using MyFlix.Catalog.Domain.Exceptions;
 using MyFlix.Catalog.Domain.Repository;
 using DomainEntities = MyFlix.Catalog.Domain.Entity;
@@ -33,7 +34,7 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 			_storageService = storageService;
 		}
 
-		public async Task<CreateVideoOutput> Handle(CreateVideoInput input, CancellationToken cancellationToken)
+		public async Task<VideoModelOutput> Handle(CreateVideoInput input, CancellationToken cancellationToken)
 		{
 			var video = new DomainEntities.Video(
 				input.Title,
@@ -60,7 +61,7 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 				await _videoRepository.Insert(video, cancellationToken);
 				await _unitOfWork.Commit(cancellationToken);
 
-				return CreateVideoOutput.FromVideo(video);
+				return VideoModelOutput.FromVideo(video);
 			}
 			catch (Exception)
 			{

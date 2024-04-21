@@ -1,4 +1,5 @@
-﻿using MyFlix.Catalog.Domain.Repository;
+﻿using MyFlix.Catalog.Application.UseCases.Video.Common;
+using MyFlix.Catalog.Domain.Repository;
 
 namespace MyFlix.Catalog.Application.UseCases.Video.GetVideo
 {
@@ -8,10 +9,10 @@ namespace MyFlix.Catalog.Application.UseCases.Video.GetVideo
 
 		public GetVideo(IVideoRepository repository) => _repository = repository;
 
-		public async Task<GetVideoOutput> Handle(GetVideoInput input, CancellationToken cancellationToken)
+		public async Task<VideoModelOutput> Handle(GetVideoInput input, CancellationToken cancellationToken)
 		{
 			var video = await _repository.Get(input.VideoId, cancellationToken);
-			return GetVideoOutput.FromVideo(video);
+			return VideoModelOutput.FromVideo(video);
 		}
 	}
 }

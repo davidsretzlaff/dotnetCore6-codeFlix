@@ -1,10 +1,10 @@
-﻿using MyFlix.Catalog.Application.UseCases.Video.Common;
-using MyFlix.Catalog.Domain.Enum;
+﻿using MyFlix.Catalog.Domain.Enum;
 using DomainEntities = MyFlix.Catalog.Domain.Entity;
 
-namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
+namespace MyFlix.Catalog.Application.UseCases.Video.Common
 {
-	public record CreateVideoOutput(
+
+	public record VideoModelOutput(
 		Guid Id,
 		DateTime CreatedAt,
 		string Title,
@@ -19,12 +19,11 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 		IReadOnlyCollection<Guid> CastMembersIds,
 		string? Thumb,
 		string? Banner,
-		string ThumbHalf,
+		string? ThumbHalf,
 		string? Media,
-		string? Trailer
-	)
+		string? Trailer)
 	{
-		public static CreateVideoOutput FromVideo(DomainEntities.Video video) => new(
+		public static VideoModelOutput FromVideo(DomainEntities.Video video) => new(
 			video.Id,
 			video.CreatedAt,
 			video.Title,
@@ -41,7 +40,6 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 			video.Banner?.Path,
 			video.ThumbHalf?.Path,
 			video.Media?.FilePath,
-			video.Trailer?.FilePath
-		);
+			video.Trailer?.FilePath);
 	}
 }

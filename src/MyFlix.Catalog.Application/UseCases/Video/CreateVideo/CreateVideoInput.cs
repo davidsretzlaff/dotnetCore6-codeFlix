@@ -20,5 +20,5 @@ namespace MyFlix.Catalog.Application.UseCases.Video.CreateVideo
 		FileInput? ThumbHalf = null,
 		FileInput? Media = null,
 		FileInput? Trailer = null
-	) : IRequest<CreateVideoOutput>;
+	) : IRequest<VideoModelOutput>;
 }
