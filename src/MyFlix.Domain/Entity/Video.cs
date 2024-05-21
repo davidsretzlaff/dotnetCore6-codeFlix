@@ -103,7 +103,14 @@ namespace MyFlix.Catalog.Domain.Entity
 			Media.UpdateAsEncoded(validEncodedPath);
 		}
 
-		public void Update(string title, string description, int yearLaunched, bool opened, bool published, int duration)
+		public void Update(
+		   string title,
+		   string description,
+		   int yearLaunched,
+		   bool opened,
+		   bool published,
+		   int duration,
+		   Rating? rating = null)
 		{
 			Title = title;
 			Description = description;
@@ -111,6 +118,8 @@ namespace MyFlix.Catalog.Domain.Entity
 			Opened = opened;
 			Published = published;
 			Duration = duration;
+			if (rating is not null)
+				Rating = (Rating)rating;
 		}
 
 		public void Validate(ValidationHandler handler)
