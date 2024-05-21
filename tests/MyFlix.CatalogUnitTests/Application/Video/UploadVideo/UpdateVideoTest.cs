@@ -7,6 +7,7 @@ using Xunit;
 using UseCase = MyFlix.Catalog.Application.UseCases.Video.UpdateVideo;
 using DomainEntities = MyFlix.Catalog.Domain.Entity;
 using MyFlix.Catalog.Domain.Exceptions;
+using MyFlix.Catalog.Application.Exceptions;
 
 namespace MyFlix.Catalog.UnitTests.Application.Video.UploadVideo
 {
@@ -64,6 +65,25 @@ namespace MyFlix.Catalog.UnitTests.Application.Video.UploadVideo
 			output.Rating.Should().Be(input.Rating.ToStringSignal());
 			output.YearLaunched.Should().Be(input.YearLaunched);
 			output.Opened.Should().Be(input.Opened);
+		}
+
+		[Fact(DisplayName = nameof(UpdateVideosThrowsWhenVideoNotFound))]
+		[Trait("Application", "UpdateVideo - Use Cases")]
+		public async Task UpdateVideosThrowsWhenVideoNotFound()
+		{
+			var input = _fixture.CreateValidInput(Guid.NewGuid());
+			_videoRepository.Setup(repository =>
+				repository.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+			.ThrowsAsync(new NotFoundException("Video not found"));
+
+			var action = () => _useCase.Handle(input, CancellationToken.None);
+			await action.Should().ThrowAsync<NotFoundException>()
+				.WithMessage("Video not found");
+
+			_videoRepository.Verify(repository => repository.Update(
+				It.IsAny<DomainEntities.Video>(), It.IsAny<CancellationToken>()),
+				Times.Never);
+			_unitOfWork.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Never);
 		}
 	}
 }
